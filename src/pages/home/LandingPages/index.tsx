@@ -1,0 +1,139 @@
+// import React, { useEffect, useState } from "react";
+// import { Box, Grid, Typography } from "@mui/material";
+// import Colors from "@/Assets/theme/base/colors";
+// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+// import Minput from "@/Components/Minput";
+// import { images } from "./CarouselData";
+// import Image from "next/image";
+// import MBox from "@/Components/MBox";
+//
+// const LandingPage = () => {
+//     const [array , setArray]=React.useState(images)
+//     const [currImg, setCurrImg] = useState(0)
+//
+//     // useEffect(() => {
+//     //     const intervalId = setInterval(() => {
+//     //         setCurrImg((prev) => (prev + 1) % images.length);
+//     //     }, 3500);
+//     //     return () => clearInterval(intervalId);
+//     // }, [currImg, images.length]);
+//     // const handleImageChange = (direction:any) => {
+//     //     if (direction === "left" && currImg > 0) {
+//     //         setCurrImg(currImg - 1);
+//     //     } else if (direction === "right" && currImg < images.length - 1) {
+//     //         setCurrImg(currImg + 1);
+//     //     }
+//     // };
+//
+//     const handleImageChange = (cur:number) => {
+//        setCurrImg(cur)
+//     };
+//
+//     return (
+//         <Grid container about="landing pages" sx={{ backgroundSize: 'cover' }} height={{ lg: "70vh", xs: '95vh', md: '100vh' }} justifyContent="center" alignItems="start">
+//             <Grid item container height={{ lg: "65vh", xs: '95vh', md: '100vh' }}>
+//                 <div className="carousel">
+//                     <div className="carouselInner">
+//                         <MBox backgroundImage backUrl={images[currImg].img.src} sx={{width:'100%' , height:'100%'}}>
+//
+//                         </MBox>
+//                         {/*</div>*/}
+//                         {/*<div className="left" onClick={() => handleImageChange("left")}>*/}
+//                         {/*    <ArrowBackIcon sx={{ color: Colors.black.main }} />*/}
+//                         {/*</div>*/}
+//                         {/*<div className="right" onClick={() => handleImageChange("right")}>*/}
+//                         {/*    <ArrowForwardIcon sx={{ color: Colors.black.main }} />*/}
+//                         {/*</div>*/}
+//
+//                     </div>
+//                     <div className="btn">
+//                         {images.map((item, i) => (
+//                             <button
+//                                 onClick={() => handleImageChange(i)}
+//                                 style={{ display:"flex" , justifyContent: "center" }}
+//                             >
+//                                 <span style={{background: i === currImg ? '#09368D' : '#AED8CC' }} className="dot"></span>
+//                             </button>
+//                         ))}
+//                     </div>
+//                 </div>
+//             </Grid>
+//         </Grid>
+//     );
+// };
+//
+// export default LandingPage;
+
+
+import React from 'react';
+import Carousel from 'react-material-ui-carousel'
+import {Paper, Button, Grid} from '@mui/material'
+import Image from "next/image";
+import Ubc from "@/Assets/images/Rectangle 34.png";
+import Ubc1 from "@/Assets/images/Artboard 1 (3) 1 (1).png";
+import Ubc2 from "@/Assets/images/3d-smartphone.svg";
+import Ubc3 from "@/Assets/images/5066999 2.png";
+import MBox from "@/Components/MBox";
+
+function Example(props: any) {
+    var items = [
+        {
+            name: "Random Name #1",
+            description: "Probably the most random thing you have ever seen!",
+            img: Ubc,
+            color:'#FEC101'
+
+        },
+        {
+            name: "Random Name #2",
+            description: "Probably the most random thing you have ever seen!",
+            img: Ubc1,
+            color:'red.main'
+
+        },
+        {
+            name: "Random Name #2",
+            description: "Probably the most random thing you have ever seen!",
+            img: Ubc1,
+            color:'white.main'
+
+        }
+    ]
+
+    return (
+        <Carousel>
+            {
+                items.map((item, i) => <Item key={i} item={item}/>)
+            }
+        </Carousel>
+    )
+}
+
+export default Example
+
+function Item(props: any) {
+    const [Colors,setColors]=React.useState('#FEC101')
+    return (
+        <Paper sx={{ maxHeight: '60vh', minHeight: '60vh', display: 'flex'}}>
+
+            <Grid item container justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} flexDirection={'column'} lg={6}>
+                <h2>{props.item.name}</h2>
+                <p>{props.item.description}</p>
+                <Button className="CheckButton">
+                    Check it out!
+                </Button>
+            </Grid>
+
+            <Grid item container lg={6} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'} >
+                <Image src={props.item.img} placeholder="blur"
+                       quality={100}
+                       sizes="100vw"
+                       style={{
+                           objectFit: 'cover',
+                       }}  alt={'ali'}/>
+            </Grid>
+
+        </Paper>
+    )
+}

@@ -1,0 +1,347 @@
+:root {
+    --max-width: 1100px;
+    --border-radius: 12px;
+    --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+
+    --primary-glow: conic-gradient(from 180deg at 50% 50%,
+    #16abff33 0deg,
+    #0885ff33 55deg,
+    #54d6ff33 120deg,
+    #0071ff33 160deg,
+    transparent 360deg);
+    --secondary-glow: radial-gradient(rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0));
+
+    --tile-start-rgb: 239, 245, 249;
+    --tile-end-rgb: 228, 232, 233;
+    --tile-border: conic-gradient(#00000080,
+    #00000040,
+    #00000030,
+    #00000020,
+    #00000010,
+    #00000010,
+    #00000080);
+
+    --callout-rgb: 238, 240, 241;
+    --callout-border-rgb: 172, 175, 176;
+    --card-rgb: 180, 185, 188;
+    --card-border-rgb: 131, 134, 135;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+
+        --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+        --secondary-glow: linear-gradient(to bottom right,
+        rgba(1, 65, 255, 0),
+        rgba(1, 65, 255, 0),
+        rgba(1, 65, 255, 0.3));
+
+        --tile-start-rgb: 2, 13, 46;
+        --tile-end-rgb: 2, 5, 19;
+        --tile-border: conic-gradient(#ffffff80,
+        #ffffff40,
+        #ffffff30,
+        #ffffff20,
+        #ffffff10,
+        #ffffff10,
+        #ffffff80);
+
+        --callout-rgb: 20, 20, 20;
+        --callout-border-rgb: 108, 108, 108;
+        --card-rgb: 100, 100, 100;
+        --card-border-rgb: 200, 200, 200;
+    }
+}
+
+@font-face {
+    font-family: 'Yekan Bakh Medium';
+    src: url('../Assets/fonts/yekan/YekanBakh-Medium.ttf');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    /*background: rgb(208, 216, 229)*/
+
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        color-scheme: dark;
+    }
+}
+@font-face {
+    font-family: 'Yekan Bakh Fat';
+    src: url('../Assets/fonts/yekan/YekanBakh-Fat.ttf');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'Yekan Bakh Bold';
+    src: url('../Assets/fonts/yekan/YekanBakh-Bold.ttf');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ffffff;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #e7e7e7;
+    border-radius: 3.5px;
+}
+@font-face {
+    font-family: 'Yekan Bakh Light';
+    src: url('../Assets/fonts/yekan/YekanBakh-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh Heavy';
+    src: url('../Assets/fonts/yekan/YekanBakh-Heavy.ttf');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh Thin';
+    src: url('../Assets/fonts/yekan/YekanBakh-Thin.ttf');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh Regular';
+    src: url('../Assets/fonts/yekan/YekanBakh-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Yekan Bakh Hairline';
+    src: url('../Assets/fonts/yekan/YekanBakh-Hairline.ttf');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+.parent {
+    width: 100%;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.titer {
+    width: 80%;
+    height: fit-content;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.btn {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 80px;
+    margin-top: 10px;
+}
+
+.btn button {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    background-color: transparent;
+    margin: 7px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.my-carousel {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: end;
+    /* margin-top: 0px; */
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid #ccc; */
+    /* background-color: transparent; */
+    /* border-radius: 1rem; */
+}
+
+@media only screen and (max-width: 768px) {
+    .btn {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 400px;
+        margin-top: 10px;
+    }
+
+    .my-carousel {
+        width: 400px;
+        height: 250px;
+        border: 1px solid #ccc;
+        background-color: red;
+    }
+}
+
+
+.carousel {
+    width: 100%;
+    height: 100%;
+}
+
+.carouselInner {
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: end;
+}
+
+.carouselInner1 {
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*background-size: contain;*/
+}
+
+
+.carouselInner .left {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-bottom: 10px;
+    border-radius: 100%;
+    margin-right: 50px;
+    background-color: #ffffff;
+    /* box-shadow: 1px 1px 0.8px 0.2px #ececec; */
+    display: grid;
+    place-items: center;
+    color: white;
+    cursor: pointer;
+    animation: infinite;
+    position: absolute;
+}
+
+.carouselInner .center {
+    flex: 80%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+    text-align-last: center;
+}
+
+.carouselInner .right {
+    /* flex: 5%; */
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-bottom: 10px;
+    border-radius: 100%;
+    margin-right: 10px;
+    background-color: #ffffff;
+    /* box-shadow: 1px 1px 0.8px 0.2px #ffffff; */
+    display: grid;
+    place-items: center;
+    color: white;
+    animation: infinite;
+    cursor: pointer;
+    position: absolute;
+}
+
+.box {
+    position: relative;
+    z-index: 0;
+    border: none;
+    outline: none;
+}
+
+.shadow:before {
+
+    /*content: "";*/
+    /*position: absolute;*/
+    /*inset: -80px 0px 50px;  !* Adjust the inset values as needed *!*/
+    /*transform: translate(10px, 0px);*/
+    /*z-index: -2;*/
+    /*background: linear-gradient(#09368D, #fffafa);*/
+    /*filter: blur(0px);*/
+
+    content: "";
+    position: absolute;
+    inset: -10px 0px -5px;
+    bottom: -0px;
+    left: 0%;
+    transform: translate(10px, 0px);
+    z-index: -2;
+    background: linear-gradient(to bottom, #09368D, #fffafa);
+    filter: blur(0px);
+    border-radius: 10px;
+}
+
+.line{
+    content: '';
+    width: 100%;
+    border-bottom: solid 1px #fff;
+    left: 0;
+    top: 50%;
+    z-index: 1;
+}
