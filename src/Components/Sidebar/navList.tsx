@@ -1,54 +1,54 @@
 import {ListRoute} from "@/Types/App/routes.type";
-import Home from '@/Assets/images/Vector.svg'
-import employee from '@/Assets/images/employee 1.svg'
-import distributed from '@/Assets/images/distributed 1.svg'
-import management from '@/Assets/images/management 1.svg'
-import pages from '@/Assets/images/page 1.svg'
+import Home from '@/Assets/images/dashboard/settings (1) 1.svg'
+import employee from '@/Assets/images/dashboard/side-menu 1.svg'
+import distributed from '@/Assets/images/dashboard/edit 1.svg'
+import management from '@/Assets/images/dashboard/chat 1.svg'
+import pages from '@/Assets/images/dashboard/announcement 1.svg'
 import server from '@/Assets/images/server 2.svg'
-import logout from '@/Assets/images/exit (1) 1.svg'
+import logout from '@/Assets/images/dashboard/system-uicons_exit-right.svg'
 import Image from "next/image";
 
 const navList: ListRoute[] = [
     {
         text: "صفحه اصلی",
-        path: "/Homeshome",
+        path: "/Settings",
+        name: "home",
+        icon: <Image alt={'icon'} src={Home} width={25} height={25}/>,
+        id: 0
+    },
+    {
+        text: "تنظیمات صفحه ها",
+        path: "/PageSetting",
         name: "home",
         icon: <Image alt={'icon'} src={Home} width={25} height={25}/>,
         id: 1
     },
     {
-        text: "کاربران",
+        text: "تنظیمات ساید بار",
         path: "/users",
         name: "users",
         icon: <Image alt={'icon'} src={employee} width={25} height={25}/>,
         id: 2
     },
     {
-        text: "connection",
-        path: "/connection",
+        text: "تنظیمات شعار",
+        path: "/SloganSettings",
         name: "connection",
         icon: <Image alt={'icon'} src={distributed} width={25} height={25}/>,
         id: 3
     },
     {
-        text: "client",
-        path: "/client",
+        text: " تنظیمات پیامک ",
+        path: "/MessageSettings",
         name: "client",
         icon: <Image alt={'icon'} src={management} width={25} height={25}/>,
         id: 3
     },
     {
-        text: "ساخت صفحه",
+        text: "تنظیمات اخبار",
         path: "/createpage",
         name: "createpage",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
-        id: 3
-    },
-    {
-        text: "تنظیمات سرور",
-        path: "/settings-server",
-        name: "settings-server",
-        icon: <Image alt={'icon'} src={server} width={25} height={25}/>,
         id: 3
     },
 

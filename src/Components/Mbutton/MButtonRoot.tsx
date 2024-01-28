@@ -163,7 +163,7 @@ export default styled(Button)(({ theme, ownerState }: any) => {
                 // border: `1px solid ${colors.kaarnas.yellow}`,
                 // borderRadius: '2rem',
                 backgroundColor: colors.black.main,
-                color: "black",
+                color: "white",
                 width: "10rem",
                 fontFamily: 'Yekan Bakh Medium',
                 fontSize: "15px",

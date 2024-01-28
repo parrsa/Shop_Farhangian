@@ -55,7 +55,7 @@ const navList: Listnav[] = [
     },
     {
         title: "تنظیمات",
-        path: '/latestworksamples',
+        path: '/Settings',
         icon: <Image alt={'icon'} src={Setting} width={25} height={25}/>,
         id: 4,
 

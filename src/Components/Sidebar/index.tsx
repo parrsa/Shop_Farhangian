@@ -14,13 +14,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import {SidebarContexts} from '../../Context/SidebarContext';
 import {Grid} from "@mui/material";
 import {usePathname} from 'next/navigation'
 import colors from "@/Assets/theme/base/colors";
 import {navList} from './navList'
 import Link from "next/link";
 import Image from "next/image";
+import MBox from "@/Components/MBox";
+import Vector from "@/Assets/images/Vector (1).svg";
 
 const drawerWidth = 200;
 
@@ -75,7 +76,6 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 export default function Sidebar() {
     const theme = useTheme();
     const pathname = usePathname();
-    const {sidebarToggle, toggleSidebar} = useContext(SidebarContexts);
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -83,7 +83,6 @@ export default function Sidebar() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const closeSidebar = () => toggleSidebar();
     return (
         <>
             <Drawer
@@ -100,14 +99,19 @@ export default function Sidebar() {
                         },
                         display: 'flex',
                         alignItems: 'start',
-                        borderRadius: '0 1rem 1rem 0rem ',
+                        // borderRadius: '0 1rem 1rem 0rem ',
                         color: "rgba(225,249,27,1)",
-                        backgroundColor: "#2B2A52",
+                        backgroundColor: "#fff",
                         zIndex: 1
                     }
                 }} variant="permanent" open={open}>
-                <Grid item container height={70} justifyContent={'center'} alignItems={'center'} sx={{display: open ? 'black' : "none"}}>
-                        <Typography color={'white.main'} variant={'caption'}>بیرکار سیستم </Typography>
+                <Grid item container  height={100} justifyContent={'center'} flexDirection={'column'}  alignItems={'center'} sx={{display: open ? 'black' : "none"}}>
+                    <MBox circlebox>
+                        <MBox circlebox sx={{ width: '2.5rem', height: '2.5rem', backgroundColor: 'farhangian.yellow' }}>
+                            <Image width={50} height={'30'} src={Vector} alt={'vector'} />
+                        </MBox>
+                    </MBox>
+                    <Typography color={'black.main'} variant={'caption'} mt={1}>بیرکار سیستم </Typography>
                 </Grid>
                 <List>
                     {navList.map((item, index) => (
@@ -133,7 +137,7 @@ export default function Sidebar() {
                                     >
                                         {item.icon}
                                     </ListItemIcon>
-                                    <Typography variant={'caption'} color={'white.main'}
+                                    <Typography variant={'caption'} color={'black.main'}
                                                 sx={{opacity: open ? 1 : 0}}>{item.text}</Typography>
                                 </ListItemButton>
                             </Link>
