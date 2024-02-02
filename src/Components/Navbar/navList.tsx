@@ -50,9 +50,9 @@ const navList: Listnav[] = [
         title: "وضعیت حساب",
         path: '/category',
         icon: <Image alt={'icon'} src={Vaziat} width={25} height={25}/>,
-
         id: 3,
     },
+
     {
         title: "تنظیمات",
         path: '/Settings',

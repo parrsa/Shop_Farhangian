@@ -7,24 +7,13 @@ import MTButton from "@/Components/Mbutton";
 import MBox from "@/Components/MBox";
 import Typography from "@mui/material/Typography";
 import Vector from '@/Assets/images/Vector (1).svg'
+import Link from "next/link";
 
 const NavSearch = () => {
-    const [Check, setCheck] = React.useState(true);
+    const [Check, setCheck] = React.useState(false);
 
     return (
-        <Grid
-            item
-            container
-            lg={12}
-            md={12}
-            sm={12}
-            xs={12}
-            justifyContent={"space-between"}
-            alignItems={'center'}
-            sx={{
-                padding: '20px', // Adjust padding for smaller screens
-            }}
-        >
+        <Grid item container lg={12} md={12} sm={12} xs={12} justifyContent={"space-between"} alignItems={'center'} sx={{padding: '20px',display: {xs: 'none', md: 'flex'}}}>
             <Grid item xs={12} md={3} lg={3} container justifyContent={'center'} sx={{ marginBottom: { xs: '20px', md: 0 } }}>
                 <Image width={130} src={Logo} alt={'logo'} />
             </Grid>
@@ -42,9 +31,12 @@ const NavSearch = () => {
             <Grid item xs={12} md={3} lg={3} container justifyContent={Check ? 'space-evenly' : 'center'}>
                 {!Check && (
                     <>
-                        <MTButton login>
-                            <span style={{ marginRight: '0px', fontFamily: 'Yekan Bakh Medium' }}>ورود / ثبت نام</span>
-                        </MTButton>
+                        <Link href={'/login'}>
+
+                            <MTButton login>
+                                <span style={{ marginRight: '0px', fontFamily: 'Yekan Bakh Medium' }}>ورود / ثبت نام</span>
+                            </MTButton>
+                        </Link>
                     </>
                 )}
 

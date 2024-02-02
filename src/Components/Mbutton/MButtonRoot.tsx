@@ -49,12 +49,12 @@ export default styled(Button)(({ theme, ownerState }: any) => {
                 fontFamily: 'Yekan Bakh Medium',
                 border: `1px solid ${colors.blue[500]}`,
                 borderRadius: '0.5rem',
-                backgroundColor: colors.blue[500],
+                backgroundColor: '#33476C',
                 width: "20rem",
                 fontSize: '0.90rem',
                 fontWeight: 'bold',
                 height: '3rem',
-                color: colors.black.main,
+                color: colors.white.main,
                 "&:hover": {
                     color: colors.white.main + "!important",
                     backgroundColor: colors.black.main,
@@ -109,7 +109,7 @@ export default styled(Button)(({ theme, ownerState }: any) => {
             {
                 border: `1px solid ${colors.black.main}`,
                 // borderRadius: '2rem',
-                backgroundColor: colors.black.main,
+                backgroundColor: '#09368D',
                 color: "white",
                 width: "10rem",
                 height: '2.8rem',
@@ -162,7 +162,7 @@ export default styled(Button)(({ theme, ownerState }: any) => {
             {
                 // border: `1px solid ${colors.kaarnas.yellow}`,
                 // borderRadius: '2rem',
-                backgroundColor: colors.black.main,
+                backgroundColor: '#285F4B',
                 color: "white",
                 width: "10rem",
                 fontFamily: 'Yekan Bakh Medium',

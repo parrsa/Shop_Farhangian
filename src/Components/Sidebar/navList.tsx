@@ -10,50 +10,71 @@ import Image from "next/image";
 
 const navList: ListRoute[] = [
     {
-        text: "صفحه اصلی",
+        text: "تنظیمات سامانه",
         path: "/Settings",
-        name: "home",
+        name: "Settings",
         icon: <Image alt={'icon'} src={Home} width={25} height={25}/>,
         id: 0
     },
     {
-        text: "تنظیمات صفحه ها",
+        text: " صفحه اصلی",
         path: "/PageSetting",
-        name: "home",
+        name: "PageSetting",
         icon: <Image alt={'icon'} src={Home} width={25} height={25}/>,
         id: 1
     },
     {
-        text: "تنظیمات ساید بار",
-        path: "/users",
-        name: "users",
+        text: " محصولات",
+        path: "/ProductSettings",
+        name: "ProductSettings",
         icon: <Image alt={'icon'} src={employee} width={25} height={25}/>,
         id: 2
     },
     {
-        text: "تنظیمات شعار",
+        text: " شعار",
         path: "/SloganSettings",
-        name: "connection",
+        name: "SloganSettings",
         icon: <Image alt={'icon'} src={distributed} width={25} height={25}/>,
         id: 3
     },
     {
-        text: " تنظیمات پیامک ",
+        text: " پیامک ",
         path: "/MessageSettings",
         name: "client",
         icon: <Image alt={'icon'} src={management} width={25} height={25}/>,
         id: 3
     },
     {
-        text: "تنظیمات اخبار",
-        path: "/createpage",
-        name: "createpage",
+        text: "اخبار",
+        path: "/NewsSettings",
+        name: "NewsSettings",
+        icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
+        id: 3
+    },
+    {
+        text: "کاربران",
+        path: "/NewsSettings",
+        name: "NewsSettings",
+        icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
+        id: 3
+    },
+    {
+        text: "صورتحساب کاربران",
+        path: "/NewsSettings",
+        name: "NewsSettings",
+        icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
+        id: 3
+    },
+    {
+        text: "پروفایل ادمین",
+        path: "/NewsSettings",
+        name: "NewsSettings",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
         id: 3
     },
 
     {
-        text: "خروج",
+        text: "برگشت",
         path: "/",
         name: "logout",
         icon: <Image alt={'icon'} src={logout} width={25} height={25}/>,

@@ -116,9 +116,14 @@ export default function Sidebar() {
                 <List>
                     {navList.map((item, index) => (
                         <ListItem sx={{
+
                             borderLeft: `${urlSplit(pathname) === urlSplit(item.path) && "3px solid #FFB636"}`,
+                            backgroundColor: `${urlSplit(pathname) === urlSplit(item.path) && "grey.200"}`,
                             display: 'flex',
-                            alignItems: 'end'
+                            alignItems: 'end',
+                            ':hover':{
+                                backgroundColor:'grey.300'
+                            }
                         }} key={index} disablePadding>
                             <Link href={item.path}>
                                 <ListItemButton
@@ -126,6 +131,9 @@ export default function Sidebar() {
                                         minHeight: 60,
                                         justifyContent: open ? 'initial' : 'center',
                                         px: 2.5,
+                                        ':hover': {
+                                            backgroundColor:'grey.300'
+                                        }
                                     }}
                                 >
                                     <ListItemIcon
@@ -137,8 +145,7 @@ export default function Sidebar() {
                                     >
                                         {item.icon}
                                     </ListItemIcon>
-                                    <Typography variant={'caption'} color={'black.main'}
-                                                sx={{opacity: open ? 1 : 0}}>{item.text}</Typography>
+                                    <Typography  variant={'caption'} color={'black.main'} sx={{opacity: open ? 1 : 0 , fontFamily:'Shabname Bakh Fat'}}>{item.text}</Typography>
                                 </ListItemButton>
                             </Link>
                         </ListItem>

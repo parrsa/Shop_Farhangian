@@ -133,8 +133,10 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     fontWeight: "bold",
                     fontSize: "1rem",
                     backgroundColor: theme.palette.white.main + "!important",
-                    width: '20rem',
-                    height: "3.2rem !important"
+                    // width: '20rem',
+                    // height: "3.2rem !important"
+                    fontFamily: 'Yekan Bakh Hairline',
+
                 },
                 '& .Mui-focused': {
                     border: '0px',
@@ -149,9 +151,10 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     padding: "0 10px !important",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
-
+                    fontFamily: 'Yekan Bakh Hairline',
                     backgroundColor: "transparent !important"
-                }
+                },
+
             }
         )
     }

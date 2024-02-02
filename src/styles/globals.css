@@ -167,6 +167,11 @@ a {
     }
 }
 @font-face {
+    font-family: 'Shabname Bakh Fat';
+    src: url('../Assets/fonts/Farsi-Digits/Shabnam-Bold-FD.ttf');
+}
+
+@font-face {
     font-family: 'Yekan Bakh Fat';
     src: url('../Assets/fonts/yekan/YekanBakh-Fat.ttf');
     font-weight: 900;

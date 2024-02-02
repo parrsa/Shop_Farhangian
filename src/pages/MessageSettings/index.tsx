@@ -8,7 +8,7 @@ import 'devextreme/dist/css/dx.light.css';
 
 const eventHandlingLabel = {'aria-label': 'Event Handling'};
 
-import {ColorBox} from 'devextreme-react/color-box';
+import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";

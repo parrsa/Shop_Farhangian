@@ -46,7 +46,7 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
     function BackImage() {
         return {
             backgroundImage: `url("${backUrl}") `,
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition:'center',
             width:'100%'

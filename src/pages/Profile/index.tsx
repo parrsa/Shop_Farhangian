@@ -39,6 +39,7 @@ let alertColor: AlertColor | undefined;
 const Profiles = () => {
     const [value, setValue] = React.useState('');
     const [error, setError] = React.useState(false);
+    const [Check,setCheck]=React.useState(true)
     const Cook = Cookies.get('Tokenlogin')
     const [helperText, setHelperText] = React.useState('Choose wisely');
     const [MeharetFani, setMeharetFani] = React.useState()
@@ -80,6 +81,7 @@ const Profiles = () => {
 
     const [Disable, setDisable] = useState(true)
     const HandellSubmite = () => {
+        setCheck(!Check)
     }
     const handleCloseAlert = () => {
         setOpenMessage(false);
@@ -106,8 +108,7 @@ const Profiles = () => {
                           textAlign={{xs: "center", md: "center"}} alignItems={"center"}>
                         <Grid item container lg={10} justifyContent={"space-between"} alignItems={"center"}>
                             <Grid item container lg={4} alignItems={"start"} flexDirection={"column"}>
-                                <Typography variant="h4" color={colors.black.main}>اطلاعات <span
-                                    style={{color: colors.yellow.main}}>کاربری</span></Typography>
+                                <Typography variant="h4" color={colors.black.main}>اطلاعات کاربری</Typography>
                                 <Typography variant="subtitle2" mt={{lg: 2}}>لورم ایپسوم متن ساختگی با تولید سادگی
                                     نامفهوم از صنعت چاپ </Typography>
                             </Grid>
@@ -140,7 +141,7 @@ const Profiles = () => {
                                 name="Name"
                                 label={item.user?.first_name}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={'true'}
+                                disabled={Check}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -166,7 +167,7 @@ const Profiles = () => {
                                 name="Name"
                                 label={item.user?.last_name ?? ''}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={'true'}
+                                disabled={Check}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -193,7 +194,7 @@ const Profiles = () => {
                                 id="PhoneNumber"
                                 name="PhoneNumber"
                                 type={'number'}
-                                disabled={'true'}
+                                disabled={Check}
                                 label={item.user?.username ?? ''}
                             />
                         </FormControl>
@@ -213,7 +214,7 @@ const Profiles = () => {
                                 value={Sabeghe_Kar}
                                 onChange={(e: any) =>  setSabeghe_kar(e.target.value)}
                                 name="Sabeghe_Kar"
-                                disabled={Disable}
+                                disabled={Check}
                                 label={Disable ? item?.sabeghe_kar == '' ? "سابقه کار خود را ویرایش کنید" : item?.sabeghe_kar : 'سابقه کار'}
                                 placeholder={item?.sabeghe_kar == '' ? "سابقه کار خود را واردکنید" : item?.sabeghe_kar}
                             />
@@ -238,7 +239,7 @@ const Profiles = () => {
                                 name="Address"
                                 value={Address}
                                 onChange={(e: any) => setAddress(e.target.value)}
-                                disabled={Disable}
+                                disabled={Check}
                                 label={Disable ? item?.address == '' ? "آدرس خود را ویرایش کنید" : item?.address : 'آدرس'}
                                 placeholder={item?.address == '' ? "آدرس خود را واردکنید" : item?.address}
                             />
@@ -261,7 +262,7 @@ const Profiles = () => {
                                 // name="birth_date"
                                 value={birth_date}
                                 onChange={(e: any) => setbirth_date(e.target.value)}
-                                disabled={Disable}
+                                disabled={Check}
                                 label={Disable ? item?.birth_date == '' ? 'تاریخ تولد خود را ویرایش کنید' : item?.birth_date : 'تاریخ تولد'}
                                 placeholder={item?.birth_date == '' ? 'تاریخ تولد خود را با ترتیب (سال و ماه و روز) وارد کنید' : item?.birth_date}
                             />
@@ -269,41 +270,6 @@ const Profiles = () => {
 
 
                     </Grid>
-
-
-                    <Grid item container lg={9} justifyContent={'space-between'}>
-
-                        <FormControl
-                            sx={{m: 0, width: {lg: '90%', xs: 220, md: 350,}, marginTop: 3, marginLeft: {lg: 5}}}>
-                            <InputLabel sx={{marginTop:"-15px",
-                                fontFamily: 'Yekan Bakh Medium',
-                                fontSize: "1.2rem",
-                                fontWeight: "bold !important",
-                                color: colors.black.main + "!important",
-
-                            }} shrink htmlFor="bootstrap-input">
-                                توضیحات :
-                            </InputLabel>
-                            <MInput
-                                textarea
-                                id="Description"
-                                name="Description"
-                                disabled={Disable}
-                                value={Description}
-                                onChange={(e: any) => setDescription(e.target.value)}
-                                label={Disable ? item?.description == '' ? 'توضیحات خود را بنویسید' : item?.description : 'توضیحات'}
-                                placeholder={ item?.description == '' ? 'توضیحات خود را وارد کنید' : item?.description}
-                                type="textarea"
-                                // value={formik.values.Description}
-                                // onChange={formik.handleChange}
-                                minRows={5}
-                                multiline
-                                rows={8}
-                            />
-                        </FormControl>
-                    </Grid>
-
-
 
                     <Grid item container justifyContent={'center'} p={2} alignItems={'center'}>
                         <MTButton color="primary" variant="contained" onClick={HandellSubmite} submite type="submit">
