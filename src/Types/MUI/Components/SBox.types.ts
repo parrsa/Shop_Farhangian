@@ -25,6 +25,7 @@ export interface ISBox {
     children?: React.ReactNode
     circlebox?:boolean
     Charts?:boolean
+    Modal?:boolean
 }
 
 export interface ISboxRoot {

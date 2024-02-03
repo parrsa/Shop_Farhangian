@@ -10,7 +10,7 @@ const SettingLayout: React.FC<LayoutsInterface> = ({ children }: LayoutsInterfac
             <Box component="main" sx={{ flexGrow: 1,flexShrink:'initial',flexBasis:'8em',  color:'black.main' }}>
                 <Grid item container justifyContent={'center'}  lg={12} md={11} xs={12} mt={1} sm={12}>
                     <Grid item container borderRadius={1} mt={1} lg={11} xs={8} p={1} justifyContent={'center'} bgcolor={'white.main'} boxShadow={5}>
-                        <Typography variant={'h1'} p={0.5}>داشبورد مدیریتی</Typography>
+                        <Typography variant={'h1'} p={0.5} fontFamily={'Shabname'}>داشبورد مدیریتی</Typography>
                     </Grid>
                 </Grid>
                 {children}

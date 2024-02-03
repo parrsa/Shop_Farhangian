@@ -282,7 +282,7 @@ const SignupPage = () => {
                 </Grid>
                 <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity={typeMessage} sx={{width: '100%'}}>
-                        {message}
+                        <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>
             </Grid>

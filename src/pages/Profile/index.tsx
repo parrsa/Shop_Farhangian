@@ -283,7 +283,7 @@ const Profiles = () => {
                 <Snackbar open={openMessage} autoHideDuration={4500}
                           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
                     <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
-                        {message}
+                        <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>
             </Grid>

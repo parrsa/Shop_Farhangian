@@ -503,6 +503,7 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     color: theme.palette.error.light + "!important",
                     fontSize: ".84rem",
                     fontWeight: "bold",
+                    textAlign: 'justify',
                     padding: "1rem 0 !important",
                     fontFamily: 'Yekan Bakh Hairline',
                     height: "10px",
@@ -511,21 +512,22 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     border: error ? "1px solid red" : "0px solid gray",
                     fontWeight: "bold",
                     fontSize: "1rem",
+                    fontFamily:'Shabname',
                     backgroundColor: theme.palette.white.main + "!important",
-                    padding:'15px'
-                    // width: '20rem',
-                    // height: "4rem !important"
+                    padding:'15px',
+                    textAlign: 'justify',
                 },
                 '& .Mui-focused': {
                     border: '0px',
                 },
                 "& .MuiInputLabel-root": {
-                    fontFamily: 'Yekan Bakh Hairline',
                     fontSize: "1rem",
                     fontWeight: "bold !important",
+                    fontFamily:'Shabname',
                     background: theme.palette.white.main + "!important",
                     borderRadius: "10px !important",
                     color: colors.black.main + "!important",
+                    textAlign: 'justify',
                     padding: "0 10px !important",
                 },
                 "& .MuiOutlinedInput-notchedOutline": {

@@ -34,7 +34,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     overflowX: 'hidden',
 });
 const urlSplit = (path: string): string => {
-    const splitUrl = path.split("/") ??" " ;
+    const splitUrl = path.split("/Settings/") ??" " ;
     const newText = splitUrl[1];
     return newText;
 };
@@ -143,9 +143,10 @@ export default function Sidebar() {
                                             justifyContent: 'center',
                                         }}
                                     >
+                                        {/*{item.path.slice(10,30)}*/}
                                         {item.icon}
                                     </ListItemIcon>
-                                    <Typography  variant={'caption'} color={'black.main'} sx={{opacity: open ? 1 : 0 , fontFamily:'Shabname Bakh Fat'}}>{item.text}</Typography>
+                                    <Typography variant={'caption'} fontSize={'0.9rem'} color={'black.main'} sx={{opacity: open ? 1 : 0 , fontFamily:'Shabname'}}>{item.text}</Typography>
                                 </ListItemButton>
                             </Link>
                         </ListItem>

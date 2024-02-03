@@ -300,7 +300,7 @@ function Navbars({saveValue }:any) {
                                                             sx={{
                                                                 borderBottom: `${urlSplit(pathname) === urlSplit(item.path) && "3px solid #FFB636"}`,
                                                                 cursor: 'pointer',
-                                                                fontFamily:'Shabname Bakh Fat',
+                                                                fontFamily:'Shabname',
                                                                 color: 'black.main',
                                                             }}
                                                         >

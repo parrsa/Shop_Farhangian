@@ -18,56 +18,56 @@ const navList: ListRoute[] = [
     },
     {
         text: " صفحه اصلی",
-        path: "/PageSetting",
+        path: "/Settings/PageSetting",
         name: "PageSetting",
         icon: <Image alt={'icon'} src={Home} width={25} height={25}/>,
         id: 1
     },
     {
         text: " محصولات",
-        path: "/ProductSettings",
+        path: "/Settings/ProductSettings",
         name: "ProductSettings",
         icon: <Image alt={'icon'} src={employee} width={25} height={25}/>,
         id: 2
     },
     {
         text: " شعار",
-        path: "/SloganSettings",
+        path: "/Settings/SloganSettings",
         name: "SloganSettings",
         icon: <Image alt={'icon'} src={distributed} width={25} height={25}/>,
         id: 3
     },
     {
         text: " پیامک ",
-        path: "/MessageSettings",
+        path: "/Settings/MessageSettings",
         name: "client",
         icon: <Image alt={'icon'} src={management} width={25} height={25}/>,
         id: 3
     },
     {
         text: "اخبار",
-        path: "/NewsSettings",
+        path: "/Settings/NewsSettings",
         name: "NewsSettings",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
         id: 3
     },
     {
         text: "کاربران",
-        path: "/NewsSettings",
+        path: "/Settings/Users",
         name: "NewsSettings",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
         id: 3
     },
     {
         text: "صورتحساب کاربران",
-        path: "/NewsSettings",
+        path: "/Settings/a",
         name: "NewsSettings",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
         id: 3
     },
     {
         text: "پروفایل ادمین",
-        path: "/NewsSettings",
+        path: "/Settings/log",
         name: "NewsSettings",
         icon: <Image alt={'icon'} src={pages} width={25} height={25}/>,
         id: 3

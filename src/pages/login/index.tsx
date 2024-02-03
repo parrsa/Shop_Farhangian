@@ -276,7 +276,7 @@ const SignInPage = () => {
             ><Image src={Myimg}  alt="images"/></Grid>
             <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleClose}>
                 <Alert  sx={{width: '100%'}}>
-                    {message}
+                    <Typography variant={'caption'}>{message}</Typography>
                 </Alert>
             </Snackbar>
         </Grid>

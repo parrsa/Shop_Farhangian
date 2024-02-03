@@ -9,6 +9,7 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
         circlebox,
         backgroundImage,
         Charts,
+        Modal,
         UserState,
         backUrl,
         backProp,
@@ -52,6 +53,20 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
             width:'100%'
 
         }
+    }
+
+    function BoxModal(){
+        return{
+            position:'absolute',
+            top:'50%',
+            left:'50%',
+            width:600,
+            transform:'translate(-50%, -50%)',
+            backgroundColor:'red.main',
+            border:'2px solid #000',
+            boxShadow:24,
+            p:4
+  }
     }
 
     function blurBackStyles() {
@@ -118,7 +133,9 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
         ...(backgroundImage && BackImage()),
         ...(circlebox && CircleBox()),
         ...(Discount && DisCcounrBox()),
-        ...(Charts && Chart())
+        ...(Charts && Chart()),
+        ...(Modal && BoxModal()),
+
     }
 })
 

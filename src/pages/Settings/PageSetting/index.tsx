@@ -55,9 +55,9 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/Advertisement/GetAllNews')
+            const response = await fetch('https://farhangian.birkar.ir/api/Advertisement/GetAll')
             const data = await response.json();
-            setOstan(data);
+            setOstan(data.data);
         }
         getData()
     }, [ostan]);
@@ -89,7 +89,7 @@ const PageSetting = () => {
                     }
                 }
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/Advertisement/Create`,
+                    const response = await axios.post(`https://farhangian.birkar.ir/api/Advertisement/Create`,
                         {
                             "id": 0,
                             "title": values.phone,
@@ -133,7 +133,7 @@ const PageSetting = () => {
                 }
             }
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/Advertisement/Delete?id=${item}`,
+                const response = await axios.delete(`https://farhangian.birkar.ir/api/Advertisement/Delete?id=${item}`,
 
                 )
                 if (response.status === 200) {
@@ -491,7 +491,7 @@ const PageSetting = () => {
                 <Snackbar open={openMessage} autoHideDuration={4500}
                           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
                     <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
-                        {message}
+                        <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>
             </Grid>

@@ -167,9 +167,14 @@ a {
     }
 }
 @font-face {
-    font-family: 'Shabname Bakh Fat';
+    font-family: 'Shabname';
     src: url('../Assets/fonts/Farsi-Digits/Shabnam-Bold-FD.ttf');
 }
+
+/*@font-face {*/
+/*    font-family: 'Shabname';*/
+/*    src: url('../Assets/fonts/Farsi-Digits/Shabnam-Thin-FD.ttf');*/
+/*}*/
 
 @font-face {
     font-family: 'Yekan Bakh Fat';
@@ -399,7 +404,7 @@ a {
 
     content: "";
     position: absolute;
-    inset: -10px 0px -5px;
+    inset: -15px 0px -5px;
     bottom: -0px;
     left: 0%;
     transform: translate(10px, 0px);
