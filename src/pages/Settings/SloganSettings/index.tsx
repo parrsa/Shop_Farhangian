@@ -1,8 +1,5 @@
 import SettingLayout from "@/Components/SettingLayout";
-import {
-    AlertColor, Box,
-    Grid, IconButton, InputAdornment, List, Modal, Stack, TextField, Typography,
-} from "@mui/material";
+import {AlertColor, Box, Grid, List, Modal, Typography,} from "@mui/material";
 import * as React from "react";
 import MInput from "@/Components/Minput";
 import FormControl from "@mui/material/FormControl";
@@ -13,15 +10,19 @@ import * as yup from "yup";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import {ColorBoxTypes} from "devextreme-react/color-box";
 import colors from "@/Assets/theme/base/colors";
 import {useEffect, useState} from "react";
-import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
-import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
-import ClearIcon from "@mui/icons-material/Clear";
+import Edite from '@/Assets/images/nimbus_edit.svg'
+import Trash from '@/Assets/images/circum_trash.svg'
+
 const formValidationSchema = yup.object({
     phone: yup.string().required('متن شعار الزامی است'),
 });
+import {ChromePicker, SketchPicker} from 'react-color';
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import Image from "next/image";
+
 
 const formValidationSchemas = yup.object({
     phone: yup.string().required('شماره موبایل الزامی است'),
@@ -36,20 +37,48 @@ const style = {
     width: 400,
     backgroundColor: 'background.paper',
     boxShadow: 24,
-    borderRadius:1,
+    borderRadius: 1,
     p: 4,
 };
+
+const swatch = {
+    padding: '5px',
+    background: '#fff',
+    borderRadius: '1px',
+    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+    display: 'inline-block',
+    cursor: 'pointer',
+}
+
+const colorsss = {
+    width: '36px',
+    height: '14px',
+    borderRadius: '2px',
+    background: `rgba(241,112,19,1)`,
+
+}
+
+const popover = {
+    position: 'absolute',
+    zIndex: '2',
+}
+
+const cover = {
+    position: 'fixed',
+    top: '0px',
+    right: '0px',
+    bottom: '0px',
+    left: '0px',
+}
 const PageSetting = () => {
     const [ostan, setOstan] = React.useState<any[]>([]);
-    const [color, setColor] = React.useState('#f05b41');
-    const handleColorChange = React.useCallback(({value}: ColorBoxTypes.ValueChangedEvent) => {
-        setColor(value);
-    }, []);
     const [uploadedFileName, setUploadedFileName] = React.useState("");
     const [files, setFiles] = React.useState<File | undefined>(undefined);
     const [openMessage, setOpenMessage] = React.useState(false);
     const [typeMessage, setTypeMessage] = React.useState('')
     const [message, setMessage] = React.useState('')
+    const [id, SetId] = React.useState()
+    const [OpenModal, SetOpenModal] = React.useState(false);
     const handleClickClear = () => {
         setUploadedFileName("");
     };
@@ -62,9 +91,6 @@ const PageSetting = () => {
         }
         getData()
     }, [ostan]);
-
-
-
     const handleFileUploads = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
@@ -74,6 +100,8 @@ const PageSetting = () => {
             setFiles(files[0])
         }
     };
+    const [color, setColor] = React.useState('430606');
+
 
     const formik = useFormik({
         initialValues: {
@@ -91,8 +119,10 @@ const PageSetting = () => {
                     const response = await axios.post(`https://farhangian.birkar.ir/api/Slogan/Create
 `,
                         {
-                            id:0,
+                            id: 0,
                             title: values.phone,
+                            backColor: color,
+                            color: color
                         },
                         config
                     )
@@ -105,7 +135,7 @@ const PageSetting = () => {
                             // navigate('/')
                         }, 2000)
                     }
-                } catch (error:any) {
+                } catch (error: any) {
                     setTypeMessage('error')
                     setOpenMessage(true)
                     setMessage(error.message)
@@ -115,12 +145,11 @@ const PageSetting = () => {
         },
     });
 
-
     const handleCloseAlert = () => {
         setOpenMessage(false);
     };
 
-    const handelDeleted=(item:any)=>{
+    const handelDeleted = (item: any) => {
         const Deleted = async () => {
             const config = {
                 headers: {
@@ -129,14 +158,13 @@ const PageSetting = () => {
             }
             try {
                 const response = await axios.delete(`https://farhangian.birkar.ir/api/Slogan/Delete?id=${item}`,
-
                 )
                 if (response.status === 200) {
                     setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
                     setTypeMessage('warning')
                     setOpenMessage(true)
                 }
-            } catch (error:any) {
+            } catch (error: any) {
                 setTypeMessage('error')
                 setOpenMessage(true)
                 setMessage(error.message)
@@ -144,19 +172,13 @@ const PageSetting = () => {
         }
         Deleted()
     }
-    const [opens, setopens] = React.useState(false)
-    const [Id, setID] = React.useState();
-    const [Descr,SetDescr]=React.useState()
-    const [id,SetId]=React.useState()
-    const [open, setOpen] = React.useState(false);
 
-    const handleOpen = (item:any)=>{
-        SetDescr(item.title)
+    const handleOpenModal = (item: any) => {
         SetId(item.id)
-        setOpen(true)
+        SetOpenModal(true)
     }
+    const handleCloseModal = () => SetOpenModal(false);
 
-    const handleClose = () => setOpen(false);
     const formiks = useFormik({
         initialValues: {
             phone: '',
@@ -174,8 +196,8 @@ const PageSetting = () => {
                     const response = await axios.put(
                         'https://farhangian.birkar.ir/api/Slogan/Edit',
                         {
-                            'id':id,
-                            'title':values.phone
+                            'id': id,
+                            'title': values.phone
                         },
                         config
                     );
@@ -184,10 +206,10 @@ const PageSetting = () => {
                         setMessage('خبر جدید با موفقیت اضافه شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
-                        setOpen(false)
+                        SetOpenModal(false)
                         formik.resetForm();
                     }
-                } catch (error:any) {
+                } catch (error: any) {
                     setTypeMessage('error');
                     setOpenMessage(true);
                     setMessage(error.message);
@@ -198,35 +220,73 @@ const PageSetting = () => {
         },
     });
 
+    const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
+    const handleClick = () => {
+        setDisplayColorPicker(!displayColorPicker);
+    };
+    const [isModalOpen, setModalOpen] = useState(false);
+    const openDialogColor = () => {
+        setModalOpen(true);
+    };
+    const closeDialogColor = () => {
+        setModalOpen(false);
+    };
+
+    const [background, setBackground] = React.useState('#fff');
+    const handleChangeComplete = (color: any) => {
+        setBackground(color.hex);
+    };
+
+
+
+
+    const handleClose = () => {
+        setDisplayColorPicker(false);
+    };
+
+    const handleChange = (newColor: any) => {
+        setColor(newColor.hex);
+    };
+
     return (
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
-                <Grid item container lg={10} boxShadow={5} justifyContent={'space-evenly'} borderRadius={2}
+                <Grid item container lg={11} boxShadow={5} justifyContent={'center'} borderRadius={2}
                       bgcolor={'white.main'}>
 
-                    <Grid item container lg={10}  mt={2}>
-                        <Typography variant={'h1'} >شعار های موجود :</Typography>
+                    <Grid item container lg={10} mt={2}>
+                        <Typography variant={'h1'}>شعار های موجود :</Typography>
                     </Grid>
-                    <Grid item container  boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'} justifyContent={'center'} overflow={'auto'} >
-                        {ostan.map((item:any)=>(
+                    <Grid item container boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'}
+                          justifyContent={'center'} overflow={'auto'}>
+                        {ostan.map((item: any) => (
                             <>
                                 <Grid item container lg={10} xs={10} bgcolor={'white.main'}
-                                      boxShadow={'1px 1px 10px 1px #C4C4C4'} my={2} maxHeight={'10vh'} minHeight={'10vh'} borderRadius={1}
+                                      boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} maxHeight={'7vh'} minHeight={'7vh'}
+                                      borderRadius={1}
                                       justifyContent={{
                                           lg: 'space-between',
                                           md: 'space-between',
                                           xs: 'space-between'
                                       }} alignItems={'center'}>
-                                    <Grid item container lg={4} xs={12}  justifyContent={'center'} p={1} alignItems={"center"}>
-                                        <Typography variant="h1" color={colors.yellow.main}>{item.title.slice(0,25)}</Typography>
+                                    <Grid item container lg={4} xs={12} p={1} alignItems={"center"}>
+                                        <Typography variant="h1"
+                                                    color={colors.yellow.main}>{item.title.slice(0, 25)}</Typography>
                                     </Grid>
 
-                                    <Grid item container lg={4} xs={12}  justifyContent={'center'} p={1} >
-                                        <Grid item container lg={4} >
-                                            <Typography sx={{cursor: "pointer"}}  variant="h1"  onClick={() => handleOpen(item)} color={colors.red.main}>ویرایش <span style={{color: colors.black.main}}></span></Typography>
+                                    <Grid item container lg={2} xs={12} justifyContent={'end'} alignItems={'center'}
+                                          p={1}>
+                                        <Grid item container lg={4}>
+                                            <Typography sx={{cursor: "pointer"}} variant="h1"
+                                                        onClick={() => handleOpenModal(item)}
+                                                        color={colors.red.main}><Image src={Edite} alt={'icons'}/> <span
+                                                style={{color: colors.black.main}}></span></Typography>
                                         </Grid>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)} variant="h1" color={colors.red.main}>حذف<span style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)}
+                                                        variant="h1" color={colors.red.main}><Image src={Trash}
+                                                                                                    alt={'icons'}/><span
+                                                style={{color: colors.black.main}}></span></Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -234,25 +294,79 @@ const PageSetting = () => {
                         ))}
                     </Grid>
 
+                    <Grid item container lg={10} bgcolor={'white.main'} boxShadow={5} borderRadius={2}
+                          justifyContent={'space-between'} mt={5}>
+                        <Grid item container lg={4} alignItems={'center'} justifyContent={'center'}>
+                            <Typography variant={'h1'}>اضافه کردن متن </Typography>
+                            <div style={swatch} onClick={handleClick}>
+                                <Box style={{...colorsss, backgroundColor: `${color}`}} >s</Box>
+                            </div>
+                        </Grid>
+                        <Grid item container lg={3} justifyContent={'center'} flexDirection={'column'}
+                              alignItems={'center'} p={2}>
+
+                            {displayColorPicker ? (
+                                <div style={popover}>
+                                    <div style={cover} onClick={handleClose}/>
+                                    <SketchPicker  color={color} onChange={handleChange}/>
+                                </div>
+                            ) : null}
+                            <MTButton onClick={openDialogColor} p={1} sx={{borderBottom: '1px solid red.main'}}>رنگ متن
+                                :</MTButton>
+                            <Box onClick={openDialogColor} sx={{
+                                backgroundColor: background ? background : 'red.main',
+                                width: '50px',
+                                height: '50px'
+                            }}></Box>
+                            <Dialog open={isModalOpen} onClose={closeDialogColor}>
+                                <DialogContent>
+                                    <Typography variant={'caption'}>
+                                        انتخاب رنگ پس زمینه
+                                    </Typography>
+                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete}/>
+                                </DialogContent>
+                            </Dialog>
+                        </Grid>
+
+                        <Grid item container lg={3} justifyContent={'center'} flexDirection={'column'}
+                              alignItems={'center'} p={2}>
+                            <Typography variant={'h1'} onClick={openDialogColor} p={1}>رنک بک گراند :</Typography>
+                            <Typography variant={'h1'}>{background}</Typography>
+                            <Dialog open={isModalOpen} onClose={closeDialogColor}>
+                                <DialogContent>
+                                    <Typography variant={'caption'} p={0}>
+                                        انتخاب رنگ پس زمینه
+                                    </Typography>
+                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete}/>
+                                </DialogContent>
+                            </Dialog>
+
+                        </Grid>
+
+                    </Grid>
 
                     <form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
-                        <Grid item container lg={12} p={2}>
-                            <FormControl fullWidth>
-                                <MInput
-                                    textarea
-                                    minRows={5}
-                                    multiline
-                                    id="phone"
-                                    name="phone"
-                                    type={'text'}
-                                    label={"متن شعار"}
-                                    value={formik.values.phone}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    error={formik.touched.phone && Boolean(formik.errors.phone)}
-                                    helperText={formik.touched.phone && formik.errors.phone}
-                                />
-                            </FormControl>
+
+                        <Grid item container lg={12} justifyContent={'center'} p={2}>
+                            <Grid item container lg={11}>
+
+                                <FormControl fullWidth>
+                                    <MInput
+                                        textarea
+                                        minRows={5}
+                                        multiline
+                                        id="phone"
+                                        name="phone"
+                                        type={'text'}
+                                        label={"متن شعار"}
+                                        value={formik.values.phone}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.phone && Boolean(formik.errors.phone)}
+                                        helperText={formik.touched.phone && formik.errors.phone}
+                                    />
+                                </FormControl>
+                            </Grid>
                         </Grid>
                         <Grid item container justifyContent={"center"} p={2}
                               lg={12} md={12}>
@@ -262,16 +376,16 @@ const PageSetting = () => {
                 </Grid>
 
                 <Modal
-                    open={open}
-                    onClose={handleClose}
+                    open={OpenModal}
+                    onClose={handleCloseModal}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
                         <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12}
-                              md={12} xs={12} sm={12} bgcolor={'white.main'} >
+                              md={12} xs={12} sm={12} bgcolor={'white.main'}>
                             <List sx={{width: '100%'}}>
-                                    <form onSubmit={formiks.handleSubmit}>
+                                <form onSubmit={formiks.handleSubmit}>
                                     <Grid item container lg={12} p={2}>
                                         <FormControl fullWidth>
                                             <MInput
@@ -293,7 +407,7 @@ const PageSetting = () => {
                                     <Grid item container lg={12} justifyContent={'end'} p={2}>
                                         <MTButton submite type="submit">ثبت</MTButton>
                                     </Grid>
-                                    </form>
+                                </form>
                             </List>
                         </Grid>
                     </Box>

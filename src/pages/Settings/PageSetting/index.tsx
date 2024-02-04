@@ -1,6 +1,6 @@
 import SettingLayout from "@/Components/SettingLayout";
 import {
-    AlertColor,
+    AlertColor, Box,
     Grid,
     IconButton,
     InputAdornment,
@@ -32,12 +32,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {CSSTransition} from "react-transition-group";
 import Mbutton from "@/Components/Mbutton";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 const formValidationSchema = yup.object({
     phone: yup.string().required('شماره موبایل الزامی است'),
     pass: yup.string().required('رمزعبور الزامی است'),
 });
-const defaultModeLabel = {'aria-label': 'Default mode'};
 
 const PageSetting = () => {
     const [openMessage, setOpenMessage] = React.useState(false);
@@ -52,6 +51,7 @@ const PageSetting = () => {
     const [uploadedFileName, setUploadedFileName] = React.useState("");
     const [files, setFiles] = React.useState<File | undefined>(undefined);
     const [ostan, setOstan] = React.useState<any[]>([]);
+    const [uploadedFile, setUploadedFile] = useState(null);
 
     useEffect(() => {
         const getData = async () => {
@@ -61,20 +61,25 @@ const PageSetting = () => {
         }
         getData()
     }, [ostan]);
-    const handleClickClear = () => {
-        setUploadedFileName("");
-    };
 
-    const handleFileUploads = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleFileReset = () => {
+        setUploadedFile(null);
+        setUploadedFileName('');
+    };
+    const handleClickClear = () => {
+        setUploadedFile(null);
+        setUploadedFileName('');
+    };
+    const handleFileUploads = (event:any) => {
         const files = event.target.files;
+
         if (files && files.length > 0) {
             const file = files[0];
-            const fileName = file.name;
-            setUploadedFileName(fileName);
-            setFiles(files[0])
+            setUploadedFile(file);
+            setUploadedFileName(file.name);
         }
     };
-
     const formik = useFormik({
         initialValues: {
             phone: '',
@@ -83,26 +88,34 @@ const PageSetting = () => {
         validationSchema: formValidationSchema,
         onSubmit: (values) => {
             const login = async () => {
+
                 const config = {
                     headers: {
-                        'Content-type': 'application/json',
-                    }
-                }
+                        'Content-type': 'multipart/form-data', // Change the content type for file uploads
+                    },
+                };
                 try {
+                    const formData = new FormData();
+                    formData.append('id', '0');
+                    formData.append('title', values.phone);
+                    formData.append('description', values.pass);
+                    formData.append('desForeColor', color);
+                    formData.append('backgroundColor', color);
+                    formData.append('titleForeColor', color);
+
+                    // Append the file directly to FormData
+                    if (uploadedFile) {
+                        formData.append('imagePath', uploadedFile);
+                    }
+
+
                     const response = await axios.post(`https://farhangian.birkar.ir/api/Advertisement/Create`,
-                        {
-                            "id": 0,
-                            "title": values.phone,
-                            "description": values.pass,
-                            "image": "string",
-                            "desForeColor": color,
-                            "backgroundColor": color,
-                            "titleForeColor": color
-                        },
+                        formData,
                         config
                     )
 
                     if (response.status === 200) {
+                        handleFileReset();
                         setshowVerify(true)
                         setMessage("با موفقیت ایجاد شد")
                         setTypeMessage('success')
@@ -155,6 +168,20 @@ const PageSetting = () => {
         setID(item);
         setopen(!open);
     };
+
+
+    const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
+    const handleClick = () => {
+        setDisplayColorPicker(!displayColorPicker);
+    };
+
+    const [background, setBackground] = React.useState('#fff');
+    const handleChangeComplete = (color:any) => {
+        setBackground(color.hex);
+    };
+
+
+
     return (
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
@@ -175,7 +202,7 @@ const PageSetting = () => {
                                       xs: 'space-between',
                                   }} alignItems={'end'}>
                                 <Grid item container lg={4} xs={12} justifyContent={'center'} mt={{lg: 2, xs: 2}} alignItems={"center"}>
-                                    <Typography variant="h1" color={colors.yellow.main}>{item.title.slice(0,25)}</Typography>
+                                    <Typography variant="h1" color={colors.yellow.main}>{item.title?.slice(0,25)}</Typography>
                                 </Grid>
 
                                 <Grid item container lg={4} xs={12} justifyContent={'center'} alignItems={"end"} mt={{xs: 2}}>
@@ -291,6 +318,7 @@ const PageSetting = () => {
                                                             )}
                                                         </Stack>
 
+
                                                         {/*<MInput*/}
                                                         {/*    popup*/}
                                                         {/*    type="file"*/}
@@ -368,6 +396,7 @@ const PageSetting = () => {
                                         inputAttr={eventHandlingLabel}
                                         onValueChanged={handleColorChange}
                                     />
+
                                 </Grid>
                                 <Grid item container lg={4} flexDirection={'column'} justifyContent={'center'}
                                       alignItems={'center'}>

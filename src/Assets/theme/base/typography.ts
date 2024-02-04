@@ -8,7 +8,7 @@ const typography: {
     },
     styleOverrides: {
         root: {
-            fontFamily: 'Yekan Bakh Medium',
+            fontFamily: 'Shabname',
             fontSize: "17px",
             color:'red.main'
         },
@@ -55,8 +55,8 @@ const typography: {
             lineHeight: 1
         },
         h3: {
-            fontFamily: 'Kalameh REGULAR',
-            fontWeight: 700,
+            fontFamily: 'Yekan Bakh Medium',
+
         },
         h4: {
             fontFamily: 'Yekan Bakh Medium',

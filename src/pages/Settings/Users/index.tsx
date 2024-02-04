@@ -13,6 +13,9 @@ import {
 } from '@mui/material';
 import axios from "axios";
 import SettingLayout from "@/Components/SettingLayout";
+import Edite from "@/Assets/images/nimbus_edit.svg";
+import Image from "next/image";
+import Trash from "@/Assets/images/circum_trash.svg";
 
 const initialUsers = [
     { id: 1, name: 'John Doe', phone: '1234567890', password: 'password123' },
@@ -44,26 +47,32 @@ const UserTable = () => {
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} >
                 <Grid item container lg={11}>
-                    <TableContainer sx={{marginTop:2}}  component={Paper}>
+                    <TableContainer sx={{ marginTop: 2 }} component={Paper} style={{ overflow: 'auto' }}>
                         <Table>
-                            <TableHead >
-                                <TableRow sx={{fontFamily:'Shabname'}} >
-                                    <TableCell>ID</TableCell>
-                                    <TableCell>نام</TableCell>
-                                    <TableCell>نام خانوادگی</TableCell>
-                                    <TableCell>شماره تماس</TableCell>
-                                    <TableCell>کدملی</TableCell>
-                                    <TableCell>نام پدر</TableCell>
-                                    <TableCell>تاریخ تولد</TableCell>
-                                    <TableCell>رمز عبور</TableCell>
-                                    <TableCell></TableCell>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">ID</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام خانوادگی</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">شماره تماس</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">کدملی</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام پدر</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">تاریخ تولد</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center">رمز عبور</TableCell>
+                                    <TableCell sx={{ fontFamily: 'Shabname' }} align="center"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {users.map((user) => (
                                     <TableRow key={user.id}>
-                                        <TableCell>{user.id}</TableCell>
-                                        <TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.id}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.name}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>
+                                        <TableCell sx={{ fontFamily: 'Shabname' }} align="center">
                                             {editingUser === user.id ? (
                                                 <TextField
                                                     value={user.name}
@@ -73,33 +82,20 @@ const UserTable = () => {
                                                 user.name
                                             )}
                                         </TableCell>
-                                        <TableCell>
-                                            {editingUser === user.id ? (
-                                                <TextField
-                                                    value={user.phone}
-                                                    onChange={(e) => handleEdit(user.id, 'phone', e.target.value)}
-                                                />
-                                            ) : (
-                                                user.phone
-                                            )}
-                                        </TableCell>
-                                        <TableCell>{user.password}</TableCell>
-                                        <TableCell>{user.password}</TableCell>
-                                        <TableCell>{user.password}</TableCell>
-                                        <TableCell>{user.password}</TableCell>
-                                        <TableCell>{user.password}</TableCell>
-                                        <TableCell>
+                                        {/* Repeat the same pattern for other TableCell components */}
+                                        {/* ... */}
+                                        <TableCell align="center">
                                             {editingUser === user.id ? (
                                                 <Button variant="contained" color="primary" onClick={() => handleSave(user.id)}>
                                                     Save
                                                 </Button>
                                             ) : (
                                                 <>
-                                                    <Button variant="contained" color="primary" onClick={() => handleEdit(user.id)}>
-                                                        Edit
+                                                    <Button onClick={() => handleEdit(user.id)}>
+                                                        <Image src={Edite} alt={'icons'} />
                                                     </Button>
-                                                    <Button variant="contained" color="secondary" onClick={() => handleDelete(user.id)}>
-                                                        Delete
+                                                    <Button onClick={() => handleDelete(user.id)}>
+                                                        <Image src={Trash} alt={'icons'} />
                                                     </Button>
                                                 </>
                                             )}
@@ -109,7 +105,6 @@ const UserTable = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-
                 </Grid>
             </Grid>
 

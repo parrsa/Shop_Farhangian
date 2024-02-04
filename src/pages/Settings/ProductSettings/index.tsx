@@ -15,7 +15,7 @@ import MInput from "@/Components/Minput";
 import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import 'devextreme/dist/css/dx.light.css';
-
+import AddIcon from '@mui/icons-material/Add';
 const eventHandlingLabel = {'aria-label': 'Event Handling'};
 
 import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
@@ -29,7 +29,20 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {CSSTransition} from "react-transition-group";
 import Mbutton from "@/Components/Mbutton";
 import {useTheme} from "@emotion/react";
+import { ChromePicker } from 'react-color';
 
+const popover = {
+    position: 'absolute',
+    zIndex: '2',
+};
+
+const cover = {
+    position: 'fixed',
+    top: '0px',
+    right: '0px',
+    bottom: '0px',
+    left: '0px',
+};
 const defaultModeLabel = {'aria-label': 'Default mode'};
 
 const PageSetting = () => {
@@ -85,13 +98,35 @@ const PageSetting = () => {
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
+
+    const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
+    const handleClick = () => {
+        setDisplayColorPicker(!displayColorPicker);
+    };
+
+    const [background, setBackground] = React.useState('#fff');
+    const handleChangeComplete = (color:any) => {
+        setBackground(color.hex);
+    };
+
+
     return (
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
                 <Grid item container lg={10} boxShadow={5} justifyContent={'center'} borderRadius={2}
                       bgcolor={'white.main'}>
-                        <Grid item container lg={10}  mt={2}>
+                        <Grid item container lg={10} p={2} justifyContent={'space-between'} alignItems={'center'} mt={2}>
                             <Typography variant={'h1'} >دسته های موجود :</Typography>
+                           <MTButton submite>  <AddIcon fontSize={'small'}/> اضافه کردن </MTButton>
+                            <button onClick={handleClick}>Pick Color</button>
+                            {displayColorPicker ? (
+                                <>
+                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete} />
+                                    <p>Selected Color: {background}</p>
+                                </>
+
+                            ) : null}
+
                         </Grid>
                     <Grid item container  boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'} justifyContent={'center'} overflow={'auto'} >
                         {ostan.map((item:any)=>(

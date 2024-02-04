@@ -89,12 +89,12 @@ function NewProduct() {
                                               flexDirection: 'column',
                                               alignItems: 'center',
                                               justifyContent: "center",
-                                              boxShadow:10,
+                                              boxShadow:2,
                                               //  boxShadow: "-8px -8px 2px 2px rgba(9, 54, 141, 1)",
                                               transition: 'box-shadow 0.3s',
                                               '&:hover': {
                                                   cursor:"pointer",
-                                                  boxShadow: 2,
+                                                  boxShadow: 10 ,
                                               },
 
                                           }}>
