@@ -1,29 +1,19 @@
 import {Grid, Typography, Button, IconButton} from "@mui/material";
 import colors from "../../Assets/theme/base/colors";
-import Images from '../../Assets/images/Rectangle.png';
 import FormControl from '@mui/material/FormControl';
 import * as yup from 'yup';
 import {useFormik} from 'formik';
 import axios from 'axios';
-import InputAdornment from '@mui/material/InputAdornment';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import React from "react";
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import {useNavigate} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Snackbar from '@mui/material/Snackbar';
 import MInput from "../../Components/Minput";
 import MTButton from "../../Components/Mbutton";
 import Myimg from '@/Assets/images/Rectangle.png';
 import Image from "next/image";
-import {Dashboard} from "@mui/icons-material";
 import DashboardLayout from "../../Components/Dashboard/Layout";
+import Link from "next/link";
 
 const formValidationSchema = yup.object({
     fname: yup.string().required('نام  الزامی است'),
@@ -42,7 +32,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const SignupPage = () => {
     const [open, setOpen] = React.useState(false);
-    // const navigate = useNavigate()
     const [checked, setChecked] = React.useState([true, false]);
     const [message, setMessage] = React.useState('')
     const [openMessage, setOpenMessage] = React.useState(false);
@@ -262,12 +251,14 @@ const SignupPage = () => {
 
                                 <Grid item container justifyContent={"center"} marginTop={{lg: 3, xs: 3, md: 5}} lg={12}
                                       md={12}>
-                                    <MTButton disabled={checked[1] ? false : true} register type="submit">ثبت نام</MTButton>
+                                    <MTButton  register type="submit">ثبت نام</MTButton>
                                 </Grid>
                                 <Grid item container justifyContent={"center"} marginTop={{lg: 3, xs: 3, md: 5}} lg={12}
                                       md={12}>
+                                    <Link href={'/login'}>
                                     <Typography color={colors.black.main} variant="caption">من قبلا ثبت نام کرده ام؟ <span
                                         style={{color: `${colors.yellow.main}`, fontSize: '14px', cursor: 'pointer'}}>صفحه ورود</span></Typography>
+                                    </Link>
                                 </Grid>
                             </form>
                         </Grid>

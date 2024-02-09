@@ -18,14 +18,12 @@ import Trash from '@/Assets/images/circum_trash.svg'
 const formValidationSchema = yup.object({
     phone: yup.string().required('متن شعار الزامی است'),
 });
-import {ChromePicker, SketchPicker} from 'react-color';
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
+import { SketchPicker} from 'react-color';
 import Image from "next/image";
 
 
 const formValidationSchemas = yup.object({
-    phone: yup.string().required('شماره موبایل الزامی است'),
+    phone: yup.string().required('عنوان متن الزامی است'),
 });
 
 let alertColor: AlertColor | undefined;
@@ -41,14 +39,7 @@ const style = {
     p: 4,
 };
 
-const swatch = {
-    padding: '5px',
-    background: '#fff',
-    borderRadius: '1px',
-    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-    display: 'inline-block',
-    cursor: 'pointer',
-}
+
 
 const colorsss = {
     width: '36px',
@@ -56,19 +47,6 @@ const colorsss = {
     borderRadius: '2px',
     background: `rgba(241,112,19,1)`,
 
-}
-
-const popover = {
-    position: 'absolute',
-    zIndex: '2',
-}
-
-const cover = {
-    position: 'fixed',
-    top: '0px',
-    right: '0px',
-    bottom: '0px',
-    left: '0px',
 }
 const PageSetting = () => {
     const [ostan, setOstan] = React.useState<any[]>([]);
@@ -79,6 +57,8 @@ const PageSetting = () => {
     const [message, setMessage] = React.useState('')
     const [id, SetId] = React.useState()
     const [OpenModal, SetOpenModal] = React.useState(false);
+    const [color, setColor] = React.useState('430606');
+    const [BackgroundColor,SetBackgroundColor]=React.useState('400606')
     const handleClickClear = () => {
         setUploadedFileName("");
     };
@@ -100,7 +80,6 @@ const PageSetting = () => {
             setFiles(files[0])
         }
     };
-    const [color, setColor] = React.useState('430606');
 
 
     const formik = useFormik({
@@ -121,7 +100,7 @@ const PageSetting = () => {
                         {
                             id: 0,
                             title: values.phone,
-                            backColor: color,
+                            backColor: BackgroundColor,
                             color: color
                         },
                         config
@@ -197,17 +176,19 @@ const PageSetting = () => {
                         'https://farhangian.birkar.ir/api/Slogan/Edit',
                         {
                             'id': id,
-                            'title': values.phone
+                            'title': values.phone,
+                            'backColor': BackgroundColor,
+                            'color': color
                         },
                         config
                     );
 
                     if (response.status === 200) {
-                        setMessage('خبر جدید با موفقیت اضافه شد');
+                        formik.resetForm();
+                        setMessage('خبر شما با موفقیت ویرایش شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
-                        SetOpenModal(false)
-                        formik.resetForm();
+                        // SetOpenModal(false)
                     }
                 } catch (error: any) {
                     setTypeMessage('error');
@@ -221,32 +202,29 @@ const PageSetting = () => {
     });
 
     const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
+    const [displayColorPickerbg, setDisplayColorPickerbg] = React.useState(false);
     const handleClick = () => {
         setDisplayColorPicker(!displayColorPicker);
     };
-    const [isModalOpen, setModalOpen] = useState(false);
-    const openDialogColor = () => {
-        setModalOpen(true);
+
+    const handleClickBackground = () => {
+        setDisplayColorPickerbg(!displayColorPickerbg);
     };
-    const closeDialogColor = () => {
-        setModalOpen(false);
-    };
-
-    const [background, setBackground] = React.useState('#fff');
-    const handleChangeComplete = (color: any) => {
-        setBackground(color.hex);
-    };
-
-
-
 
     const handleClose = () => {
         setDisplayColorPicker(false);
+    };
+    const handleCloseBackground = () => {
+        setDisplayColorPickerbg(false);
     };
 
     const handleChange = (newColor: any) => {
         setColor(newColor.hex);
     };
+
+    const handleChangeBackground=(newColor:any)=>{
+        SetBackgroundColor(newColor.hex)
+    }
 
     return (
         <SettingLayout>
@@ -270,23 +248,15 @@ const PageSetting = () => {
                                           xs: 'space-between'
                                       }} alignItems={'center'}>
                                     <Grid item container lg={4} xs={12} p={1} alignItems={"center"}>
-                                        <Typography variant="h1"
-                                                    color={colors.yellow.main}>{item.title.slice(0, 25)}</Typography>
+                                        <Typography variant="h1" color={colors.yellow.main}>{item.title.slice(0, 25)}</Typography>
                                     </Grid>
 
-                                    <Grid item container lg={2} xs={12} justifyContent={'end'} alignItems={'center'}
-                                          p={1}>
+                                    <Grid item container lg={2} xs={12} justifyContent={'end'} alignItems={'center'} p={1}>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} variant="h1"
-                                                        onClick={() => handleOpenModal(item)}
-                                                        color={colors.red.main}><Image src={Edite} alt={'icons'}/> <span
-                                                style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{cursor: "pointer"}} variant="h1" onClick={() => handleOpenModal(item)} color={colors.red.main}><Image src={Edite} alt={'icons'}/> <span style={{color: colors.black.main}}></span></Typography>
                                         </Grid>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)}
-                                                        variant="h1" color={colors.red.main}><Image src={Trash}
-                                                                                                    alt={'icons'}/><span
-                                                style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)} variant="h1" color={colors.red.main}><Image src={Trash} alt={'icons'}/><span style={{color: colors.black.main}}></span></Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -298,49 +268,38 @@ const PageSetting = () => {
                           justifyContent={'space-between'} mt={5}>
                         <Grid item container lg={4} alignItems={'center'} justifyContent={'center'}>
                             <Typography variant={'h1'}>اضافه کردن متن </Typography>
-                            <div style={swatch} onClick={handleClick}>
-                                <Box style={{...colorsss, backgroundColor: `${color}`}} >s</Box>
-                            </div>
+
                         </Grid>
-                        <Grid item container lg={3} justifyContent={'center'} flexDirection={'column'}
+                        <Grid item container lg={3} justifyContent={'center'}
                               alignItems={'center'} p={2}>
 
-                            {displayColorPicker ? (
-                                <div style={popover}>
-                                    <div style={cover} onClick={handleClose}/>
-                                    <SketchPicker  color={color} onChange={handleChange}/>
-                                </div>
+                            <Typography variant={'h1'}>رنگ متن :</Typography>
+
+                                <Box sx={{padding: '5px', background: '#fff', borderRadius: '1px', boxShadow: '0 0 0 1px rgba(0,0,0,.1)', display: 'inline-block', cursor: 'pointer',marginLeft:1}} onClick={handleClick}>
+                                    <Box style={{...colorsss, backgroundColor: `${color}`}} ></Box>
+                                </Box>
+                                {displayColorPicker ? (
+                                    <Box sx={{position: 'absolute', zIndex: '2', }}>
+                                        <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleClose}></Box>
+                                        <SketchPicker  color={color} onChange={handleChange}/>
+                                    </Box>
+                                ) : null}
+
+                        </Grid>
+
+                        <Grid item container lg={3} justifyContent={'center'}
+                              alignItems={'center'} p={2}>
+                            <Typography variant={'h1'} p={1}>رنک بک گراند :</Typography>
+
+                            <Box sx={{padding: '5px', background: '#fff', borderRadius: '1px', boxShadow: '0 0 0 1px rgba(0,0,0,.1)', display: 'inline-block', cursor: 'pointer',marginLeft:1}} onClick={handleClickBackground}>
+                                <Box style={{...colorsss, backgroundColor: `${BackgroundColor}`}} ></Box>
+                            </Box>
+                            {displayColorPickerbg ? (
+                                <Box sx={{position: 'absolute', zIndex: '2', }}>
+                                    <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleCloseBackground}></Box>
+                                    <SketchPicker  color={BackgroundColor} onChange={handleChangeBackground}/>
+                                </Box>
                             ) : null}
-                            <MTButton onClick={openDialogColor} p={1} sx={{borderBottom: '1px solid red.main'}}>رنگ متن
-                                :</MTButton>
-                            <Box onClick={openDialogColor} sx={{
-                                backgroundColor: background ? background : 'red.main',
-                                width: '50px',
-                                height: '50px'
-                            }}></Box>
-                            <Dialog open={isModalOpen} onClose={closeDialogColor}>
-                                <DialogContent>
-                                    <Typography variant={'caption'}>
-                                        انتخاب رنگ پس زمینه
-                                    </Typography>
-                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete}/>
-                                </DialogContent>
-                            </Dialog>
-                        </Grid>
-
-                        <Grid item container lg={3} justifyContent={'center'} flexDirection={'column'}
-                              alignItems={'center'} p={2}>
-                            <Typography variant={'h1'} onClick={openDialogColor} p={1}>رنک بک گراند :</Typography>
-                            <Typography variant={'h1'}>{background}</Typography>
-                            <Dialog open={isModalOpen} onClose={closeDialogColor}>
-                                <DialogContent>
-                                    <Typography variant={'caption'} p={0}>
-                                        انتخاب رنگ پس زمینه
-                                    </Typography>
-                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete}/>
-                                </DialogContent>
-                            </Dialog>
-
                         </Grid>
 
                     </Grid>
@@ -382,15 +341,53 @@ const PageSetting = () => {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12}
-                              md={12} xs={12} sm={12} bgcolor={'white.main'}>
+                        <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12} sm={12} bgcolor={'white.main'}>
+                            <Grid lg={12} md={12} item container justifyContent={'center'}>
+                                <Typography  variant={'h1'} color={'black.main'} >ویرایش</Typography>
+                            </Grid>
+
+                            <Grid item container lg={12} bgcolor={'red'}>
+                                <Grid item container lg={5} justifyContent={'center'}
+                                      alignItems={'center'} p={2}>
+
+                                    <Typography variant={'h1'} color={'balck.main'}>رنگ متن :</Typography>
+
+                                    <Box sx={{padding: '5px', background: '#fff', borderRadius: '1px', boxShadow: '0 0 0 1px rgba(0,0,0,.1)', display: 'inline-block', cursor: 'pointer',marginLeft:1}} onClick={handleClick}>
+                                        <Box style={{...colorsss, backgroundColor: `${color}`}} ></Box>
+                                    </Box>
+                                    {displayColorPicker ? (
+                                        <Box sx={{position: 'absolute', zIndex: '2', }}>
+                                            <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleClose}></Box>
+                                            <SketchPicker  color={color} onChange={handleChange}/>
+                                        </Box>
+                                    ) : null}
+
+                                </Grid>
+
+                                <Grid item container lg={7} justifyContent={'center'}
+                                      alignItems={'center'} p={2}>
+                                    <Typography variant={'h1'} color={'balck.main'} p={1}>رنگ بک گراند :</Typography>
+
+                                    <Box sx={{padding: '5px', background: '#fff', borderRadius: '1px', boxShadow: '0 0 0 1px rgba(0,0,0,.1)', display: 'inline-block', cursor: 'pointer',marginLeft:1}} onClick={handleClickBackground}>
+                                        <Box style={{...colorsss, backgroundColor: `${BackgroundColor}`}} ></Box>
+                                    </Box>
+                                    {displayColorPickerbg ? (
+                                        <Box sx={{position: 'absolute', zIndex: '2', }}>
+                                            <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleCloseBackground}></Box>
+                                            <SketchPicker  color={BackgroundColor} onChange={handleChangeBackground}/>
+                                        </Box>
+                                    ) : null}
+                                </Grid>
+
+                            </Grid>
+
                             <List sx={{width: '100%'}}>
                                 <form onSubmit={formiks.handleSubmit}>
                                     <Grid item container lg={12} p={2}>
                                         <FormControl fullWidth>
                                             <MInput
                                                 textarea
-                                                label="عنوان متن ..."
+                                                label={'متن شما'}
                                                 minRows={0}
                                                 multiline
                                                 id="phone"
@@ -404,7 +401,7 @@ const PageSetting = () => {
                                             />
                                         </FormControl>
                                     </Grid>
-                                    <Grid item container lg={12} justifyContent={'end'} p={2}>
+                                    <Grid item container lg={12} justifyContent={'center'} >
                                         <MTButton submite type="submit">ثبت</MTButton>
                                     </Grid>
                                 </form>

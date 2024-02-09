@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import Image from "next/image";
-import Logo from '@/Assets/images/HamedanLogo 1.svg'
+import Logo from '@/Assets/images/HamedanLogo 1.webp'
 import MInput from "@/Components/Minput";
 import React from "react";
 import MTButton from "@/Components/Mbutton";
@@ -15,7 +15,7 @@ const NavSearch = () => {
     return (
         <Grid item container lg={12} md={12} sm={12} xs={12} justifyContent={"space-between"} alignItems={'center'} sx={{padding: '20px',display: {xs: 'none', md: 'flex'}}}>
             <Grid item xs={12} md={3} lg={3} container justifyContent={'center'} sx={{ marginBottom: { xs: '20px', md: 0 } }}>
-                <Image width={130} src={Logo} alt={'logo'} />
+                <Image width={130} src={Logo} alt={'logo'} loading={'lazy'} />
             </Grid>
             <Grid item xs={12} md={6} lg={6} container justifyContent={'center'} sx={{ marginBottom: { xs: '20px', md: 0 } }}>
                 <MInput

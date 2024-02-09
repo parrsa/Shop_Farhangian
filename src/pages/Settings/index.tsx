@@ -1,8 +1,7 @@
 import SettingLayout from "@/Components/SettingLayout";
-import {Grid, Typography} from "@mui/material";
+import {Grid} from "@mui/material";
 import Image from "next/image";
 import logo from "@/Assets/images/[fpdl 1.png";
-import Link from "next/link";
 
 const Settings=()=>{
     return(

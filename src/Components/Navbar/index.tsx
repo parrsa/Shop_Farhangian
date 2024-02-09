@@ -289,12 +289,12 @@ function Navbars({saveValue }:any) {
                                 navList.map((item: Listnav, index) => {
                                     return (
                                         <>
-                                            {/*<Link href={item.path} style={{display:'flex'}}>*/}
+                                            <Link href={item.path} style={{display:'flex'}}>
                                             <MenuList
-                                                onMouseEnter={item.children ? handleClickparsa : undefined}
-                                                onMouseLeave={()=>setAnchorElparsa(null)}
+                                                // onMouseEnter={item.children ? handleClickparsa : undefined}
+                                                // onMouseLeave={()=>setAnchorElparsa(null)}
                                                 key={item.id}>
-                                                <Link href={item.path}>
+                                                {/*<Link href={item.path}>*/}
                                                         <MenuItem
                                                             // onClick={handleClickparsa}
                                                             sx={{
@@ -309,7 +309,7 @@ function Navbars({saveValue }:any) {
                                                             </ListItemIcon>
                                                             {item.title}
                                                         </MenuItem>
-                                                </Link>
+                                                {/*</Link>*/}
 
                                                 {item.children && (
                                                     <Menu
@@ -359,7 +359,7 @@ function Navbars({saveValue }:any) {
                                                     </Menu>
                                                 )}
                                             </MenuList>
-                                            {/*</Link>*/}
+                                            </Link>
                                         </>
                                     )
                                 })

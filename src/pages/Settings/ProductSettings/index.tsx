@@ -1,11 +1,8 @@
 import SettingLayout from "@/Components/SettingLayout";
 import {
-    Divider,
     Grid,
     IconButton,
     InputAdornment,
-    InputLabel, List,
-    Select,
     Stack,
     TextField,
     Typography
@@ -18,31 +15,16 @@ import 'devextreme/dist/css/dx.light.css';
 import AddIcon from '@mui/icons-material/Add';
 const eventHandlingLabel = {'aria-label': 'Event Handling'};
 
-import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
+import { ColorBoxTypes} from 'devextreme-react/color-box';
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
 import {useEffect} from "react";
 import colors from "@/Assets/theme/base/colors";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {CSSTransition} from "react-transition-group";
-import Mbutton from "@/Components/Mbutton";
+
 import {useTheme} from "@emotion/react";
-import { ChromePicker } from 'react-color';
 
-const popover = {
-    position: 'absolute',
-    zIndex: '2',
-};
 
-const cover = {
-    position: 'fixed',
-    top: '0px',
-    right: '0px',
-    bottom: '0px',
-    left: '0px',
-};
 const defaultModeLabel = {'aria-label': 'Default mode'};
 
 const PageSetting = () => {
@@ -52,7 +34,6 @@ const PageSetting = () => {
     }, []);
     const [uploadedFileName, setUploadedFileName] = React.useState("");
     const [files, setFiles] = React.useState<File | undefined>(undefined);
-    const [soran, setSoran] = React.useState<any>(0)
     const [ostan, setOstan] = React.useState<any[]>([]);
 
     const handleClickClear = () => {
@@ -88,12 +69,6 @@ const PageSetting = () => {
         setID(item);
         setopen(!open);
     };
-
-    // const handleRemoveFruit = (item: any) => {
-    //     console.log(item)
-    //     setFruitsInBasket((prev) => prev.filter((i) => i !== item));
-    //     setopen(false)
-    // };
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -118,15 +93,6 @@ const PageSetting = () => {
                         <Grid item container lg={10} p={2} justifyContent={'space-between'} alignItems={'center'} mt={2}>
                             <Typography variant={'h1'} >دسته های موجود :</Typography>
                            <MTButton submite>  <AddIcon fontSize={'small'}/> اضافه کردن </MTButton>
-                            <button onClick={handleClick}>Pick Color</button>
-                            {displayColorPicker ? (
-                                <>
-                                    <ChromePicker color={background} onChangeComplete={handleChangeComplete} />
-                                    <p>Selected Color: {background}</p>
-                                </>
-
-                            ) : null}
-
                         </Grid>
                     <Grid item container  boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'} justifyContent={'center'} overflow={'auto'} >
                         {ostan.map((item:any)=>(
@@ -150,12 +116,8 @@ const PageSetting = () => {
                                             <Typography sx={{cursor: "pointer"}} onClick={() => handleAddFruit(item.id)} variant="h1" color={colors.red.main}>حذف<span style={{color: colors.black.main}}></span></Typography>
                                         </Grid>
                                     </Grid>
-
-
                                 </Grid>
-
                             </>
-
                         ))}
                     </Grid>
 
@@ -182,17 +144,9 @@ const PageSetting = () => {
                                         <MTButton
                                             selectimages
                                             sx={{
-                                                // backgroundColor: "white",
-                                                // color: "black.main",
-                                                // fontSize: "1rem",
-                                                // border: "1px dashed rgba(0, 0, 0, 0.12)",
                                                 width: "100%",
                                                 height: "45px",
                                                 boxShadow: "none",
-                                                // "&:hover": {
-                                                //     backgroundColor: "#FAFAFA",
-                                                //     boxShadow: "none"
-                                                // }
                                             }}
                                             startIcon={<CloudUploadRoundedIcon />}
                                             variant="contained"
@@ -237,25 +191,6 @@ const PageSetting = () => {
                                         />
                                     )}
                                 </Stack>
-
-                                {/*<MInput*/}
-                                {/*    popup*/}
-                                {/*    type="file"*/}
-                                {/*    InputProps={{*/}
-                                {/*        // startAdornment: <InputAdornment position="start" sx={{fontSize:'5px'}}>ان</InputAdornment>,*/}
-                                {/*    }} x*/}
-                                {/*    id="lname"*/}
-                                {/*    name="lname"*/}
-                                {/*    label={""}*/}
-                                {/*    placeholder="نام و نام خانوادگی یا نرم مرکز تخضض خود را وارد کنید"*/}
-                                {/*    // value={formik.values.lname}*/}
-                                {/*    // minRows={5}*/}
-                                {/*    rows={8}*/}
-                                {/*    onChange={formik.handleChange}*/}
-                                {/*    onBlur={formik.handleBlur}*/}
-                                {/*    // error={formik.touched.lname && Boolean(formik.errors.lname)}*/}
-                                {/*    // helperText={formik.touched.lname && formik.errors.lname}*/}
-                                {/*/>*/}
                             </FormControl>
 
                         </Grid>

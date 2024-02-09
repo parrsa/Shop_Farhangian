@@ -58,7 +58,6 @@ const formValidationSchemas = yup.object({
 const PageSetting = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
     const [uploadedFileName, setUploadedFileName] = useState('');
-    const [files, setFiles] = React.useState<File | undefined>(undefined);
     const [ostan, setOstan] = React.useState<any[]>([]);
     const [openModal, setOpenModal] = React.useState(false);
     const theme = useTheme();
@@ -83,10 +82,7 @@ const PageSetting = () => {
         }
     };
 
-    const handleAddFruit = (item: any) => {
-        setID(item);
-        setopens(!opens);
-    };
+
     const handleFileReset = () => {
         setUploadedFile(null);
         setUploadedFileName('');
@@ -109,11 +105,6 @@ const PageSetting = () => {
 
     const handelDeleted = (item: any) => {
         const Deleted = async () => {
-            const config = {
-                headers: {
-                    'Content-type': 'application/json',
-                }
-            }
             try {
                 const response = await axios.delete(`https://farhangian.birkar.ir/api/News/Delete?id=${item}`,
                 )
@@ -195,13 +186,13 @@ const PageSetting = () => {
             const Submite = async () => {
                 const config = {
                     headers: {
-                        'Content-type': 'multipart/form-data', // Change the content type for file uploads
+                        'Content-type': 'multipart/form-data',
                     },
                 };
 
                 try {
                     const formData = new FormData();
-                    formData.append('id', id);
+                    formData.append('id', id ?? '');
                     formData.append('title', values.pass);
                     formData.append('description', values.phone);
                     if (uploadedFile) {
@@ -219,6 +210,7 @@ const PageSetting = () => {
                         setMessage('خبر جدید با موفقیت اضافه شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
+                        setOpen(false)
                         formik.resetForm();
                     }
                 } catch (error: any) {

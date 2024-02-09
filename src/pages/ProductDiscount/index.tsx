@@ -1,24 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import {Grid, Box, Typography, Divider} from "@mui/material";
 import colors from "@/Assets/theme/base/colors";
-import Images from './../../../../../Assets/images/Rectangle 2.webp'
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Rating from '@mui/material/Rating';
 import MTButton from "@/Components/Mbutton";
-import StarIcon from '@mui/icons-material/Star';
 import DashboardLayout from "@/Components/Dashboard/Layout";
-import MyImage from "@/Assets/images/megaphone-laptop-screen-orange-background-ai-digital-illustration_803320-1252 1.png";
-import Link from "next/link";
 import {useRouter} from "next/router";
 function Clubs() {
-    const [value, setValue] = React.useState<number | null>(2);
     const [ostan, setOstan] = React.useState<any[]>([]);
     const boxRef = useRef<HTMLDivElement>(null)
     const elRef = useRef<HTMLDivElement>(null)
-    const [soran, setSoran] = React.useState<any>(0)
     const router = useRouter();
     const { title } = router.query;
     useEffect(() => {
@@ -30,16 +22,7 @@ function Clubs() {
         getData()
     }, []);
 
-    useEffect(() => {
-        function myChange() {
-            const soranValue = ((boxRef.current?.offsetWidth ?? 0) - (elRef.current?.offsetWidth ?? 0)) / 2;
-            setSoran(soranValue);
-        }
-        window.addEventListener("resize", myChange);
-    }, [
-        boxRef,
-        elRef,
-    ]);
+
     const [currentPage, setCurrentPage] = React.useState(1);
     const itemsPerPage = 10;
 
@@ -61,7 +44,7 @@ function Clubs() {
                 <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
                       justifyContent={"center"}>
                     <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
-                          sx={{ overflow: 'hidden', p: { lg: `${soran}px` } }}>
+                          sx={{ overflow: 'hidden',  }}>
                         {ostan.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) =>(
                             <>
                                 {(index <= 11) && (
@@ -81,8 +64,6 @@ function Clubs() {
                                                       flexDirection: 'column',
                                                       alignItems: 'center',
                                                       justifyContent: "end",
-                                                      // boxShadow:10,
-                                                      //  boxShadow: "-8px -8px 2px 2px rgba(9, 54, 141, 1)",
                                                       transition: 'box-shadow 0.3s',
                                                       '&:hover': {
                                                           cursor:"pointer",

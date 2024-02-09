@@ -3,13 +3,13 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HistoryIcon from '@mui/icons-material/History';
 import Settings from '@mui/icons-material/Settings';
-import Home from '@/Assets/images/fluent_home-48-regular.svg'
-import Vaziat from '@/Assets/images/fluent_money-calculator-20-regular.svg'
-import Setting from '@/Assets/images/arcticons_settings.svg'
+import Home from '@/Assets/images/fluent_home-48-regular.webp'
+import Vaziat from '@/Assets/images/fluent_money-calculator-20-regular.webp'
+import Setting from '@/Assets/images/arcticons_settings.webp'
 import Call from '@/Assets/images/fluent_call-20-regular.svg'
-import Profiles from '@/Assets/images/iconamoon_profile-thin.svg'
-import Messages from '@/Assets/images/messages 1.svg'
-import Chart from '@/Assets/images/organization-chart (1) 1.svg'
+import Profiles from '@/Assets/images/iconamoon_profile-thin.webp'
+import Messages from '@/Assets/images/messages 1.webp'
+import Chart from '@/Assets/images/organization-chart (1) 1.webp'
 import Category from '@/Assets/images/categorys.svg'
 import Image from "next/image";
 const navList: Listnav[] = [

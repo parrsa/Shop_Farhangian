@@ -112,6 +112,7 @@ const formValidationSchema = yup.object({
 
 import Image from 'next/image'
 import DashboardLayout from "@/Components/Dashboard/Layout";
+import Link from "next/link";
 
 const SignInPage = () => {
     // const Swal = require('sweetalert2')
@@ -230,11 +231,9 @@ const SignInPage = () => {
                                                     helperText={formik.touched.pass && formik.errors.pass}
                                                     type={showPassword ? 'text' : 'password'}
                                                 />
-                                                <InputAdornment sx={{width: '97%', top: {lg: 30, xs: 30}, position: 'absolute', display: 'flex', justifyContent: 'end'}}>
                                                 <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                                                     {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
-                                            </InputAdornment>
                                             </FormControl>
                                         </Grid>
                                         <Grid item container lg={11.5} justifyContent={'space-between'} alignItems={'center'}>
@@ -248,12 +247,15 @@ const SignInPage = () => {
                                         </Grid>
                                         <Grid item container justifyContent={"center"} marginTop={{lg: 3, xs: 3, md: 5}}
                                               lg={12} md={12}>
-                                            <Typography color={colors.black.main} variant="caption">من هنوز ثبت نام نکرده
-                                                ام؟ <span  style={{
-                                                    color: `${colors.blue.main}`,
-                                                    fontSize: '14px',
-                                                    cursor: 'pointer'
-                                                }}>صفحه ثبت نام</span></Typography>
+                                            <Link href={'/signup'}>
+                                                <Typography color={colors.black.main} variant="caption">من هنوز ثبت نام نکرده
+                                                    ام؟ <span  style={{
+                                                        color: `${colors.blue.main}`,
+                                                        fontSize: '14px',
+                                                        cursor: 'pointer'
+                                                    }}>صفحه ثبت نام</span></Typography>
+                                            </Link>
+
                                         </Grid>
                                     </form>
                                 </>

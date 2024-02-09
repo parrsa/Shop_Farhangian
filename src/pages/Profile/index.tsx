@@ -1,31 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {AlertColor, Grid, InputLabel, Typography} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import MInput from "@/Components/Minput";
-import {useFormik} from "formik";
 import * as yup from "yup";
-import {Link, useLocation, useNavigate} from "react-router-dom";
 import colors from "../../Assets/theme/base/colors";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Cookies from "js-cookie";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import ClearIcon from "@mui/icons-material/Clear";
-import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
-import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
-
-import {
-    IconButton,
-    InputAdornment,
-    Stack,
-    TextField,
-} from "@mui/material";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-// import url from "../../Api/Url";
-import axios from "axios";
 import DashboardLayout from "@/Components/Dashboard/Layout";
 
 const formValidationSchema = yup.object({
@@ -42,14 +24,11 @@ const Profiles = () => {
     const [Check,setCheck]=React.useState(true)
     const Cook = Cookies.get('Tokenlogin')
     const [helperText, setHelperText] = React.useState('Choose wisely');
-    const [MeharetFani, setMeharetFani] = React.useState()
     const [openMessage, setOpenMessage] = React.useState(false);
     const [typeMessage, setTypeMessage] = React.useState('')
-    const [showVerify, setshowVerify] = React.useState(false);
     const [message, setMessage] = React.useState('')
     const [ostan, setOstan] = React.useState<any[]>([]);
     const [Address, setAddress] = React.useState('')
-    const [Description, setDescription] = React.useState('')
     const [Sabeghe_Kar, setSabeghe_kar] = React.useState('')
     const [birth_date, setbirth_date] = React.useState('')
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,26 +38,6 @@ const Profiles = () => {
     };
 
 
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         const config = {
-    //             headers: {
-    //                 'Content-type': 'application/json',
-    //                 Authorization: `Token ${Cook}`,
-    //             }
-    //         };
-    //         const response = await fetch(`$https://fakestoreapi.com/products`)
-    //         const data = await response.json();
-    //         if (!Cook) {
-    //             navigate('/')
-    //         } else {
-    //             setOstan(data)
-    //         }
-    //     }
-    //     getData()
-    //
-    // }, [ostan,openMessage])
-
     const [Disable, setDisable] = useState(true)
     const HandellSubmite = () => {
         setCheck(!Check)
@@ -86,18 +45,7 @@ const Profiles = () => {
     const handleCloseAlert = () => {
         setOpenMessage(false);
     };
-    const [uploadedFileName, setUploadedFileName] = React.useState("");
-    const handleClickClear = () => {
-        setUploadedFileName("");
-    };
-    const handleFileUploads = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            const fileName = file.name;
-            setUploadedFileName(fileName);
-        }
-    };
+
 
 
     return (
@@ -117,11 +65,6 @@ const Profiles = () => {
                 </Grid>
                 <Grid item container lg={12} justifyContent={'center'}>
                 </Grid>
-                {/*<form onSubmit={formik.handleSubmit}*/}
-
-
-                {/*style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>*/}
-
                 {[...Array(ostan)].map((item: any) => (<>
                     <Grid lg={12} item container justifyContent={'space-around'} p={2}>
 
@@ -140,12 +83,11 @@ const Profiles = () => {
                                 id="Name"
                                 name="Name"
                                 label={item.user?.first_name}
-                                // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
                                 disabled={Check}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
-                                        opacity: 1, // otherwise firefox shows a lighter color
+                                        opacity: 1,
                                     },
                                 }}
                             />
@@ -166,12 +108,11 @@ const Profiles = () => {
                                 id="Name"
                                 name="Name"
                                 label={item.user?.last_name ?? ''}
-                                // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
                                 disabled={Check}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
-                                        opacity: 1, // otherwise firefox shows a lighter color
+                                        opacity: 1,
                                     },
                                 }}
                             />
@@ -258,8 +199,6 @@ const Profiles = () => {
                             </InputLabel>
                             <MInput
                                 popup
-                                // id="birth_date"
-                                // name="birth_date"
                                 value={birth_date}
                                 onChange={(e: any) => setbirth_date(e.target.value)}
                                 disabled={Check}
@@ -278,7 +217,6 @@ const Profiles = () => {
                     </Grid>
                 </>))}
 
-                {/*</form>*/}
 
                 <Snackbar open={openMessage} autoHideDuration={4500}
                           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
