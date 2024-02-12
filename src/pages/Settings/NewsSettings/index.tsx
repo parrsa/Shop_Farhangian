@@ -45,7 +45,6 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     backgroundColor: 'background.paper',
     boxShadow: 24,
     borderRadius: 1,
@@ -57,20 +56,31 @@ const formValidationSchemas = yup.object({
 });
 const PageSetting = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
+    const [uploadedFileEdit, setUploadedFileEdit] = useState(null);
     const [uploadedFileName, setUploadedFileName] = useState('');
+    const [uploadedFileNameEdit, setUploadedFileNameEdit] = useState('');
     const [ostan, setOstan] = React.useState<any[]>([]);
-    const [openModal, setOpenModal] = React.useState(false);
     const theme = useTheme();
     const [opens, setopens] = React.useState(false)
     const [Id, setID] = React.useState();
-    // const items = ostan.map((item) => item.id);
     const [openMessage, setOpenMessage] = React.useState(false);
     const [typeMessage, setTypeMessage] = React.useState('')
     const [message, setMessage] = React.useState('')
     const [id, SetId] = React.useState()
     const [open, setOpen] = React.useState(false);
-    const [editingUser, setEditingUser] = useState(null);
-    const [Descr, SetDescr] = React.useState()
+    const [EditData, setEditDate] = React.useState<any>()
+
+
+    useEffect(() => {
+        const getData = async () => {
+            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
+            const data = await response.json();
+            setOstan(data.data);
+        }
+        getData()
+    }, [ostan]);
+
+
 
     const handleFileUploads = (event: any) => {
         const files = event.target.files;
@@ -81,28 +91,41 @@ const PageSetting = () => {
             setUploadedFileName(file.name);
         }
     };
-
-
     const handleFileReset = () => {
         setUploadedFile(null);
         setUploadedFileName('');
     };
-    const handleCloseAlert = () => {
-        setOpenMessage(false);
-    };
+
     const handleClickClear = () => {
         setUploadedFile(null);
         setUploadedFileName('');
     };
-    const handleOpen = (item: any) => {
-        setEditingUser(item.id)
-        SetDescr(item.description)
-        SetId(item.id)
-        setOpen(true)
-    }
+
+
+    const handleFileUploadsEdit = (event: any) => {
+        const files = event.target.files;
+
+        if (files && files.length > 0) {
+            const file = files[0];
+            setUploadedFileEdit(file);
+            setUploadedFileNameEdit(file.name);
+        }
+    };
+    const handleFileResetEdit = () => {
+        setUploadedFileEdit(null);
+        setUploadedFileNameEdit('');
+    };
+
+    const handleClickClearEdit = () => {
+        setUploadedFileEdit(null);
+        setUploadedFileNameEdit('');
+    };
+    const handleCloseAlert = () => {
+        setOpenMessage(false);
+    };
+    const [editingEnabled, setEditingEnabled] = useState(false); // State to control editing mode
+
     const handleClose = () => setOpen(false);
-
-
     const handelDeleted = (item: any) => {
         const Deleted = async () => {
             try {
@@ -168,14 +191,25 @@ const PageSetting = () => {
             Submite();
         },
     });
-    useEffect(() => {
+
+
+    const handleOpenEdite = (item: any) => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
+            const response = await fetch(`https://farhangian.birkar.ir/api/News/GetById?id=${item.id}`)
             const data = await response.json();
-            setOstan(data.data);
+            setEditDate(data.data)
         }
         getData()
-    }, [ostan]);
+        SetId(item.id)
+        setOpen(true)
+    }
+    const handleEditDescription = (newDescription:any) => {
+        setEditingEnabled(true)
+        setEditDate ((prevEditData:any) => ({
+            ...prevEditData,
+            description: newDescription
+        }));
+    };
     const formiks = useFormik({
         initialValues: {
             phone: '',
@@ -195,8 +229,8 @@ const PageSetting = () => {
                     formData.append('id', id ?? '');
                     formData.append('title', values.pass);
                     formData.append('description', values.phone);
-                    if (uploadedFile) {
-                        formData.append('imagePath', uploadedFile);
+                    if (uploadedFileEdit) {
+                        formData.append('imagePath', uploadedFileEdit);
                     }
 
                     const response = await axios.put(
@@ -206,12 +240,12 @@ const PageSetting = () => {
                     );
 
                     if (response.status === 200) {
-                        handleFileReset();
-                        setMessage('خبر جدید با موفقیت اضافه شد');
+                        handleFileResetEdit();
+                        setMessage(' موفقیت ادیت شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
+                        formiks.resetForm();
                         setOpen(false)
-                        formik.resetForm();
                     }
                 } catch (error: any) {
                     setTypeMessage('error');
@@ -223,6 +257,7 @@ const PageSetting = () => {
             Submite();
         },
     });
+
 
     return (
         <SettingLayout>
@@ -253,7 +288,7 @@ const PageSetting = () => {
                                     <Grid item container lg={2} xs={12} justifyContent={'center'} alignItems={"end"}
                                           mt={{xs: 2}}>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handleOpen(item)}
+                                            <Typography sx={{cursor: "pointer"}} onClick={() => handleOpenEdite(item)}
                                                         variant="h1" color={colors.red.main}><Image src={Edite}
                                                                                                     alt={'icons'}/>
                                                 <span style={{color: colors.black.main}}></span></Typography>
@@ -409,16 +444,26 @@ const PageSetting = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style}>
+                    <Box sx={style} width={{lg:800}}>
                         <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12}
                               md={12} xs={12} sm={12} bgcolor={'white.main'}>
                             <List sx={{width: '100%'}}>
+
                                 <form onSubmit={formiks.handleSubmit} style={{width: '100%'}}>
                                     <Grid item container lg={12} p={2}>
+
                                         <FormControl fullWidth>
+                                            <InputLabel sx={{marginTop:"-15px",
+                                                fontFamily: 'Yekan Bakh Medium',
+                                                fontSize: "1.2rem",
+                                                fontWeight: "bold !important",
+                                                color: colors.black.main + "!important",
+
+                                            }} shrink htmlFor="bootstrap-input">
+                                               عنوان متن :
+                                            </InputLabel>
                                             <MInput
                                                 textarea
-                                                label="عنوان متن ..."
                                                 minRows={0}
                                                 multiline
                                                 id="pass"
@@ -433,8 +478,10 @@ const PageSetting = () => {
                                     </Grid>
                                     <Grid item container lg={12} p={2}>
                                         <FormControl sx={{width: {lg: '100%', xs: 220, md: 350}}}>
+                                            <InputLabel sx={{marginTop:"-15px", fontFamily: 'Yekan Bakh Medium', fontSize: "1.2rem", fontWeight: "bold !important", color: colors.black.main + "!important",}} shrink htmlFor="bootstrap-input">
+                                            </InputLabel>
                                             <Stack direction="row" alignItems="center" spacing={2}>
-                                                {!uploadedFileName && (
+                                                {!uploadedFileNameEdit && (
                                                     <MTButton
                                                         selectimages
                                                         sx={{
@@ -453,14 +500,14 @@ const PageSetting = () => {
                                                             accept="image/*"
                                                             multiple
                                                             type="file"
-                                                            onChange={handleFileUploads}
+                                                            onChange={handleFileUploadsEdit}
                                                         />
                                                     </MTButton>
                                                 )}
-                                                {uploadedFileName && (
+                                                {uploadedFileNameEdit && (
                                                     <TextField
                                                         variant="outlined"
-                                                        value={uploadedFileName}
+                                                        value={uploadedFileNameEdit}
                                                         disabled
                                                         sx={{
                                                             width: "100%"
@@ -475,7 +522,7 @@ const PageSetting = () => {
                                                                 <InputAdornment position="end">
                                                                     <IconButton
                                                                         aria-label="toggle password visibility"
-                                                                        onClick={handleClickClear}
+                                                                        onClick={handleClickClearEdit}
                                                                         edge="end"
                                                                     >
                                                                         <ClearIcon/>
@@ -491,9 +538,17 @@ const PageSetting = () => {
 
                                     <Grid item container lg={12} p={2}>
                                         <FormControl fullWidth>
+                                            <InputLabel sx={{marginTop:"-15px",
+                                                fontFamily: 'Yekan Bakh Medium',
+                                                fontSize: "1.2rem",
+                                                fontWeight: "bold !important",
+                                                color: colors.black.main + "!important",
+
+                                            }} shrink htmlFor="bootstrap-input">
+                                                متن شما  :
+                                            </InputLabel>
                                             <MInput
                                                 textarea
-                                                label="متن خود را بنویسید ..."
                                                 minRows={5}
                                                 multiline
                                                 id="phone"
@@ -510,6 +565,50 @@ const PageSetting = () => {
                                         <MTButton submite type="submit">ثبت</MTButton>
                                     </Grid>
                                 </form>
+
+
+
+                                {/*<form style={{ width: '100%' }}>*/}
+                                {/*    <FormControl fullWidth>*/}
+                                {/*        <MInput*/}
+                                {/*            textarea*/}
+                                {/*            label="عنوان متن ..."*/}
+                                {/*            minRows={0}*/}
+                                {/*            multiline*/}
+                                {/*            id="pass"*/}
+                                {/*            name="pass"*/}
+                                {/*            value={formiks.values.pass || (EditData ? EditData.title : '')}*/}
+                                {/*            onChange={formiks.handleChange}*/}
+                                {/*            onBlur={formiks.handleBlur}*/}
+                                {/*            error={formiks.touched.pass && Boolean(formiks.errors.pass)}*/}
+                                {/*            helperText={formiks.touched.pass && formiks.errors.pass}*/}
+                                {/*        />*/}
+                                {/*        /!* Button to update the title *!/*/}
+                                {/*        /!*<MTButton onClick={() => handleEditTitle(formiks.values.pass)}>ویرایش عنوان</MTButton>*!/*/}
+                                {/*    </FormControl>*/}
+                                {/*    <FormControl fullWidth>*/}
+                                {/*        <MInput*/}
+                                {/*            textarea*/}
+                                {/*            label="متن خود را بنویسید ..."*/}
+                                {/*            minRows={5}*/}
+                                {/*            multiline*/}
+                                {/*            id="phone"*/}
+                                {/*            name="phone"*/}
+                                {/*            value={formiks.values.phone || (EditData ? EditData.description : '')}*/}
+                                {/*            onChange={formiks.handleChange}*/}
+                                {/*            onBlur={formiks.handleBlur}*/}
+                                {/*            error={formiks.touched.phone && Boolean(formiks.errors.phone)}*/}
+                                {/*            helperText={formiks.touched.phone && formiks.errors.phone}*/}
+                                {/*        disabled={!editingEnabled}*/}
+
+                                {/*        />*/}
+                                {/*        /!* Button to update the description *!/*/}
+                                {/*        <MTButton onClick={() => handleEditDescription(formiks.values.phone)}>ویرایش متن</MTButton>*/}
+                                {/*    </FormControl>*/}
+                                {/*    <Grid item container lg={12} justifyContent={'end'} p={2}>*/}
+                                {/*        <MTButton type="submit">ثبت</MTButton>*/}
+                                {/*    </Grid>*/}
+                                {/*</form>*/}
                             </List>
                         </Grid>
                     </Box>

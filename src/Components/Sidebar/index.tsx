@@ -34,7 +34,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     overflowX: 'hidden',
 });
 const urlSplit = (path: string): string => {
-    const splitUrl = path.split("/Settings/") ??" " ;
+    const splitUrl = path.split("/Settings/") ?? " " ;
     const newText = splitUrl[1];
     return newText;
 };

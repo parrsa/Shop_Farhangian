@@ -65,6 +65,7 @@ function Clubs() {
                                                       alignItems: 'center',
                                                       justifyContent: "end",
                                                       transition: 'box-shadow 0.3s',
+                                                      boxShadow:5,
                                                       '&:hover': {
                                                           cursor:"pointer",
                                                           boxShadow: 2,

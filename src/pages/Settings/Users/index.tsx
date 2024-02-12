@@ -17,6 +17,9 @@ import Edite from "@/Assets/images/nimbus_edit.svg";
 import Image from "next/image";
 import Trash from "@/Assets/images/circum_trash.svg";
 import Typography from "@mui/material/Typography";
+import {useCookies} from "react-cookie";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const initialUsers = [
     { id: 1, name: 'John Doe', phone: '1234567890', password: 'password123' },
@@ -29,6 +32,12 @@ const UserTable = () => {
     const [users, setUsers] = useState(initialUsers);
     const [editingUser, setEditingUser] = useState(null);
     const [Value,setValue]=React.useState()
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [typeMessage, setTypeMessage] = React.useState('')
+    const [message, setMessage] = React.useState('')
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [Cookiess, SetCookies] = useCookies(['TokenLogin'])
+
     const handleEdit = (id:any, field:any, value:any) => {
         setEditingUser(id);
         const updatedUsers = users.map((user) => (user.id === id ? { ...user, [field]: value } : user));
@@ -39,11 +48,11 @@ const UserTable = () => {
         setEditingUser(null);
     };
 
-    const handleDelete = (id:any) => {
-        const updatedUsers = users.filter((user) => user.id !== id);
-        setUsers(updatedUsers);
-        setEditingUser(null);
-    };
+    // const handleDelete = (id:any) => {
+    //     const updatedUsers = users.filter((user) => user.id !== id);
+    //     setUsers(updatedUsers);
+    //     setEditingUser(null);
+    // };
 
 
     useEffect(() => {
@@ -72,79 +81,40 @@ const UserTable = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setCurrentPage(0); // Reset to the first page when changing rows per page
     };
-
-
+    const handleDelete = (id:number) => {
+        const Deleted = async () => {
+            try {
+                const response = await axios.delete(`https://farhangian.birkar.ir/api/User/Delete?id=${id}`,
+                )
+                if (response.status === 200) {
+                    setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
+                    setTypeMessage('warning')
+                    setOpenMessage(true)
+                }
+            } catch (error: any) {
+                setTypeMessage('error')
+                setOpenMessage(true)
+                setMessage(error.message)
+            }
+        }
+        Deleted()
+    };
+    const handleClose = (event:any, reason:any) => {
+        setOpenMessage(false);
+    };
 
     return (
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} >
                 <Grid item container lg={11}>
-                    <TableContainer sx={{ marginTop: 2 }} component={Paper} style={{ overflow: 'auto' }}>
-                        {/*<Table>*/}
-                        {/*    <TableHead>*/}
-                        {/*        <TableRow>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">ID</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام خانوادگی</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">شماره تماس</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">کدملی</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">نام پدر</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">تاریخ تولد</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center">رمز عبور</TableCell>*/}
-                        {/*            <TableCell sx={{ fontFamily: 'Shabname' }} align="center"></TableCell>*/}
-                        {/*        </TableRow>*/}
-                        {/*    </TableHead>*/}
-                        {/*    <TableBody>*/}
-                        {/*        {users.map((user) => (*/}
-                        {/*            <TableRow key={user.id}>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.id}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.name}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">{user.phone}</TableCell>*/}
-                        {/*                <TableCell sx={{ fontFamily: 'Shabname' }} align="center">*/}
-                        {/*                    {editingUser === user.id ? (*/}
-                        {/*                        <TextField*/}
-                        {/*                            value={user.name}*/}
-                        {/*                            onChange={(e) => handleEdit(user.id, 'name', e.target.value)}*/}
-                        {/*                        />*/}
-                        {/*                    ) : (*/}
-                        {/*                        user.name*/}
-                        {/*                    )}*/}
-                        {/*                </TableCell>*/}
-                        {/*                /!* Repeat the same pattern for other TableCell components *!/*/}
-                        {/*                /!* ... *!/*/}
-                        {/*                <TableCell align="center">*/}
-                        {/*                    {editingUser === user.id ? (*/}
-                        {/*                        <Button variant="contained" color="primary" onClick={() => handleSave(user.id)}>*/}
-                        {/*                            Save*/}
-                        {/*                        </Button>*/}
-                        {/*                    ) : (*/}
-                        {/*                        <>*/}
-                        {/*                            <Button onClick={() => handleEdit(user.id)}>*/}
-                        {/*                                <Image src={Edite} alt={'icons'} />*/}
-                        {/*                            </Button>*/}
-                        {/*                            <Button onClick={() => handleDelete(user.id)}>*/}
-                        {/*                                <Image src={Trash} alt={'icons'} />*/}
-                        {/*                            </Button>*/}
-                        {/*                        </>*/}
-                        {/*                    )}*/}
-                        {/*                </TableCell>*/}
-                        {/*            </TableRow>*/}
-                        {/*        ))}*/}
-                        {/*    </TableBody>*/}
-                        {/*</Table>*/}
-
-
-                        <Table component={Paper}>
+                    <TableContainer component={Paper} sx={{marginTop:5}}>
+                        <Table>
                             <TableHead>
                                 <TableRow>
-                                    {Object.keys(Clients[0] ?? '').map((column, index) => (
+                                    {columns.map((column, index) => (
                                         <TableCell key={index}>{column}</TableCell>
                                     ))}
-                                    <TableCell>Actions</TableCell> {/* New column for actions */}
+                                    <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -154,14 +124,13 @@ const UserTable = () => {
                                             <TableCell key={colIndex}>{object[column]}</TableCell>
                                         ))}
                                         <TableCell>
-                                            <Button >Edit</Button>
-                                            <Button >Delete</Button>
+                                            <Button>Edit</Button>
+                                            <Button onClick={() => handleDelete(object.id)}>Delete</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-
                     </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 20, 30, 40, 100]}
@@ -174,7 +143,11 @@ const UserTable = () => {
                     />
                 </Grid>
             </Grid>
-
+            <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleClose}>
+                <Alert  sx={{width: '100%'}}>
+                    <Typography variant={'caption'}>{message}</Typography>
+                </Alert>
+            </Snackbar>
         </SettingLayout>
     );
 };

@@ -393,15 +393,6 @@ a {
 }
 
 .shadow:before {
-
-    /*content: "";*/
-    /*position: absolute;*/
-    /*inset: -80px 0px 50px;  !* Adjust the inset values as needed *!*/
-    /*transform: translate(10px, 0px);*/
-    /*z-index: -2;*/
-    /*background: linear-gradient(#09368D, #fffafa);*/
-    /*filter: blur(0px);*/
-
     content: "";
     position: absolute;
     inset: -15px 0px -5px;
@@ -411,7 +402,8 @@ a {
     z-index: -2;
     background: linear-gradient(to bottom, #09368D, #fffafa);
     filter: blur(0px);
-    border-radius: 10px;
+    border-radius: 1rem;
+
 }
 
 .line{

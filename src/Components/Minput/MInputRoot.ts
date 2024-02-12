@@ -454,51 +454,9 @@ export default styled(TextField)(({theme, ownerState}: any) => {
         )
     }
 
-    function SelectrouterDatasource() {
-        return (
-            {
-                '& .MuiFormHelperText-root': {
-                    color: theme.palette.error.light + "!important",
-                    fontSize: ".84rem",
-                    fontWeight: "bold",
-                    padding: "0.1rem 0 !important",
-                    fontFamily: 'Yekan Bakh Hairline',
-                    height: "10px",
-
-                },
-                "& .MuiInputBase-root": {
-                    border: error ? "1px solid red" : "0px solid gray",
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    fontFamily: 'Yekan Bakh Hairline',
-
-                    backgroundColor: theme.palette.white.main + "!important",
-                    height: "3.2rem !important",
-                },
-                '& .Mui-focused': {
-                    border: '0px',
-                },
-                "& .MuiInputLabel-root": {
-                    fontFamily: 'Yekan Bakh Hairline',
-                    fontSize: "1rem",
-                    fontWeight: "bold !important",
-                    background: theme.palette.white.main + "!important",
-                    color: colors.black.main + "!important",
-                    padding: "0 10px !important",
-
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: error ? " red" : "",
-
-                    backgroundColor: "transparent !important"
-                }
-            }
-        )
-    }
     function TextArea(){
         return (
             {
-
                 '& .MuiFormHelperText-root': {
                     color: theme.palette.error.light + "!important",
                     fontSize: ".84rem",
@@ -507,6 +465,7 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     padding: "1rem 0 !important",
                     fontFamily: 'Yekan Bakh Hairline',
                     height: "10px",
+                    overflow:'auto'
                 },
                 "& .MuiInputBase-root": {
                     border: error ? "1px solid red" : "0px solid gray",
@@ -516,6 +475,8 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     backgroundColor: theme.palette.white.main + "!important",
                     padding:'15px',
                     textAlign: 'justify',
+                    overflow:'auto'
+
                 },
                 '& .Mui-focused': {
                     border: '0px',
@@ -529,6 +490,9 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     color: colors.black.main + "!important",
                     textAlign: 'justify',
                     padding: "0 10px !important",
+                    overflow:'auto'
+
+
                 },
                 "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: error ? " red" : "",
@@ -552,7 +516,6 @@ export default styled(TextField)(({theme, ownerState}: any) => {
         ...(verify && VerifyCodeStyle()),
         ...(date && Date()),
         ...(datasource && DatasourceInput()),
-        ...(selectBox && SelectrouterDatasource()),
         ...(textarea && TextArea())
     }
 })

@@ -8,9 +8,11 @@ import MBox from "@/Components/MBox";
 import Typography from "@mui/material/Typography";
 import Vector from '@/Assets/images/Vector (1).svg'
 import Link from "next/link";
+import Cookies from 'js-cookie';
 
 const NavSearch = () => {
     const [Check, setCheck] = React.useState(false);
+    let Cook = Cookies.get('TokenLogin')
 
     return (
         <Grid item container lg={12} md={12} sm={12} xs={12} justifyContent={"space-between"} alignItems={'center'} sx={{padding: '20px',display: {xs: 'none', md: 'flex'}}}>
@@ -29,10 +31,9 @@ const NavSearch = () => {
                 />
             </Grid>
             <Grid item xs={12} md={3} lg={3} container justifyContent={Check ? 'space-evenly' : 'center'}>
-                {!Check && (
+                {!Cook && (
                     <>
                         <Link href={'/login'}>
-
                             <MTButton login>
                                 <span style={{ marginRight: '0px', fontFamily: 'Yekan Bakh Medium' }}>ورود / ثبت نام</span>
                             </MTButton>
@@ -40,7 +41,7 @@ const NavSearch = () => {
                     </>
                 )}
 
-                {Check && (
+                {Cook && (
                     <>
                         <MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>
                             <Typography variant={'caption'}> مانده حساب: <span style={{ marginRight: 10 }}>152.250.000.000 ریال </span></Typography>

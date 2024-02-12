@@ -80,7 +80,7 @@ function ProductDiscounts() {
                                     <Card className={'shadow'} ref={elRef}
                                           sx={{
                                         width: '300px',
-                                        height: "360px",
+                                        height: "380px",
                                         borderRadius: '1rem',
                                         outline: "none",
                                         border: 'none',
@@ -89,6 +89,7 @@ function ProductDiscounts() {
                                         alignItems: 'center',
                                         justifyContent: "end",
                                         transition: 'box-shadow 0.3s',
+                                              boxShadow:5,
                                         '&:hover': {
                                             cursor:"pointer",
                                             boxShadow: 2,
@@ -101,6 +102,7 @@ function ProductDiscounts() {
                                                 top: "0",
                                                 right: "0",
                                                 height: "70%",
+                                                borderRadius:'1rem',
                                                 width: "100%",
                                             }}
                                             component="img"

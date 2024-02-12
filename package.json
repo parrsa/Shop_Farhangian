@@ -31,6 +31,7 @@
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
+    "react-cookie": "^7.0.2",
     "react-dom": "18.2.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-organizational-chart": "^2.2.1",

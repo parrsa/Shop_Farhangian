@@ -65,7 +65,7 @@ function Clubs() {
                                                       flexDirection: 'column',
                                                       alignItems: 'center',
                                                       justifyContent: "end",
-                                                      // boxShadow:10,
+                                                      boxShadow:5,
                                                       //  boxShadow: "-8px -8px 2px 2px rgba(9, 54, 141, 1)",
                                                       transition: 'box-shadow 0.3s',
                                                       '&:hover': {

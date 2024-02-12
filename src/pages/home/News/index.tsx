@@ -95,7 +95,11 @@ function NewProduct() {
                                                 mt={2}
                                             >
                                                 برای دیدن مطالب بیشتر
-                                                کلیک  <span color={'red.main'}>کنید</span>
+                                                
+
+                                                کلیک
+                                                {/*<span color={'red.main'}>کنید</span>*/}
+
                                             </Typography>
 
                                         </CardContent>

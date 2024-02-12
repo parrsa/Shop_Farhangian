@@ -90,7 +90,6 @@
 import React from "react";
 import {Grid, Typography, IconButton} from "@mui/material";
 import {useFormik} from 'formik';
-import {useNavigate} from "react-router-dom";
 import * as yup from 'yup';
 import axios from 'axios';
 import colors from "@/Assets/theme/base/colors";
@@ -113,16 +112,16 @@ const formValidationSchema = yup.object({
 import Image from 'next/image'
 import DashboardLayout from "@/Components/Dashboard/Layout";
 import Link from "next/link";
+import {useCookies} from "react-cookie";
+import { useRouter } from "next/router";
 
 const SignInPage = () => {
-    // const Swal = require('sweetalert2')
-    // const navigate = useNavigate()
-    // const [Cookiess, SetCookies] = useCookies(['TokenLogin'])
     const [openMessage, setOpenMessage] = React.useState(false);
     const [typeMessage, setTypeMessage] = React.useState('')
-    const [showVerify, setshowVerify] = React.useState(false);
-    const [message, setMessage] = React.useState()
+    const [message, setMessage] = React.useState('')
     const [showPassword, setShowPassword] = React.useState(false);
+    const [Cookiess, SetCookies] = useCookies(['TokenLogin'])
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event:any) => {
         event.preventDefault();
@@ -131,6 +130,8 @@ const SignInPage = () => {
     const handleClose = (event:any, reason:any) => {
         setOpenMessage(false);
     };
+    const router = useRouter();
+
     const formik = useFormik({
         initialValues: {
             phone: '',
@@ -145,27 +146,24 @@ const SignInPage = () => {
                     }
                 }
                 try {
-                    const response = await axios.post(`/user/login/`,
+                    const response = await axios.post(`https://farhangian.birkar.ir/api/User/Login`,
                         {
-                            username: values.phone,
+                            nationalCode: values.phone,
                             password: values.pass,
                         },
                         config
                     )
                     if (response.status === 200) {
-                        // setshowVerify(true)
-                        // SetCookies("Tokenlogin", response.data.token)
-                        // setMessage('با موفقیت وارد شدید')
+                        SetCookies('TokenLogin' , response.data.data.token)
+                        setMessage('با موفقیت وارد شوید')
                         setTypeMessage('success')
                         setOpenMessage(true)
-                        setTimeout(() => {
-                            // navigate('/')
-                        }, 3000)
+                        router.push('/')
                     }
                 } catch (error:any) {
                     setTypeMessage('error')
                     setOpenMessage(true)
-                    setMessage(error.response.data.message)
+                    setMessage(error.message)
                 }
             }
             login();
@@ -176,20 +174,15 @@ const SignInPage = () => {
     return (
         <DashboardLayout>
         <Grid container sx={{backgroundSize: {xs: 'cover', md: "cover", lg: 'cover'}}} height={{lg: "91vh", md: '105vh'}} flexDirection={{md: 'column-reverse', xs: 'column-reverse'}} justifyContent={"center"} alignItems={"center"} lg={12} md={12}>
-            <Grid item container height={"100%"}
-                //  zIndex={{ xs: 1 }}
-                  alignItems={"center"} justifyContent={"center"} lg={6} md={6} xs={6}>
+            <Grid item container height={"100%"} alignItems={"center"} justifyContent={"center"} lg={6} md={6} xs={6}>
                 <Grid item container md={10}  justifyContent={'center'} marginTop={{lg: 2}}>
                     <Grid item container md={10}  justifyContent={"center"} marginTop={{lg: 2}}>
                         <Grid item container md={10} justifyContent={"center"}>
                             <Grid item container borderLeft={{lg: 3, md: 0}} borderColor={{lg: '#D6C109'}}
                                   alignItems={"center"} height={{lg: 40}} lg={11.5} xs={12}
                                   justifyContent={{lg: 'start', xs: 'center'}}>
-                                <Typography fontSize={{lg: "30px"}} ml={{lg: 1}} color={colors.black.main}
-                                            alignItems={{lg: "center"}} variant={"h1"}>ورود به حساب
-                                    کاربری</Typography>
+                                <Typography fontSize={{lg: "30px"}} ml={{lg: 1}} color={colors.black.main} alignItems={{lg: "center"}} variant={"h1"}>ورود به حساب کاربری</Typography>
                             </Grid>
-                            {!showVerify &&
                                 <>
                                     <form onSubmit={formik.handleSubmit}>
                                         <Grid item container justifyContent={{lg: "space-evenly", xs: 'start'}}
@@ -231,9 +224,11 @@ const SignInPage = () => {
                                                     helperText={formik.touched.pass && formik.errors.pass}
                                                     type={showPassword ? 'text' : 'password'}
                                                 />
-                                                <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                                </IconButton>
+                                                <InputAdornment sx={{ width: '97%', top: { lg: 30, xs: 30 }, position: 'absolute', display: 'flex', justifyContent: 'end' }}>
+                                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                                    </IconButton>
+                                                </InputAdornment>
                                             </FormControl>
                                         </Grid>
                                         <Grid item container lg={11.5} justifyContent={'space-between'} alignItems={'center'}>
@@ -259,7 +254,6 @@ const SignInPage = () => {
                                         </Grid>
                                     </form>
                                 </>
-                            }
                         </Grid>
                     </Grid>
                 </Grid>

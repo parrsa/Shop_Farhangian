@@ -78,7 +78,7 @@ function Clubs() {
                                                         right: "0",
                                                         height: "70%",
                                                         width: "100%",
-                                                        borderRadius:'1rem'
+                                                        borderRadius:'10rem'
                                                     }}
                                                     component="img"
                                                     image={item.image}

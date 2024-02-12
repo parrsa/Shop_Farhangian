@@ -15,17 +15,21 @@ const NavTop = () => {
             const data = await response.json();
             setP(data.data)
         }
-
         getData();
     }, [])
-
     let Sp = p.map((item: any) => item.title);
-    const [Random, setRandom] = React.useState();
+    let Sp1 = p.map((item: any) => item.backColor);
+    let Sp2 = p.map((item: any) => item.color);
+    const [Random, setRandom] = React.useState<any>();
+    const [Random1, setRandom1] = React.useState<any>();
+    const [Random2, setRandom2] = React.useState<any>();
     React.useEffect(() => {
         const intervalId = setInterval(() => {
             let A = Math.floor(Math.random() * Sp.length);
             setRandom(Sp[A]);
-        }, 3500);
+            setRandom2(Sp1[A]);
+            setRandom1(Sp2[A]);
+        }, 1800);
         return () => clearInterval(intervalId);
     }, [Sp]);
 
@@ -33,8 +37,8 @@ const NavTop = () => {
     return (
         <>
             {p && (
-                <Grid item container bgcolor={'red.main'} lg={12}>
-                    <Typography variant={'h1'} color={'red.main'} p={1}>
+                <Grid item container bgcolor={Random2} lg={12} p={1}>
+                    <Typography variant={'h1'} color={Random1} >
                         {Random}
                         {/*فروشگاه فرهنگیان سال نو را به شما مشتریان عزیز تبریک گفته و امیدوار است سالی نیکو و سرشار از*/}
                         {/*سلامتی را داشته باشید .*/}

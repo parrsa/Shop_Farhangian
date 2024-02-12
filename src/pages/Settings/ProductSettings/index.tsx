@@ -28,26 +28,33 @@ import {useTheme} from "@emotion/react";
 const defaultModeLabel = {'aria-label': 'Default mode'};
 
 const PageSetting = () => {
-    const [color, setColor] = React.useState('#f05b41');
-    const handleColorChange = React.useCallback(({value}: ColorBoxTypes.ValueChangedEvent) => {
-        setColor(value);
-    }, []);
     const [uploadedFileName, setUploadedFileName] = React.useState("");
     const [files, setFiles] = React.useState<File | undefined>(undefined);
-    const [ostan, setOstan] = React.useState<any[]>([]);
+    const [Category, setCategory] = React.useState<any[]>([]);
+    const theme = useTheme();
+    const [open, setopen] = React.useState(false)
+    const [Id, setID] = React.useState();
 
     const handleClickClear = () => {
         setUploadedFileName("");
     };
 
-    useEffect(() => {
-        const getData = async () => {
-            const response = await fetch('https://fakestoreapi.com/products')
-            const data = await response.json();
-            setOstan(data);
-        }
-        getData()
+    const fetchData = async () => {
+        const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll');
+        const data = await response.json();
+        return data.data;
+    };
+
+    const memoizedOstan = React.useMemo(async () => {
+        return await fetchData();
     }, []);
+
+    useEffect(() => {
+        memoizedOstan.then((ostanData:any) => {
+            setCategory(ostanData);
+        });
+    }, [memoizedOstan]);
+
 
 
     const handleFileUploads = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,29 +66,9 @@ const PageSetting = () => {
             setFiles(files[0])
         }
     };
-    const theme = useTheme();
-    const [fruitsInBasket, setFruitsInBasket] = React.useState<any[]>([]);
-    const [open, setopen] = React.useState(false)
-    const [Id, setID] = React.useState();
-    const items = ostan.map((item) => item.id);
-    const shouldShowTransition = items.includes(Id) && open;
     const handleAddFruit = (item: any) => {
         setID(item);
         setopen(!open);
-    };
-    const [openModal, setOpenModal] = React.useState(false);
-    const handleOpen = () => setOpenModal(true);
-    const handleClose = () => setOpenModal(false);
-
-
-    const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
-    const handleClick = () => {
-        setDisplayColorPicker(!displayColorPicker);
-    };
-
-    const [background, setBackground] = React.useState('#fff');
-    const handleChangeComplete = (color:any) => {
-        setBackground(color.hex);
     };
 
 
@@ -95,7 +82,7 @@ const PageSetting = () => {
                            <MTButton submite>  <AddIcon fontSize={'small'}/> اضافه کردن </MTButton>
                         </Grid>
                     <Grid item container  boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'} justifyContent={'center'} overflow={'auto'} >
-                        {ostan.map((item:any)=>(
+                        {Category.map((item:any)=>(
                             <>
                                 <Grid item container lg={10} xs={10} bgcolor={'white.main'}
                                       boxShadow={'1px 1px 10px 1px #C4C4C4'} my={2} borderRadius={1}
@@ -105,7 +92,7 @@ const PageSetting = () => {
                                           xs: 'space-between'
                                       }} alignItems={'center'}>
                                     <Grid item container lg={4} xs={12}  justifyContent={'center'} p={1} alignItems={"center"}>
-                                        <Typography variant="h1" color={colors.yellow.main}>{item.title.slice(0,25)}</Typography>
+                                        <Typography variant="h1" color={colors.yellow.main}>{item.categoryName}</Typography>
                                     </Grid>
 
                                     <Grid item container lg={4} xs={12}  justifyContent={'center'} p={1} >

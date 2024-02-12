@@ -81,7 +81,6 @@ const PageSetting = () => {
         }
     };
 
-
     const formik = useFormik({
         initialValues: {
             phone: '',
@@ -218,7 +217,7 @@ const PageSetting = () => {
         setDisplayColorPickerbg(false);
     };
 
-    const handleChange = (newColor: any) => {
+    const handleChangeColor = (newColor: any) => {
         setColor(newColor.hex);
     };
 
@@ -281,7 +280,7 @@ const PageSetting = () => {
                                 {displayColorPicker ? (
                                     <Box sx={{position: 'absolute', zIndex: '2', }}>
                                         <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleClose}></Box>
-                                        <SketchPicker  color={color} onChange={handleChange}/>
+                                        <SketchPicker  color={color} onChange={handleChangeColor}/>
                                     </Box>
                                 ) : null}
 
@@ -308,7 +307,6 @@ const PageSetting = () => {
 
                         <Grid item container lg={12} justifyContent={'center'} p={2}>
                             <Grid item container lg={11}>
-
                                 <FormControl fullWidth>
                                     <MInput
                                         textarea
@@ -358,7 +356,7 @@ const PageSetting = () => {
                                     {displayColorPicker ? (
                                         <Box sx={{position: 'absolute', zIndex: '2', }}>
                                             <Box sx={{  position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}} onClick={handleClose}></Box>
-                                            <SketchPicker  color={color} onChange={handleChange}/>
+                                            <SketchPicker  color={color} onChange={handleChangeColor}/>
                                         </Box>
                                     ) : null}
 

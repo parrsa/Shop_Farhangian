@@ -43,6 +43,8 @@ function NewProduct() {
                                   alignItems: 'center',
                                   justifyContent: "end",
                                   transition: 'box-shadow 0.3s',
+                                  boxShadow:5,
+
                                   '&:hover': {
                                       cursor: "pointer",
                                       boxShadow: 2,
@@ -55,6 +57,7 @@ function NewProduct() {
                                     right: "0",
                                     height: "70%",
                                     width: "100%",
+                                    borderRadius:'1rem',
                                 }}
                                 component="img"
                                 image={item.image}
