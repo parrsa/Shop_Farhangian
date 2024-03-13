@@ -8,6 +8,7 @@ import ProductDescount from "@/pages/home/ProductDescount";
 import NewProduct from "@/pages/home/NewProduct";
 import News from "@/pages/home/News";
 const Homes = () => {
+
     return (
         <DashboardLayout>
             <LandingPage/>

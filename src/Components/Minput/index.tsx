@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import MInputRoot from "./MInputRoot";
+import MTButton from "@/Components/Mbutton";
 
 interface owner {
     internShip?: boolean
@@ -62,3 +63,4 @@ const MInput = forwardRef<HTMLInputElement, any>(
     )
 );
 export default MInput;
+MInput.displayName="MInput"

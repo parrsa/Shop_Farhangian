@@ -1,52 +1,60 @@
-import React from "react";
-import {Grid} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 
-const NavTop = () => {
-    const [p, setP] = React.useState([])
-    React.useEffect(() => {
-        const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Slogan/GetAll`);
+interface Slogan {
+    title: string;
+    backColor: string;
+    color: string;
+}
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+const NavTop = () => {
+    const [slogans, setSlogans] = useState<Slogan[]>([]);
+    const [randomSlogan, setRandomSlogan] = useState<string>("");
+    const [randomBackColor, setRandomBackColor] = useState<string>("");
+    const [randomColor, setRandomColor] = useState<string>("");
+    const [dataFetched, setDataFetched] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("https://farhangian.birkar.ir/api/Slogan/GetAll");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setSlogans(data.data);
+                setDataFetched(true);
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-            const data = await response.json();
-            setP(data.data)
+        };
+
+        if (!dataFetched) {
+            fetchData();
         }
-        getData();
-    }, [])
-    let Sp = p.map((item: any) => item.title);
-    let Sp1 = p.map((item: any) => item.backColor);
-    let Sp2 = p.map((item: any) => item.color);
-    const [Random, setRandom] = React.useState<any>();
-    const [Random1, setRandom1] = React.useState<any>();
-    const [Random2, setRandom2] = React.useState<any>();
-    React.useEffect(() => {
+    }, [dataFetched]);
+
+    useEffect(() => {
         const intervalId = setInterval(() => {
-            let A = Math.floor(Math.random() * Sp.length);
-            setRandom(Sp[A]);
-            setRandom2(Sp1[A]);
-            setRandom1(Sp2[A]);
+            if (slogans.length > 0) {
+                const randomIndex = Math.floor(Math.random() * slogans.length);
+                setRandomSlogan(slogans[randomIndex].title);
+                setRandomBackColor(slogans[randomIndex].backColor);
+                setRandomColor(slogans[randomIndex].color);
+            }
         }, 1800);
         return () => clearInterval(intervalId);
-    }, [Sp]);
-
+    }, [slogans]);
 
     return (
-        <>
-            {p && (
-                <Grid item container bgcolor={Random2} lg={12} p={1}>
-                    <Typography variant={'h1'} color={Random1} >
-                        {Random}
-                        {/*فروشگاه فرهنگیان سال نو را به شما مشتریان عزیز تبریک گفته و امیدوار است سالی نیکو و سرشار از*/}
-                        {/*سلامتی را داشته باشید .*/}
-                    </Typography>
-                </Grid>
-            )}
-        </>
+        <Grid item container bgcolor={randomBackColor} lg={12} p={1}>
+            <Typography  variant="h1" color={randomColor}>
+                {randomSlogan}
+            </Typography>
+        </Grid>
+    );
+};
 
-    )
-}
-export default NavTop
+export default NavTop;

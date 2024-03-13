@@ -133,7 +133,7 @@ function ProductDiscounts() {
 
             <Grid item container lg={11} xs={12} mt={{lg:4 , xs:4}} >
                 <Grid item container lg={12} mb={10} borderRadius={2} justifyContent={'space-evenly'} >
-                    <Grid item container lg={5} boxShadow={5} xs={12} bgcolor={'#FFB800'} borderRadius={3} alignItems={'center'} >
+                    <Grid item container lg={5} minHeight={{lg:'25vh'}} boxShadow={5} xs={12}  bgcolor={'#FFB800'} borderRadius={3} alignItems={'center'} >
                         <Grid item container lg={6} justifyContent={'center'}>
                             <Image src={MyAx}  width={200}  alt={'logo'}/>
                         </Grid>
@@ -146,10 +146,18 @@ function ProductDiscounts() {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item container lg={5} xs={12} boxShadow={5} borderRadius={3}  justifyContent={'center'} >
-                    <MBox blurBackground backUrl={require("@/Assets/images/grocery-shop-with-food-shelves-budapest_117930-1488 2.png").default.src}>
-                        <Image src={Group}  width={200}  alt={'logo'} />
-                    </MBox>
+                    <Grid item container lg={5} boxShadow={5} xs={12} minHeight={{lg:'25vh'}}  bgcolor={'blue.main'} borderRadius={3} alignItems={'center'} >
+                        <Grid item container lg={6} justifyContent={'center'}>
+                            <Image src={MyAx}  width={200}  alt={'logo'}/>
+                        </Grid>
+                        <Grid item container lg={6} justifyContent={'center'}>
+                            <Typography variant={'body2'} color={'white.main'}>
+                                تلویزیون ال ای دی 47 اینچ
+                            </Typography>
+                            <Typography variant={'body1'} color={'white.main'} textAlign={'center'} >
+                                تلویزیون با کیفیت 4K
+                            </Typography>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

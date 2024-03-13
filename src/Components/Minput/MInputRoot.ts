@@ -460,10 +460,9 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                 '& .MuiFormHelperText-root': {
                     color: theme.palette.error.light + "!important",
                     fontSize: ".84rem",
-                    fontWeight: "bold",
                     textAlign: 'justify',
                     padding: "1rem 0 !important",
-                    fontFamily: 'Yekan Bakh Hairline',
+                    fontFamily: 'Shabname',
                     height: "10px",
                     overflow:'auto'
                 },
@@ -491,7 +490,6 @@ export default styled(TextField)(({theme, ownerState}: any) => {
                     textAlign: 'justify',
                     padding: "0 10px !important",
                     overflow:'auto'
-
 
                 },
                 "& .MuiOutlinedInput-notchedOutline": {

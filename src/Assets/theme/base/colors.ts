@@ -1,5 +1,4 @@
 import { PaletteOptions } from "@mui/material";
-
 const colors: PaletteOptions = {
     transparent: {
         main: "transparent",
@@ -606,4 +605,7 @@ const colors: PaletteOptions = {
 
 }
 
-export default colors
+export default colors;
+
+
+

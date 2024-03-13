@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import {Grid, Box, Typography, } from "@mui/material";
+import React, {useEffect, useRef, useState} from "react";
+import {Grid, Box, Typography, Pagination,} from "@mui/material";
 import colors from "@/Assets/theme/base/colors";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,40 +13,48 @@ function Clubs() {
     const elRef = useRef<HTMLDivElement>(null)
     const router = useRouter();
     const { title } = router.query;
+    const { Search } = router.query;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(12);
+    const [Category, setCategory] = React.useState<any[]>([]);
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://fakestoreapi.com/products')
+            const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll')
             const data = await response.json();
-            setOstan(data);
+            setCategory(data.data);
         }
         getData()
     }, []);
+    const CheckTitle=Category?.find((item)=>item.id == title)
 
 
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const itemsPerPage = 10; //
+    useEffect(() => {
+        const getData = async () => {
+            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetByCategoryId?id=${title}`)
+            const data = await response.json();
+            setOstan(data.data);
+        }
+        getData()
+    }, [title])
 
-    const goToPreviousPage = () => {
-        setCurrentPage((prev) => Math.max(prev - 1, 1));
-    };
-
-    const goToNextPage = () => {
-        setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(ostan.length / itemsPerPage)));
-    };
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = ostan?.slice(indexOfFirstItem, indexOfLastItem);
+        const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
                 <Grid item container xs={12} marginRight={7} md={10} justifyContent={"center"}
                       textAlign={{ xs: "center", md: "center" }} alignItems={"center"} flexDirection={"column"} >
-                    <Typography variant="h4" color={colors.black.main}>{title}</Typography>
+                    <Typography variant="h4" color={colors.black.main}>{CheckTitle?.categoryName}</Typography>
                     <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </Typography>
                 </Grid>
                 <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
                       justifyContent={"center"}>
                     <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
                           sx={{ overflow: 'hidden',  }}>
-                        {ostan.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) =>(
+                        {ostan?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) =>(
                             <>
                                 {(index <= 11) && (
                                     <Grid key={index} marginTop={{ lg: 2 }} item sx={{
@@ -84,7 +92,7 @@ function Clubs() {
                                                         borderRadius:'1rem'
                                                     }}
                                                     component="img"
-                                                    image={item.image}
+                                                    image={`https://farhangian.birkar.ir/${item.image}`}
                                                     alt="green iguana"
                                                 />
                                                 <CardContent sx={{ position: 'relative' }}>
@@ -108,25 +116,30 @@ function Clubs() {
                             </>
                         ))}
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center" marginTop={2}>
-                        <MTButton onClick={goToPreviousPage} disabled={currentPage === 1}>
-                            Previous Page
-                        </MTButton>
-                        <Typography variant="subtitle2" mx={2}>
-                            Page {currentPage} of {Math.ceil(ostan.length / itemsPerPage)}
-                        </Typography>
-                        <MTButton onClick={goToNextPage} disabled={currentPage === Math.ceil(ostan.length / itemsPerPage)}>
-                            Next Page
-                        </MTButton>
-                  {/*<Pagination currentPage={10} totalPages={totalPages} onPageChange={handlePageChange} />*/}
-                  {/*      <Pagination count={Math.ceil(ostan.length / itemsPerPage)} onChange={handlePageChange} />*/}
-
-                        {/*<Pagination count={Math.ceil(ostan.length / itemsPerPage)} onChange={handlePageChange} shape="rounded" />*/}
-                    </Grid>
                 </Grid>
+                    <MyPagination itemsPerPage={itemsPerPage} totalItems={ostan?.length} paginate={paginate} />
+
             </Grid >
         </DashboardLayout>
     )
 }
+
+const MyPagination = ({ itemsPerPage, totalItems, paginate }: { itemsPerPage: number, totalItems: number, paginate: Function }) => {
+    const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+
+    return (
+        <>
+            <Pagination
+                count={pageCount}
+                onChange={(event:any, page:any) => paginate(page)}
+                variant="outlined"
+                shape="rounded"
+                color="primary"
+                style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}
+            />
+        </>
+    );
+};
 
 export default Clubs

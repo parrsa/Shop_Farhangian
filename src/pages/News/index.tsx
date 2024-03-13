@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from "react";
-import {Grid, Box, Typography, Divider} from "@mui/material";
+import React, {useEffect, useRef, useState} from "react";
+import {Grid, Box, Typography, Divider, Pagination} from "@mui/material";
 import colors from "@/Assets/theme/base/colors";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,29 +14,24 @@ function Clubs() {
     const [ostan, setOstan] = React.useState<any[]>([]);
     const boxRef = useRef<HTMLDivElement>(null)
     const elRef = useRef<HTMLDivElement>(null)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(12);
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
             const data = await response.json();
-            setOstan(data);
+            setOstan(data.data);
         }
         getData()
-    }, []);
+    }, [ostan]);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = ostan?.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
 
-
-
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const itemsPerPage = 10; //
-
-    const goToPreviousPage = () => {
-        setCurrentPage((prev) => Math.max(prev - 1, 1));
-    };
-
-    const goToNextPage = () => {
-        setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(ostan.length / itemsPerPage)));
-    };
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
@@ -50,7 +45,7 @@ function Clubs() {
                       justifyContent={"center"}>
                     <Grid container rowGap={0} marginTop={{xs: 10, md: 0}} columns={{xs: 2, sm: 8, md: 12, lg: 12}}
                           sx={{overflow: 'hidden', }}>
-                        {ostan.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) => (
+                        {ostan?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) => (
                             <>
                                 {(index <= 11) && (
                                     <Grid key={index} marginTop={{lg: 2}} item sx={{
@@ -59,7 +54,7 @@ function Clubs() {
                                     }} xs={2} sm={12} lg={3} md={6}>
                                         <Box key={index} ref={boxRef} my={4}>
                                             <Link href={`/News/${item.id}`}>
-                                                <Card ref={elRef}
+                                                <Card key={index} ref={elRef}
                                                       sx={{
                                                           width: '330px',
                                                           height: "auto",
@@ -83,19 +78,19 @@ function Clubs() {
                                                             position: 'relative',
                                                             top: "0",
                                                             right: "0",
+                                                            minHeight:300,
+                                                            maxHeight:300
                                                         }}
                                                         component="img"
-                                                        image={MyImage.src}
+
+                                                        image={`https://farhangian.birkar.ir/${item.image}`}
                                                         alt="green iguana"
                                                     />
                                                     <CardContent sx={{
                                                         position: 'relative', textAlign: 'center', display: 'flex',
                                                         flexDirection: "column", alignItems: 'center'
                                                     }}>
-                                                        <Typography gutterBottom variant="h1" component="h2">
-                                                            {/* {item.title.substring(0, 15)} */}
-                                                            ارائه تسهیلات اقساطی ویژه کارکنان
-                                                        </Typography>
+                                                        <Typography gutterBottom variant="h1" component="h2">{item.title.substring(0, 15)}</Typography>
                                                         <Divider sx={{width: '80%', marginTop: '2'}}/>
                                                         <Typography
                                                             variant="h1"
@@ -114,26 +109,30 @@ function Clubs() {
                             </>
                         ))}
                     </Grid>
-                    <Grid container justifyContent="center" alignItems="center" marginTop={2}>
-                        <MTButton onClick={goToPreviousPage} disabled={currentPage === 1}>
-                            Previous Page
-                        </MTButton>
-                        <Typography variant="subtitle2" mx={2}>
-                            Page {currentPage} of {Math.ceil(ostan.length / itemsPerPage)}
-                        </Typography>
-                        <MTButton onClick={goToNextPage}
-                                  disabled={currentPage === Math.ceil(ostan.length / itemsPerPage)}>
-                            Next Page
-                        </MTButton>
-                        {/*<Pagination currentPage={10} totalPages={totalPages} onPageChange={handlePageChange} />*/}
-                        {/*      <Pagination count={Math.ceil(ostan.length / itemsPerPage)} onChange={handlePageChange} />*/}
-
-                        {/*<Pagination count={Math.ceil(ostan.length / itemsPerPage)} onChange={handlePageChange} shape="rounded" />*/}
-                    </Grid>
                 </Grid>
+                <MyPagination itemsPerPage={itemsPerPage} totalItems={ostan.length} paginate={paginate} />
             </Grid>
         </DashboardLayout>
     )
 }
+
+
+const MyPagination = ({ itemsPerPage, totalItems, paginate }: { itemsPerPage: number, totalItems: number, paginate: Function }) => {
+    const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+
+    return (
+        <>
+            <Pagination
+                count={pageCount}
+                onChange={(event:any, page:any) => paginate(page)}
+                variant="outlined"
+                shape="rounded"
+                color="primary"
+                style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}
+            />
+        </>
+    );
+};
 
 export default Clubs

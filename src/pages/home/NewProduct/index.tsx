@@ -16,9 +16,9 @@ function NewProduct() {
 
     useEffect(() => {
         const getData = async () => {
-                const response = await fetch('https://fakestoreapi.com/products')
+            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetNewestProduct?pageIndex=${1}`);
             const data = await response.json();
-            setOstan(data);
+            setOstan(data.data);
         }
         getData()
     }, []);
@@ -34,7 +34,7 @@ function NewProduct() {
                         <Card className={'shadow'} ref={elRef}
                               sx={{
                                   width: '300px',
-                                  height: "360px",
+                                  height: "380px",
                                   borderRadius: '1rem',
                                   outline: "none",
                                   border: 'none',
@@ -44,11 +44,11 @@ function NewProduct() {
                                   justifyContent: "end",
                                   transition: 'box-shadow 0.3s',
                                   boxShadow:5,
-
                                   '&:hover': {
-                                      cursor: "pointer",
+                                      cursor:"pointer",
                                       boxShadow: 2,
                                   },
+
                               }}>
                             <CardMedia
                                 sx={{
@@ -56,11 +56,11 @@ function NewProduct() {
                                     top: "0",
                                     right: "0",
                                     height: "70%",
-                                    width: "100%",
                                     borderRadius:'1rem',
+                                    width: "100%",
                                 }}
                                 component="img"
-                                image={item.image}
+                                image={`https://farhangian.birkar.ir/${item.image}`}
                                 alt="green iguana"
                             />
                             <CardContent sx={{ position: 'relative' }}>
@@ -74,6 +74,7 @@ function NewProduct() {
                                 >
                                     یخچال ساید بای ساید
                                 </Typography>
+
                             </CardContent>
                         </Card>
                     </Box>

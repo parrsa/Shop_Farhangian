@@ -1,4 +1,4 @@
-import {SxProps} from "@mui/material";
+import {SxProps, Theme} from "@mui/material";
 import * as CSS from "csstype";
 
 export interface ISBox {
@@ -29,7 +29,9 @@ export interface ISBox {
 }
 
 export interface ISboxRoot {
-    customstats: ISBox
+
+    customstats: ISBox,
+    theme?:Theme
 }
 export interface ColorStop {
     color?: string;

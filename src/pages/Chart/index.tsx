@@ -1,114 +1,107 @@
+"use client"
+
 import React from "react";
 import styled from "@emotion/styled";
 import {Tree, TreeNode} from "react-organizational-chart";
 import DashboardLayout from "@/Components/Dashboard/Layout";
-import {Grid} from "@mui/material";
+import {Avatar, Box, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
+import {OrganizationChart} from 'primereact/organizationchart';
 
-const StyledNode = styled.div`
-  border-radius: 8px;
-  width: 380px;
-  height: 150px;
-  background-color: white;
-  box-shadow: 0px 0px 5px 0px black;
-  display: inline-block;
-  color: black;
-
-  @media (max-width: 1200px) {
-    /* Adjust styling for tablet screens */
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
-    /* Adjust styling for mobile screens */
-    width: 100%;
-    /* Adjust height for mobile screens */
-  }
-`;
-
-const StyledTreeExample = () => (
-    <DashboardLayout>
-        <div dir={'ltr'} style={{marginTop: '50px', textAlign: 'center'}}>
-            <Tree
-                lineWidth={"5px"}
-                lineColor={"#0CA290"}
-                lineBorderRadius={"10px"}
-                label={
-                    <StyledNode>
-                        <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                            <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                            <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
-                        </Grid>
-                    </StyledNode>
+import dynamic from "next/dynamic";
+// const Organizational = dynamic(
+//     () => import("./ChartData"),
+//     {
+//         ssr: false,
+//     })
+const StyledTreeExample = () => {
+    const [data] = React.useState([
+        {
+            expanded: true,
+            type: 'person',
+            className: 'bg-indigo-500',
+            style: { borderRadius: '12px' , width:380 , backgroundColor:'blue' },
+            data: {
+                image: 'https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png',
+                name: 'Amy Elsner',
+                title: 'CEO'
+            },
+            children: [
+                {
+                    expanded: true,
+                    type: 'person',
+                    className: 'bg-purple-500',
+                    style: { borderRadius: '12px' },
+                    data: {
+                        image: 'https://primefaces.org/cdn/primereact/images/avatar/annafali.png',
+                        name: 'Anna Fali',
+                        title: 'CMO'
+                    },
+                },
+                {
+                    expanded: true,
+                    type: 'person',
+                    className: 'bg-teal-500',
+                    style: { borderRadius: '12px' },
+                    data: {
+                        image: 'https://primefaces.org/cdn/primereact/images/avatar/stephenshaw.png',
+                        name: 'Stephen Shaw',
+                        title: 'CTO'
+                    },
+                },
+                {
+                    expanded: true,
+                    type: 'person',
+                    className: 'bg-teal-500',
+                    style: { borderRadius: '12px' },
+                    data: {
+                        image: 'https://primefaces.org/cdn/primereact/images/avatar/stephenshaw.png',
+                        name: 'Stephen Shaw',
+                        title: 'CTO'
+                    },
                 }
-            >
-                <TreeNode label={
-                    <StyledNode>
-                        <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                            <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                            <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
-                        </Grid>
-                    </StyledNode>
-                }>
-                    <TreeNode label={
-                        <StyledNode>
-                            <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                                <Grid item container lg={6} bgcolor={'blue.main'} flexDirection={'column'}>
-                                    </Grid>
-                                <Grid item container lg={6} bgcolor={'green.main'}>
-                                    <Typography>ثنا حبیبی</Typography>
 
-                                </Grid>
-                            </Grid>
-                        </StyledNode>
-                    }/>
-                </TreeNode>
-                <TreeNode label={
-                    <StyledNode>
-                        <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                            <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                            <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
+
+
+            ]
+        }
+    ]);
+
+    const nodeTemplate = (node:any) => {
+        if (node.type === 'person') {
+            return (
+                <Box sx={{ display: 'flex', flexDirection: 'column' , width:380  }}>
+                    <Grid container justifyContent="center">
+                        <Grid item container lg={12} justifyContent={'center'} alignItems={'center'}>
+                            <Avatar alt={node.data.name} src={node.data.image} sx={{ width: 50, height: 50, mb: 3 }} />
                         </Grid>
-                    </StyledNode>
-                }>
-                    <TreeNode label={
-                        <StyledNode>
-                            <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                                <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                                <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
-                            </Grid>
-                        </StyledNode>
-                    }>
-                        <TreeNode label={
-                            <StyledNode>
-                                <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                                    <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                                    <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
-                                </Grid>
-                            </StyledNode>
-                        }/>
-                    </TreeNode>
-                </TreeNode>
-                <TreeNode label={
-                    <StyledNode>
-                        <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                            <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                            <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
+                        <Grid item>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>{node.data.name}</Typography>
                         </Grid>
-                    </StyledNode>
-                }>
-                    <TreeNode label={
-                        <StyledNode>
-                            <Grid item borderRadius={2} container lg={12} bgcolor={'red.main'}>
-                                <Grid item container lg={6} bgcolor={'blue.main'}>SDS</Grid>
-                                <Grid item container lg={6} bgcolor={'green.main'}>SDS</Grid>
-                            </Grid>
-                        </StyledNode>
-                    }/>
-                </TreeNode>
-            </Tree>
-        </div>
-    </DashboardLayout>
-);
+                        <Grid item>
+                            <Typography variant="body2">{node.data.title}</Typography>
+                        </Grid>
+                    </Grid>
+                </Box>
+            );
+        }
+
+        return node.label;
+    };
+    return (
+        <DashboardLayout>
+            {/*<Organizational/>*/}
+            <Grid item container lg={12} justifyContent={'center'} alignItems={'center'} bgcolor={'red.main'} sx={{
+                padding: '2rem',
+                borderRadius: '10px',
+                marginBottom: '1rem'
+
+            }}>
+                <OrganizationChart value={data} nodeTemplate={nodeTemplate} />
+            </Grid>
+
+        </DashboardLayout>
+    )
+}
 
 export default StyledTreeExample;

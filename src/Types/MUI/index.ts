@@ -62,7 +62,6 @@ declare module '@mui/material/styles' {
     }
 
     interface PaletteOptions {
-        PaletteOptions:socialColorOptions
         socialMedias: socialColors
         gradients: gradientsColors
         red: SimplePaletteColorOptions

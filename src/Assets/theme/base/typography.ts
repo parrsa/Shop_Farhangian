@@ -56,7 +56,6 @@ const typography: {
         },
         h3: {
             fontFamily: 'Yekan Bakh Medium',
-
         },
         h4: {
             fontFamily: 'Yekan Bakh Medium',

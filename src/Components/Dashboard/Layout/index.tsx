@@ -6,6 +6,7 @@ import * as React from "react";
 import Navbars from "@/Components/Navbar";
 import NavTop from "@/Components/Navbar/NavTop";
 import NavSearch from "@/Components/Navbar/NavSearch/NavSearch";
+import Footer from "@/Components/Footer";
 
 const DashboardLayout: React.FC<LayoutsInterface> = ({children}: LayoutsInterface) => {
     return (
@@ -14,6 +15,7 @@ const DashboardLayout: React.FC<LayoutsInterface> = ({children}: LayoutsInterfac
             <NavSearch/>
             <Navbars/>
             {children}
+            <Footer/>
         </Grid>
 )
 }

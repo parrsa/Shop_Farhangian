@@ -1,10 +1,9 @@
-import {styled} from "@mui/material/styles";
-import {Box} from "@mui/material";
-import {ISboxRoot} from "@/Types/MUI/Components/SBox.types";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { ISboxRoot } from "@/Types/MUI/Components/SBox.types";
 import colors from "@/Assets/theme/base/colors";
 
-
-const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
+const MBoxRoot = styled(Box)<ISboxRoot>(({ customstats }) => {
     const {
         circlebox,
         backgroundImage,
@@ -20,10 +19,29 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
         bgColor,
         blurBackground,
         borderRadius,
-    } = customstats
+    } = customstats;
+
+    // const MBoxRoot = styled(Box)<ISboxRoot>((props) => {
+    //     const {
+    //         circlebox,
+    //         backgroundImage,
+    //         Charts,
+    //         Modal,
+    //         UserState,
+    //         backUrl,
+    //         backProp,
+    //         width,
+    //         Discount,
+    //         height,
+    //         position,
+    //         bgColor,
+    //         blurBackground,
+    //         borderRadius,
+    //     } = props as any;
 
 
-    function backGroundType() {
+
+        function backGroundType() {
         switch (backProp) {
             case "cover" :
                 return {
@@ -47,10 +65,9 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
     function BackImage() {
         return {
             backgroundImage: `url("${backUrl}") `,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition:'center',
-            width:'100%'
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
 
         }
     }
@@ -66,7 +83,7 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
             border:'2px solid #000',
             boxShadow:24,
             p:4
-  }
+        }
     }
 
     function blurBackStyles() {
@@ -139,4 +156,4 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({customstats}) => {
     }
 })
 
-export default MBoxRoot
+export default MBoxRoot;

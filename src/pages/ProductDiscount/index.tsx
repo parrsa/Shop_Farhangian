@@ -41,10 +41,8 @@ function Clubs() {
                     <Typography variant="h4" color={colors.black.main}>محصولات تخفیف دار</Typography>
                     <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </Typography>
                 </Grid>
-                <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
-                      justifyContent={"center"}>
-                    <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
-                          sx={{ overflow: 'hidden',  }}>
+                <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} justifyContent={"center"}>
+                    <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }} sx={{ overflow: 'hidden',  }}>
                         {ostan.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) =>(
                             <>
                                 {(index <= 11) && (

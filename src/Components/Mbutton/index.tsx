@@ -51,7 +51,7 @@ const MTButton = forwardRef<HTMLButtonElement, any>(
             {...rest}
             ref={ref}
             color="primary"
-            variant={variant === "gradient" ? "contained" : variant}   
+            variant={variant === "gradient" ? "contained" : variant}
              style={{ direction: "rtl" }}
             size={size}
             ownerState={{
@@ -78,9 +78,8 @@ const MTButton = forwardRef<HTMLButtonElement, any>(
     )
 );
 
-
-
 export default MTButton;
+MTButton.displayName="MTButton"
 
 
 
