@@ -18,6 +18,7 @@ import MInput from '@/Components/Minput';
 import MTButton from '@/Components/Mbutton';
 import Image from 'next/image'
 import axios from 'axios'
+import imageslogo from '../../Assets/images/Login/cyber-monday-shopping-sales_23-2148688504.jpg'
 import logo from '@/Assets/images/HamedanLogo 1.webp'
 import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
@@ -152,7 +153,7 @@ const Login = () => {
                 } catch (error: any) {
                     setTypeMessage('error')
                     setOpenMessage(true)
-                    setMessage(error.response.Message)
+                    setMessage(error.response.data.Message)
                 }
             }
             login();
@@ -218,6 +219,7 @@ const Login = () => {
                         setOpenEditePassword(false)
                     }
                 } catch (error: any) {
+                    console.log(error)
                     setTypeMessage('error');
                     setOpenMessage(true);
                     setMessage(error.response.data.Message)
@@ -305,12 +307,15 @@ const Login = () => {
                     </Grid>
                 </Grid>
                 <Grid lg={6} md={6} sm={6} item container>
-                    <MBox width={"100%"} height={"100%"} backProp={"contain"} backgroundImage
-                          backUrl={require("../../Assets/images/Login/cyber-monday-shopping-sales_23-2148688504.jpg").default.src}>
-                        <Grid item container justifyContent={'end'} alignItems={'end'}
-                              flexDirection={"column"}>
+                    <Box width={"100%"} height={"100%"}  sx={{
+                        backgroundImage: `url(${imageslogo.src}) `,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat'
+                    }} >
+                        <Grid item container justifyContent={'end'} alignItems={'end'} flexDirection={"column"}>
                         </Grid>
-                    </MBox>
+                    </Box>
                 </Grid>
 
 

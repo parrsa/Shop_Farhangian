@@ -3,8 +3,9 @@ import {
     AlertColor, Box,
     Grid,
     IconButton,
-    InputAdornment, InputLabel,
-    List, Modal,
+    InputAdornment,
+    InputLabel, List, Modal,
+    Select,
     Stack,
     TextField,
     Typography
@@ -15,32 +16,41 @@ import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import 'devextreme/dist/css/dx.light.css';
 
-import {ColorBoxTypes} from 'devextreme-react/color-box';
+const eventHandlingLabel = {'aria-label': 'Event Handling'};
+const formValidationSchemas = yup.object({
+});
+import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
-import {useEffect, useState} from "react";
-import colors from "@/Assets/theme/base/colors";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {CSSTransition} from "react-transition-group";
-import {useTheme} from "@emotion/react";
+import {useFormik} from "formik";
+import * as yup from "yup";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import {useFormik} from "formik";
-import * as yup from "yup";
+import colors from "@/Assets/theme/base/colors";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import {CSSTransition} from "react-transition-group";
 import Mbutton from "@/Components/Mbutton";
-import Edite from "@/Assets/images/nimbus_edit.svg";
-import Image from "next/image";
-import Trash from '@/Assets/images/circum_trash.svg'
-import CardMedia from "@mui/material/CardMedia";
+import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
-
+import {SketchPicker} from "react-color";
+import Image from "next/image";
+import Edite from "@/Assets/images/nimbus_edit.svg";
+import Trash from "@/Assets/images/circum_trash.svg";
 const formValidationSchema = yup.object({
-    title: yup.string().required('عنوان متن الزامی است'),
-    description: yup.string().required('متن خود را بنویسید'),
+    phone: yup.string().required('شماره موبایل الزامی است'),
+    pass: yup.string().required('رمزعبور الزامی است'),
 });
+const colorsss = {
+    width: '36px',
+    height: '14px',
+    borderRadius: '2px',
+    background: `rgba(241, 112, 19, 1)`,
+
+}
+
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -51,44 +61,31 @@ const style = {
     borderRadius: 1,
     p: 4,
 };
-const formValidationSchemas = yup.object({
-});
 const PageSetting = () => {
-
-
-        const [uploadedFile, setUploadedFile] = useState(null);
-    const [uploadedFileEdit, setUploadedFileEdit] = useState(null);
-    const [uploadedFileName, setUploadedFileName] = useState('');
-    const [uploadedFileNameEdit, setUploadedFileNameEdit] = useState('');
-    const [ostan, setOstan] = React.useState<any[]>([]);
-    const theme = useTheme();
-    const [opens, setopens] = React.useState(false)
-    const [Id, setID] = React.useState();
     const [openMessage, setOpenMessage] = React.useState(false);
     const [typeMessage, setTypeMessage] = React.useState('')
+    const [showVerify, setshowVerify] = React.useState(false);
     const [message, setMessage] = React.useState('')
-    const [id, SetId] = React.useState()
-    const [open, setOpen] = React.useState(false);
-    const [EditData, setEditDate] = React.useState<any>()
-    const Cook = Cookies.get('TokenLogin');
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [color, setColor] = React.useState('#f05b41');
+    const handleColorChange = React.useCallback(({value}: ColorBoxTypes.ValueChangedEvent) => {
+        setColor(value);
+    }, []);
+    const [uploadedFileName, setUploadedFileName] = React.useState("");
+    const [files, setFiles] = React.useState<File | undefined>(undefined);
+    const [ostan, setOstan] = React.useState<any[]>([]);
+    const [uploadedFile, setUploadedFile] = useState(null);
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
+            const response = await fetch('https://farhangian.birkar.ir/api/Banner/GetAll\n')
             const data = await response.json();
             setOstan(data.data);
         }
         getData()
-    }, [ostan.length]);
+    }, [ostan]);
 
-    const handleFileUploads = (event: any) => {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            const file = files[0];
-            setUploadedFile(file);
-            setUploadedFileName(file.name);
-        }
-    };
+
     const handleFileReset = () => {
         setUploadedFile(null);
         setUploadedFileName('');
@@ -97,44 +94,95 @@ const PageSetting = () => {
         setUploadedFile(null);
         setUploadedFileName('');
     };
-    const handleFileUploadsEdit = (event: any) => {
+    const handleFileUploads = (event:any) => {
         const files = event.target.files;
 
         if (files && files.length > 0) {
             const file = files[0];
-            setUploadedFileEdit(file);
-            setUploadedFileNameEdit(file.name);
+            setUploadedFile(file);
+            setUploadedFileName(file.name);
         }
     };
-    const handleFileResetEdit = () => {
-        setUploadedFileEdit(null);
-        setUploadedFileNameEdit('');
-    };
-    const handleClickClearEdit = () => {
-        setUploadedFileEdit(null);
-        setUploadedFileNameEdit('');
-    };
+    const [loading, setLoading] = useState(false); // وضعیت لودینگ برای ارسال درخواست به سرور
+
+    const formik = useFormik({
+        initialValues: {
+            phone: '',
+            pass: '',
+        },
+        validationSchema: formValidationSchema,
+        onSubmit: (values) => {
+            const login = async () => {
+
+                const config = {
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Authorization': `Bearer ${Cook}`,
+
+                    },
+                };
+                try {
+
+                    setLoading(true); // فعال کردن وضعیت لودینگ
+                    const formData = new FormData();
+                    formData.append('title', values.phone);
+                    formData.append('description', values.pass);
+                    if (uploadedFile) {
+                        formData.append('Image', uploadedFile);
+                    }
+
+                    const response = await axios.post(`https://farhangian.birkar.ir/api/Banner/Create`,
+                        formData,
+                        config
+                    )
+
+                    if (response.status === 200) {
+                        handleFileReset();
+                        setshowVerify(true)
+                        setMessage("با موفقیت ایجاد شد")
+                        setTypeMessage('success')
+                        setOpenMessage(true)
+                        formik.resetForm();
+                        setTimeout(() => {
+                            // navigate('/')
+                        }, 3000)
+                        setLoading(false); // فعال کردن وضعیت لودینگ
+
+                    }
+                } catch (error: any) {
+                    setTypeMessage('error')
+                    setOpenMessage(true)
+                    setMessage(error.response.data.message)
+                    setLoading(false); // فعال کردن وضعیت لودینگ
+
+                }
+            }
+            login();
+        },
+    });
     const handleCloseAlert = () => {
         setOpenMessage(false);
     };
-    const [editingEnabled, setEditingEnabled] = useState(false); // State to control editing mode
+    const Cook = Cookies.get('TokenLogin');
 
-    const handleClose = () => setOpen(false);
-    const handelDeleted = (item: any) => {
+    const handelDeleted=(item:any)=>{
         const Deleted = async () => {
             const config = {
                 headers: {
+                    'Content-type': 'application/json',
                     'Authorization': `Bearer ${Cook}`,
-                },
-            };
-            try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/News/Delete?id=${item}`,config)
+                }
+            }
+            try  {
+                const response = await axios.delete(`https://farhangian.birkar.ir/api/Banner/Delete?id=${item}`,
+                    config
+                )
                 if (response.status === 200) {
-                    setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
+                    setMessage('شعار شما با موفقیت حذف شد')
                     setTypeMessage('warning')
                     setOpenMessage(true)
                 }
-            } catch (error: any) {
+            } catch (error:any) {
                 setTypeMessage('error')
                 setOpenMessage(true)
                 setMessage(error.response.data.message)
@@ -142,55 +190,17 @@ const PageSetting = () => {
         }
         Deleted()
     }
-    const formikAdd = useFormik({
-        initialValues: {
-            title: '',
-            description: '',
-        },
-        validationSchema: formValidationSchema,
-        onSubmit: async (values) => {
-            const Submite = async () => {
-                const config = {
-                    headers: {
-                        'Content-type': 'multipart/form-data', // Change the content type for file uploads
-                        'Authorization': `Bearer ${Cook}`,
-                    },
-                };
 
-                try {
-                    const formData = new FormData();
-                    formData.append('title', values.title);
-                    formData.append('description', values.description);
 
-                    // Append the file directly to FormData
-                    if (uploadedFile) {
-                        formData.append('image', uploadedFile);
-                    }
 
-                    const response = await axios.post(
-                        'https://farhangian.birkar.ir/api/News/Create',
-                        formData,
-                        config
-                    );
 
-                    if (response.status === 200) {
-                        handleFileReset();
-                        setMessage('خبر جدید با موفقیت اضافه شد');
-                        setTypeMessage('success');
-                        setOpenMessage(true);
-                        formikAdd.resetForm();
-                    }
-                } catch (error: any) {
-                    setTypeMessage('error');
-                    setOpenMessage(true);
-                    setMessage(error.response.data.message);
-                }
-            };
+    const [id, SetId] = React.useState()
+    const [EditData, setEditDate] = React.useState<any>()
+    const [uploadedFileNameEdit, setUploadedFileNameEdit] = useState('');
+    const [uploadedFileEdit, setUploadedFileEdit] = useState(null);
 
-            Submite();
-        },
-    });
-
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => setOpen(false);
 
     const handleOpenEdite = (item: any) => {
         const getData = async () => {
@@ -201,27 +211,18 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/News/GetById?id=${item.id}` , config)
+                const response = await fetch(`https://farhangian.birkar.ir/api/Advertisement/GetById?id=${item}` , config)
                 const data = await response.json();
                 setEditDate(data.data)
-                console.log(data)
+                console.log(data.data)
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
         }
         getData()
-        console.log(EditData)
-        SetId(item.id)
+        SetId(item)
         setOpen(true)
     }
-
-    const handleEditDescription = (newDescription: any) => {
-        setEditingEnabled(true)
-        setEditDate((prevEditData: any) => ({
-            ...prevEditData,
-            description: newDescription
-        }));
-    };
 
 
     const [profile, setProfile] = useState({
@@ -246,6 +247,23 @@ const PageSetting = () => {
         setProfiles({'description': EditData?.description})
     },[EditData])
 
+    const handleFileUploadsEdit = (event: any) => {
+        const files = event.target.files;
+
+        if (files && files.length > 0) {
+            const file = files[0];
+            setUploadedFileEdit(file);
+            setUploadedFileNameEdit(file.name);
+        }
+    };
+    const handleFileResetEdit = () => {
+        setUploadedFileEdit(null);
+        setUploadedFileNameEdit('');
+    };
+    const handleClickClearEdit = () => {
+        setUploadedFileEdit(null);
+        setUploadedFileNameEdit('');
+    };
     const handleChanged = (e:any) => {
         const { name, value } = e.target;
         setProfiles(prevProfile => ({
@@ -259,6 +277,7 @@ const PageSetting = () => {
         },
         validationSchema: formValidationSchemas,
         onSubmit: (values) => {
+            alert(id)
             const Submite = async () => {
                 const config = {
                     headers: {
@@ -270,49 +289,53 @@ const PageSetting = () => {
 
                 try {
                     const formData = new FormData();
-                    formData.append('id', id ?? '');
-                    formData.append('title', profile.title);
-                    formData.append('description', profiles.description);
+                    setLoading(true)
+                    formData.append('Id', id ?? '');
+                    formData.append('Title', profile.title);
+                    formData.append('Description', profiles.description);
                     if (uploadedFileEdit) {
-                        formData.append('imagePath', uploadedFileEdit);
+                        formData.append('Image', uploadedFileEdit);
                     }
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/News/Edit',
+                        'https://farhangian.birkar.ir/api/Advertisement/Edit',
                         formData,
                         config
                     );
 
                     if (response.status === 200) {
                         handleFileResetEdit();
-                        setMessage(' موفقیت ادیت شد');
+                        setMessage(' با موفقیت ادیت شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
                         formiksEdit.resetForm();
                         setOpen(false)
+                        setLoading(false)
+
                     }
                 } catch (error: any) {
                     setTypeMessage('error');
                     setOpenMessage(true);
-                    setMessage(error.response.data.message);
+                    setMessage(error.message);
+                    setLoading(false)
                 }
             };
 
             Submite();
         },
     });
-    return (
-        <SettingLayout>
-            <Grid item container lg={12} justifyContent={'center'} mt={2}>
 
-                <Grid item container lg={11} boxShadow={5} justifyContent={'center'} borderRadius={2}
+
+    return (
+            <Grid item container lg={12} justifyContent={'center'} mt={2}>
+                <Grid item container lg={10} mt={10} boxShadow={5} justifyContent={'center'} borderRadius={2}
                       bgcolor={'white.main'}>
-                    <Grid item container lg={10} mt={2}>
-                        <Typography variant={'h1'}>اخبار های موجود :</Typography>
+                    <Grid item container lg={10}  mt={2}>
+                        <Typography variant={'h1'} >بنر های موجود :</Typography>
                     </Grid>
                     <Grid item container lg={12} maxHeight={'50vh'} minHeight={'50vh'} justifyContent={'center'}
                           overflow={'auto'}>
-                        {ostan.map((item: any) => (
+                        {ostan.map((item:any)=>(
                             <>
                                 <Grid item container lg={10} xs={10} maxHeight={'8vh'} minHeight={'8vh'}
                                       bgcolor={'white.main'}
@@ -324,7 +347,7 @@ const PageSetting = () => {
                                       }} alignItems={'start'}>
                                     <Grid item container lg={4} xs={12} justifyContent={'center'} mt={{lg: 2, xs: 2}}
                                           alignItems={"center"}>
-                                        <Typography variant="h1" color={colors.yellow.main}> عنوان خبر
+                                        <Typography variant="h1" color={colors.yellow.main}> عنوان
                                             : <span>{item.title?.slice(0, 20)}</span> </Typography>
                                     </Grid>
 
@@ -333,7 +356,7 @@ const PageSetting = () => {
                                     <Grid item container lg={2} xs={12} justifyContent={'center'} alignItems={"center"}
                                           mt={{xs: 2}}>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handleOpenEdite(item)}
+                                            <Typography sx={{cursor: "pointer"}} onClick={() => handleOpenEdite(item.id)}
                                                         variant="h1" color={colors.red.main}><Image src={Edite}
                                                                                                     alt={'icons'}/>
                                                 <span style={{color: colors.black.main}}></span></Typography>
@@ -348,120 +371,113 @@ const PageSetting = () => {
                                     </Grid>
                                 </Grid>
                             </>
+
                         ))}
                     </Grid>
-
-
-                    <Grid item container lg={12} mt={10} overflow={'auto'}>
+                </Grid>
+                <Grid item container lg={10} boxShadow={5} mt={5} justifyContent={'space-evenly'} borderRadius={2} bgcolor={'white.main'}>
+                    <Grid item container lg={12} p={2}>
                         <Grid item container lg={3} alignItems={'center'}>
-                            <Typography variant={'h1'} p={0.5}>افزدون اخبار جدید</Typography>
+                            <Typography variant={'h1'} p={0.5}>بنر صفحه اصلی </Typography>
                         </Grid>
-                        <form onSubmit={formikAdd.handleSubmit} style={{width: '100%'}}>
-                            <Grid item container lg={12} p={2}>
-                                <FormControl fullWidth>
-                                    <MInput
-                                        textarea
-                                        label="عنوان متن ..."
-                                        minRows={0}
-                                        multiline
-                                        id="title"
-                                        name="title"
-                                        value={formikAdd.values.title}
-                                        onChange={formikAdd.handleChange}
-                                        onBlur={formikAdd.handleBlur}
-                                        error={formikAdd.touched.title && Boolean(formikAdd.errors.title)}
-                                        helperText={formikAdd.touched.title && formikAdd.errors.title}
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid item container lg={12} p={2}>
-                                <FormControl sx={{width: {lg: '100%', xs: 220, md: 350}}}>
-                                    <Stack direction="row" alignItems="center" spacing={2}>
-                                        {!uploadedFileName && (
-                                            <MTButton
-                                                selectimages
-                                                sx={{
-                                                    // backgroundColor: "white",
-                                                    // color: "black.main",
-                                                    // fontSize: "1rem",
-                                                    // border: "1px dashed rgba(0, 0, 0, 0.12)",
-                                                    width: "100%",
-                                                    height: "45px",
-                                                    boxShadow: "none",
-                                                    // "&:hover": {
-                                                    //     backgroundColor: "#FAFAFA",
-                                                    //     boxShadow: "none"
-                                                    // }
-                                                }}
-                                                startIcon={<CloudUploadRoundedIcon/>}
-                                                variant="contained"
-                                                component="label"
-                                            >
-                                                <Typography variant={'h1'} color={'black.main'}>انتخاب عکس</Typography>
-                                                <input
-                                                    hidden
-                                                    accept="image/*"
-                                                    multiple
-                                                    type="file"
-                                                    onChange={handleFileUploads}
-                                                />
-                                            </MTButton>
-                                        )}
-                                        {uploadedFileName && (
-                                            <TextField
-                                                variant="outlined"
-                                                value={uploadedFileName}
-                                                disabled
-                                                sx={{
-                                                    width: "100%"
-                                                }}
-                                                InputProps={{
-                                                    startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DescriptionRoundedIcon/>
-                                                        </InputAdornment>
-                                                    ),
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <IconButton
-                                                                aria-label="toggle password visibility"
-                                                                onClick={handleClickClear}
-                                                                edge="end"
-                                                            >
-                                                                <ClearIcon/>
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    )
-                                                }}
-                                            />
-                                        )}
-                                    </Stack>
-                                </FormControl>
 
-                            </Grid>
-                            <Grid item container lg={12} p={2}>
-                                <FormControl fullWidth>
-                                    <MInput
-                                        textarea
-                                        label="متن خود را بنویسید ..."
-                                        minRows={5}
-                                        maxRows={5}
-                                        multiline
-                                        id="description"
-                                        name="description"
-                                        value={formikAdd.values.description}
-                                        onChange={formikAdd.handleChange}
-                                        onBlur={formikAdd.handleBlur}
-                                        error={formikAdd.touched.description && Boolean(formikAdd.errors.description)}
-                                        helperText={formikAdd.touched.description && formikAdd.errors.description}
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid item container lg={12} justifyContent={'end'} p={2}>
-                                <MTButton submite type="submit">ثبت</MTButton>
-                            </Grid>
-                        </form>
                     </Grid>
+                    <form onSubmit={formik.handleSubmit} style={{width:'100%'}}>
+                        <Grid item container lg={12} p={2}>
+                            <FormControl fullWidth>
+                                <MInput
+                                    popup
+                                    label="عنوان متن ..."
+                                    id="pass"
+                                    name="pass"
+                                    value={formik.values.pass}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.pass && Boolean(formik.errors.pass)}
+                                    helperText={formik.touched.pass && formik.errors.pass}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item container lg={12} justifyContent={'center'} alignItems={'end'}>
+                            <FormControl sx={{width: {lg: '97%', xs: 220, md: 350}}}>
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                    {!uploadedFileName && (
+                                        <MTButton
+                                            selectimages
+                                            sx={{
+                                                width: "100%",
+                                                height: "45px",
+                                                boxShadow: "none",
+                                            }}
+                                            startIcon={<CloudUploadRoundedIcon/>}
+                                            variant="contained"
+                                            component="label"
+                                        >
+                                            <Typography variant={'h1'} color={'black.main'}>انتخاب عکس</Typography>
+                                            <input
+                                                hidden
+                                                accept="image/*"
+                                                multiple
+                                                type="file"
+                                                onChange={handleFileUploads}
+                                            />
+                                        </MTButton>
+                                    )}
+                                    {uploadedFileName && (
+                                        <TextField
+                                            variant="outlined"
+                                            value={uploadedFileName}
+                                            disabled
+                                            sx={{
+                                                width: "100%"
+                                            }}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <DescriptionRoundedIcon/>
+                                                    </InputAdornment>
+                                                ),
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label="toggle password visibility"
+                                                            onClick={handleClickClear}
+                                                            edge="end"
+                                                        >
+                                                            <ClearIcon/>
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
+                                    )}
+                                </Stack>
+                            </FormControl>
+
+                        </Grid>
+                        <Grid item container lg={12} p={2}>
+                            <FormControl fullWidth>
+                                <MInput
+                                    textarea
+                                    label="متن خود را بنویسید ..."
+                                    minRows={5}
+                                    multiline
+                                    id="phone"
+                                    name="phone"
+                                    value={formik.values.phone}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched.phone && Boolean(formik.errors.phone)}
+                                    helperText={formik.touched.phone && formik.errors.phone}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item container lg={12} justifyContent={'end'} p={2}>
+                            <MTButton submite type="submit">
+                                {loading ? 'در حال ارسال...' : 'ثبت'}
+                            </MTButton>
+                        </Grid>
+                    </form>
                 </Grid>
                 <Modal
                     open={open}
@@ -469,12 +485,17 @@ const PageSetting = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style} width={{lg: 800}}>
+                    <Box sx={style} width={{lg: 1000}}>
                         <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12}
                               md={12} xs={12} sm={12} bgcolor={'white.main'}>
                             <List sx={{width: '100%'}}>
+                                <Grid item container lg={12} p={2} sx={{color:'black.main'}}>
+                                    <Grid item container lg={3} alignItems={'center'}>
+                                        <Typography variant={'h1'} p={0.5}>نوار تبلیغاتی صفحه اصلی </Typography>
+                                    </Grid>
+                                </Grid>
                                 <form onSubmit={formiksEdit.handleSubmit} style={{width: '100%'}}>
-                                    <Grid item container lg={12} p={2}>
+                                    <Grid item container lg={12} p={2} sx={{color:'black.main'}}>
                                         <FormControl fullWidth>
                                             <InputLabel sx={{
                                                 marginTop: "-15px",
@@ -502,14 +523,6 @@ const PageSetting = () => {
                                     </Grid>
                                     <Grid item container lg={12} p={2}>
                                         <FormControl sx={{width: {lg: '100%', xs: 220, md: 350}}}>
-                                            <InputLabel sx={{
-                                                marginTop: "-15px",
-                                                fontFamily: 'Yekan Bakh Medium',
-                                                fontSize: "1.2rem",
-                                                fontWeight: "bold !important",
-                                                color: colors.black.main + "!important",
-                                            }} shrink htmlFor="bootstrap-input">
-                                            </InputLabel>
                                             <Stack direction="row" alignItems="center" spacing={2}>
                                                 {!uploadedFileNameEdit && (
                                                     <MTButton
@@ -523,8 +536,7 @@ const PageSetting = () => {
                                                         variant="contained"
                                                         component="label"
                                                     >
-                                                        <Typography variant={'h1'} color={'black.main'}>انتخاب
-                                                            عکس</Typography>
+                                                        <Typography variant={'h1'} color={'black.main'}>انتخاب عکس</Typography>
                                                         <input
                                                             hidden
                                                             accept="image/*"
@@ -552,7 +564,7 @@ const PageSetting = () => {
                                                                 <InputAdornment position="end">
                                                                     <IconButton
                                                                         aria-label="toggle password visibility"
-                                                                        onClick={handleClickClearEdit}
+                                                                        onClick={handleClickClear}
                                                                         edge="end"
                                                                     >
                                                                         <ClearIcon/>
@@ -564,6 +576,7 @@ const PageSetting = () => {
                                                 )}
                                             </Stack>
                                         </FormControl>
+
                                     </Grid>
 
                                     <Grid item container lg={12} p={2}>
@@ -594,15 +607,14 @@ const PageSetting = () => {
                                         </FormControl>
                                     </Grid>
                                     <Grid item container lg={12} justifyContent={'end'} p={2}>
-                                        <MTButton submite type="submit">ثبت</MTButton>
+                                        <MTButton submite type="submit">                            {loading ? "در حال ارسال..." : "ثبت تغییرات"}
+                                        </MTButton>
                                     </Grid>
                                 </form>
                             </List>
                         </Grid>
                     </Box>
                 </Modal>
-
-
                 <Snackbar open={openMessage} autoHideDuration={4500}
                           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
                     <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
@@ -610,7 +622,8 @@ const PageSetting = () => {
                     </Alert>
                 </Snackbar>
             </Grid>
-        </SettingLayout>
+
+
     )
 }
 export default PageSetting

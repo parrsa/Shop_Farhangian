@@ -120,7 +120,7 @@ const Bills = ({formData, setCurrentStep, setFormData, client}: any) => {
             } catch (error: any) {
                 setTypeMessage('error');
                 setOpenMessage(true);
-                setMessage(error.message);
+                setMessage(error.response.data.message);
             }
         };
 

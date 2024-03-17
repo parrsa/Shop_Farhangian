@@ -14,7 +14,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import {Grid} from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import {usePathname} from 'next/navigation'
 import colors from "@/Assets/theme/base/colors";
 import {navList} from './navList'
@@ -106,11 +106,26 @@ export default function Sidebar() {
                     }
                 }} variant="permanent" open={open}>
                 <Grid item container  height={100} justifyContent={'center'} flexDirection={'column'}  alignItems={'center'} sx={{display: open ? 'black' : "none"}}>
-                    <MBox circlebox>
-                        <MBox circlebox sx={{ width: '2.5rem', height: '2.5rem', backgroundColor: 'farhangian.yellow' }}>
+                    <Box sx={{
+                        width: '3.2rem',
+                        height: '3.2rem',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        flexDirection:'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: colors.farhangian.blue,
+                    }} >
+                        <Box  sx={{ width: '2.5rem', height: '2.5rem', backgroundColor: 'farhangian.yellow' ,
+                            borderRadius: '50%',
+                            display: 'flex',
+                            flexDirection:'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
                             <Image width={50} height={'30'} src={Vector} alt={'vector'} />
-                        </MBox>
-                    </MBox>
+                        </Box>
+                    </Box>
                     <Typography color={'black.main'} variant={'caption'} mt={1}>بیرکار سیستم </Typography>
                 </Grid>
                 <List>

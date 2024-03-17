@@ -113,15 +113,14 @@ const Profiles = () => {
                     const formData=new FormData();
                     formData.append('FirstName', '' )
                     formData.append('LastName', '' )
-                    formData.append('Address', Address ? Address : AddresServer )
+                    formData.append('Address', Address )
                     formData.append('CodeMelli', CodeMeli )
                     formData.append('Birthdate', birth_date )
                     formData.append('FatherName', FatherName)
-                    formData.append('phoneNumber', PhoneNumber )
+                    formData.append('PhoneNumber', PhoneNumber )
                     if (uploadedFile) {
                         formData.append('image', uploadedFile);
                     }
-
                     const response = await axios.put(`https://farhangian.birkar.ir/api/User/Update `,
                        formData,
                         config

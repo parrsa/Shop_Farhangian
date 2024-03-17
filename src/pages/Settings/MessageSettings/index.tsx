@@ -87,7 +87,7 @@ const PageSetting = () => {
                 } catch (error: any) {
                     setTypeMessage('error')
                     setOpenMessage(true)
-                    setMessage(error.message)
+                    setMessage(error.response.data.message)
                 }
             }
             login();

@@ -18,15 +18,11 @@ function ProductDiscounts() {
 
     useEffect(() => {
         const getData = async () => {
-            try {
-                const response = await fetch('https://fakestoreapi.com/products')
-                const data = await response.json();
-                setOstan(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        getData();
+            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetProductByTakhfif`);
+            const data = await response.json();
+            setOstan(data.data);
+        }
+        getData()
     }, []);
 
 
@@ -76,54 +72,96 @@ function ProductDiscounts() {
                     {ostan.map((item, index) => (
                         <>
                             {(index <= 2) && (
-                                <Box className={'box'} key={index}  ref={boxRef} my={4}>
-                                    <Card className={'shadow'} ref={elRef}
-                                          sx={{
-                                        width: '300px',
-                                        height: "380px",
-                                        borderRadius: '1rem',
-                                        outline: "none",
-                                        border: 'none',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: "end",
-                                        transition: 'box-shadow 0.3s',
-                                              boxShadow:5,
-                                        '&:hover': {
-                                            cursor:"pointer",
-                                            boxShadow: 2,
-                                        },
+                                <Grid key={index} marginTop={{lg: 2}} item sx={{
+                                    display: "flex", justifyContent: "space-between",
+                                    flexDirection: "column", alignItems: "center"
+                                }} xs={2} sm={12} lg={3} md={6}>
+                                    <Box className={'box'} key={index} ref={boxRef} my={4}>
+                                        <Card className={'shadow'} ref={elRef}
+                                              sx={{
+                                                  width: '280px',
+                                                  height: "360px",
+                                                  borderRadius: '1rem',
+                                                  outline: "none",
+                                                  border: 'none',
+                                                  display: 'flex',
+                                                  flexDirection: 'column',
+                                                  alignItems: 'center',
+                                                  justifyContent: "end",
+                                                  transition: 'box-shadow 0.3s',
+                                                  boxShadow: 5,
+                                                  '&:hover': {
+                                                      cursor: "pointer",
+                                                      boxShadow: 2,
+                                                  },
 
-                                    }}>
-                                        <CardMedia
-                                            sx={{
-                                                position: 'absolute',
-                                                top: "0",
-                                                right: "0",
-                                                height: "70%",
-                                                borderRadius:'1rem',
-                                                width: "100%",
-                                            }}
-                                            component="img"
-                                            image={item.image}
-                                            alt="green iguana"
-                                        />
-                                        <CardContent sx={{ position: 'relative' }}>
-                                            <Typography gutterBottom variant="h1" component="h2">
-                                                {/* {item.title.substring(0, 15)} */}
-                                                2.900.000 ریال
-                                            </Typography>
-                                            <Typography
-                                                variant="body2"
-                                                component="p"
-                                            >
-                                                یخچال ساید بای ساید
-                                            </Typography>
+                                              }}>
+                                            <Grid item container lg={12}>
+                                                {item?.darsadeTakhfif && (
+                                                    <Box sx={{width:'40px' , height:'30px' , backgroundColor:'red.main' , display:'flex' , justifyContent:'center' , alignItems:'end' , borderRadius:1 }}>
+                                                        <Typography gutterBottom variant="caption" component="h2" color={'white.main'}>
+                                                            {item?.darsadeTakhfif} %
+                                                        </Typography>
+                                                    </Box>
+                                                )}
+                                            </Grid>
+                                            <CardMedia
+                                                sx={{
+                                                    position: 'absolute',
+                                                    top: "0",
+                                                    right: "0",
+                                                    minHeight: 200,
+                                                    maxHeight: 200,
+                                                    borderRadius: '1rem'
+                                                }}
+                                                component="img"
+                                                image={`https://farhangian.birkar.ir/${item.image}`}
+                                                alt="green iguana"
+                                            />
+                                            <CardContent sx={{position: 'relative' , width:'100%' }}>
 
-                                        </CardContent>
-                                    </Card>
-                                </Box>
+                                                <Grid item container lg={12}  mt={2} flexDirection={'column'} >
+                                                    <Grid item container lg={12} alignItems={'end'}  justifyContent={'center'} >
+                                                        <Typography gutterBottom  variant="h1" component="h2">
+                                                            {item?.name}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container lg={12} justifyContent={ 'start'} alignItems={'end'}>
+                                                        <Grid item container lg={3} >
+                                                            <Typography gutterBottom variant="h1" component="h2">
+                                                                قیمت :
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item container lg={9} justifyContent={'end'}>
+                                                            <Typography gutterBottom variant="h1" component="h2" >
+                                                                {item?.gheymatNahai.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                </Grid>
+
+                                                {item?.isTakhfif && (
+                                                    <>
+                                                        <Grid item container lg={12} justifyContent={ 'start'} alignItems={'end'}>
+                                                            <Grid item container lg={4} justifyContent={'start'}>
+                                                                <Typography gutterBottom variant="h1" component="h2"  color={item.tedad <=5 ? "red.main" : 'black.main'} >
+                                                                    موجودی :  {item?.tedad}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid item container lg={8} justifyContent={'end'}>
+                                                                <Typography gutterBottom variant="caption" component="h2" color={'grey.500'}  style={{ textDecoration: "line-through" }}>
+                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+
+                                                    </>
+                                                )}
+                                            </CardContent>
+                                        </Card>
+                                    </Box>
+                                </Grid>
                             )}
                         </>
                     ))}

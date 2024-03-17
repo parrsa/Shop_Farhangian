@@ -81,7 +81,7 @@ const Category=()=>{
             } catch (error: any) {
                 setTypeMessage('error')
                 setOpenMessage(true)
-                setMessage(error.message)
+                setMessage(error.response.data.message)
             }
         }
         Deleted()
@@ -121,7 +121,7 @@ const Category=()=>{
                 } catch (error: any) {
                     setTypeMessage('error');
                     setOpenMessage(true);
-                    setMessage(error.message);
+                    setMessage(error.response.data.message);
                 }
             };
 

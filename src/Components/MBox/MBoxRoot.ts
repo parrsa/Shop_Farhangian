@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { ISboxRoot } from "@/Types/MUI/Components/SBox.types";
 import colors from "@/Assets/theme/base/colors";
 
-const MBoxRoot = styled(Box)<ISboxRoot>(({ customstats }) => {
+const MBoxRoot = styled(Box)<any>((props ) => {
     const {
         circlebox,
         backgroundImage,
@@ -19,29 +19,11 @@ const MBoxRoot = styled(Box)<ISboxRoot>(({ customstats }) => {
         bgColor,
         blurBackground,
         borderRadius,
-    } = customstats;
-
-    // const MBoxRoot = styled(Box)<ISboxRoot>((props) => {
-    //     const {
-    //         circlebox,
-    //         backgroundImage,
-    //         Charts,
-    //         Modal,
-    //         UserState,
-    //         backUrl,
-    //         backProp,
-    //         width,
-    //         Discount,
-    //         height,
-    //         position,
-    //         bgColor,
-    //         blurBackground,
-    //         borderRadius,
-    //     } = props as any;
+    } = props;
 
 
 
-        function backGroundType() {
+    function backGroundType() {
         switch (backProp) {
             case "cover" :
                 return {

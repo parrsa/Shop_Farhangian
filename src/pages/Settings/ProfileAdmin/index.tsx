@@ -64,7 +64,7 @@ const ProfileAdmin=()=>{
                 } catch (error: any) {
                     setTypeMessage('error')
                     setOpenMessage(true)
-                    setMessage(error.response.Message)
+                    setMessage(error.response.data.Message)
                 }
             }
             login();

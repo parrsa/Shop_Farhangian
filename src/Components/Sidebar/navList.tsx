@@ -57,13 +57,7 @@ const navList: ListRoute[] = [
         icon: <Image alt={'icon'} src={AddNews} width={27} height={27}/>,
         id: 3
     },
-    {
-        text: "کاربران",
-        path: "/Settings/Users",
-        name: "NewsSettings",
-        icon: <Image alt={'icon'} src={Users} width={27} height={27}/>,
-        id: 3
-    },
+
     {
         text: "صورتحساب کاربران",
         path: "/Settings/Bill",
@@ -72,12 +66,19 @@ const navList: ListRoute[] = [
         id: 3
     },
     {
-        text: "پروفایل ادمین",
-        path: "/Settings/ProfileAdmin",
-        name: "ProfileAdmin",
-        icon: <Image alt={'icon'} src={AdminProfiles} width={27} height={27}/>,
+        text: "کاربران",
+        path: "/Settings/Users",
+        name: "NewsSettings",
+        icon: <Image alt={'icon'} src={Users} width={27} height={27}/>,
         id: 3
     },
+    // {
+    //     text: "پروفایل ادمین",
+    //     path: "/Settings/ProfileAdmin",
+    //     name: "ProfileAdmin",
+    //     icon: <Image alt={'icon'} src={AdminProfiles} width={27} height={27}/>,
+    //     id: 3
+    // },
     {
         text: "پشتیبانی",
         path: "/Settings/SupportList",

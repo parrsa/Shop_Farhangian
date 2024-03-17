@@ -241,6 +241,7 @@ const PageSetting = () => {
             const response = await fetch(`https://farhangian.birkar.ir/api/Category/GetById?id=${CategoryId}`)
             const data = await response.json();
             setCate(data?.data);
+
         }
         getData()
 
@@ -252,7 +253,7 @@ const PageSetting = () => {
             const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetByCategoryId?id=${CategoryId}`)
             const data = await response.json();
             setProduct(data.data);
-        }
+            }
         getData()
     }, [CategoryId , Products])
 
@@ -328,15 +329,15 @@ const PageSetting = () => {
                     formData.append('CategoryId', CategoryIdProdcutADD );
                     formData.append('Description', values.Description);
                     if(valueTakhfif == 'best'){
-                        formData.append('DarsadeTakhfif', '2');
+                        formData.append('DarsadeTakhfif', DarsadeTakhfif);
 
-                        formData.append('GheymatTakhfif', '3');
+                        formData.append('GheymatNahai', (values.Gheymat*DarsadeTakhfif/100)-values.Gheymat);
 
                         formData.append('isTakhfif', 'true');
                     }else{
-                        formData.append('DarsadeTakhfif', '2');
+                        formData.append('DarsadeTakhfif', '');
 
-                        formData.append('GheymatTakhfif', '2');
+                        formData.append('GheymatNahai', '');
 
                         formData.append('isTakhfif', 'false');
                     }
@@ -613,6 +614,15 @@ const PageSetting = () => {
                                                                   },
 
                                                               }}>
+                                                            <Grid item container lg={12}>
+                                                                {item?.darsadeTakhfif && (
+                                                                    <Box sx={{width:'40px' , height:'30px' , backgroundColor:'red.main' , display:'flex' , justifyContent:'center' , alignItems:'end' , borderRadius:1 }}>
+                                                                        <Typography gutterBottom variant="caption" component="h2" color={'white.main'}>
+                                                                            {item?.darsadeTakhfif} %
+                                                                        </Typography>
+                                                                    </Box>
+                                                                )}
+                                                            </Grid>
                                                             <CardMedia
                                                                 sx={{
                                                                     position: 'absolute',
@@ -626,16 +636,46 @@ const PageSetting = () => {
                                                                 image={`https://farhangian.birkar.ir/${item.image}`}
                                                                 alt="green iguana"
                                                             />
-                                                            <CardContent sx={{position: 'relative'}}>
-                                                                <Typography gutterBottom variant="h1" component="h2">
-                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
-                                                                </Typography>
-                                                                <Typography
-                                                                    variant="body2"
-                                                                    component="p"
-                                                                >
-                                                                    {item.name}
-                                                                </Typography>
+                                                            <CardContent sx={{position: 'relative' , width:'100%' }}>
+
+                                                                <Grid item container lg={12}  mt={2} flexDirection={'column'} >
+                                                                    <Grid item container lg={12} alignItems={'end'}  justifyContent={'center'} >
+                                                                        <Typography gutterBottom  variant="h1" component="h2">
+                                                                            {item?.name}
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid item container lg={12} justifyContent={ 'start'} alignItems={'end'}>
+                                                                        <Grid item container lg={3} >
+                                                                            <Typography gutterBottom variant="h1" component="h2">
+                                                                                قیمت :
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                        <Grid item container lg={9} justifyContent={'end'}>
+                                                                            <Typography gutterBottom variant="h1" component="h2" >
+                                                                                {item?.gheymatNahai.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            </Typography>
+                                                                        </Grid>
+                                                                    </Grid>
+
+                                                                </Grid>
+
+                                                                {item?.isTakhfif && (
+                                                                    <>
+                                                                        <Grid item container lg={12} justifyContent={ 'start'} alignItems={'end'}>
+                                                                            <Grid item container lg={4} justifyContent={'start'}>
+                                                                                <Typography gutterBottom variant="h1" component="h2"  color={item.tedad <=5 ? "red.main" : 'black.main'} >
+                                                                                     موجودی :  {item?.tedad}
+                                                                                </Typography>
+                                                                            </Grid>
+                                                                            <Grid item container lg={8} justifyContent={'end'}>
+                                                                                <Typography gutterBottom variant="caption" component="h2" color={'grey.500'}  style={{ textDecoration: "line-through" }}>
+                                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                                </Typography>
+                                                                            </Grid>
+                                                                        </Grid>
+
+                                                                    </>
+                                                                )}
 
                                                                 <Grid item container lg={12} justifyContent={'center'} mt={{lg: 2}}>
                                                                     <Button>
@@ -683,9 +723,7 @@ const PageSetting = () => {
                                                             عنوان :
                                                         </InputLabel>
                                                         <MInput
-                                                            textarea
-                                                            minRows={0}
-                                                            multiline
+                                                            popup
                                                             name="title"
                                                             id='title'
                                                             value={formiksAdd.values.title}
@@ -774,11 +812,10 @@ const PageSetting = () => {
                                                             تعداد :
                                                         </InputLabel>
                                                         <MInput
-                                                            textarea
-                                                            minRows={0}
-                                                            multiline
+                                                            popup
                                                             name="Tedad"
                                                             id='Tedad'
+                                                            type={'number'}
                                                             value={formiksAdd.values.Tedad}
                                                             onChange={formiksAdd.handleChange}
                                                             onBlur={formiksAdd.handleBlur}
@@ -799,9 +836,7 @@ const PageSetting = () => {
                                                             قیمت :
                                                         </InputLabel>
                                                         <MInput
-                                                            textarea
-                                                            minRows={0}
-                                                            multiline
+                                                            popup
                                                             name="Gheymat"
                                                             id='Gheymat'
                                                             value={formiksAdd.values.Gheymat}
@@ -884,36 +919,34 @@ const PageSetting = () => {
                                                                         درصد تخفیف :
                                                                     </InputLabel>
                                                                     <MInput
-                                                                        textarea
-                                                                        minRows={0}
-                                                                        multiline
+                                                                        popup
                                                                         name="DarsadeTakhfif"
                                                                         id='DarsadeTakhfif'
                                                                         value={DarsadeTakhfif}
                                                                         onChange={(e:any)=>setDarsadeTakhfif(e.target.value)}
                                                                     />
                                                                 </FormControl>
-                                                                <FormControl>
-                                                                    <InputLabel sx={{
-                                                                        marginTop: "-15px",
-                                                                        fontFamily: 'Yekan Bakh Medium',
-                                                                        fontSize: "1.2rem",
-                                                                        fontWeight: "bold !important",
-                                                                        color: colors.black.main + "!important",
+                                                                {/*<FormControl>*/}
+                                                                {/*    <InputLabel sx={{*/}
+                                                                {/*        marginTop: "-15px",*/}
+                                                                {/*        fontFamily: 'Yekan Bakh Medium',*/}
+                                                                {/*        fontSize: "1.2rem",*/}
+                                                                {/*        fontWeight: "bold !important",*/}
+                                                                {/*        color: colors.black.main + "!important",*/}
 
-                                                                    }} shrink htmlFor="bootstrap-input">
-                                                                        قیمت تخفیف :
-                                                                    </InputLabel>
-                                                                    <MInput
-                                                                        textarea
-                                                                        minRows={0}
-                                                                        multiline
-                                                                        name="GheymatTakhfif"
-                                                                        id='GheymatTakhfif'
-                                                                        value={GheymatTakhfif}
-                                                                        onChange={(e:any)=>setGheymatTakhfif(e.target.value)}
-                                                                    />
-                                                                </FormControl>
+                                                                {/*    }} shrink htmlFor="bootstrap-input">*/}
+                                                                {/*        قیمت تخفیف :*/}
+                                                                {/*    </InputLabel>*/}
+                                                                {/*    <MInput*/}
+                                                                {/*        textarea*/}
+                                                                {/*        minRows={0}*/}
+                                                                {/*        multiline*/}
+                                                                {/*        name="GheymatTakhfif"*/}
+                                                                {/*        id='GheymatTakhfif'*/}
+                                                                {/*        value={GheymatTakhfif}*/}
+                                                                {/*        onChange={(e:any)=>setGheymatTakhfif(e.target.value)}*/}
+                                                                {/*    />*/}
+                                                                {/*</FormControl>*/}
                                                                 <FormControl>
                                                                     <InputLabel sx={{
                                                                         marginTop: "-15px",
@@ -930,6 +963,7 @@ const PageSetting = () => {
                                                                         minRows={0}
                                                                         multiline
                                                                         name="email"
+                                                                        value={(formiksAdd?.values?.Gheymat * DarsadeTakhfif / 100)-formiksAdd?.values?.Gheymat}
                                                                         // value={profile?.title}
                                                                         // value={`${EditData?.title || ''}${formiks.values.pass || ''}`}
                                                                         // onChange={handleChange}

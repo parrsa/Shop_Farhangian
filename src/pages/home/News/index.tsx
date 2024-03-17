@@ -25,7 +25,7 @@ function NewProduct() {
     }, []);
 
     return (
-        <Grid container item xs={12} md={12} marginTop={5} justifyContent="center">
+        <Grid container item xs={12} md={12} marginTop={5} marginBottom={5} justifyContent="center">
             <Grid item container xs={12} md={12} justifyContent="center" textAlign="center" alignItems="center">
                 <Grid item container lg={10} xs={12} justifyContent="space-between">
                     <Grid item container className="line" lg={4} xs={4} alignItems="center">
