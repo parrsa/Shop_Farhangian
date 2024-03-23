@@ -72,7 +72,6 @@ import { Paper, Button, Grid } from '@mui/material'
 import Image from "next/image";
 import Ubc from "@/Assets/images/Rectangle 34.png";
 import Ubc1 from "@/Assets/images/Artboard 1 (3) 1 (1).png";
-import MBox from "@/Components/MBox";
 
 const items = [
     {
@@ -117,15 +116,15 @@ export default Example;
 const Item = (props: any) => {
     return (
         <Paper sx={{ maxHeight: '60vh', minHeight: '60vh', display: 'flex' }}>
-            <Grid container justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} flexDirection={'column'} lg={6}>
+            <Grid container justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} flexDirection={'column'} lg={4}>
                 <h2>{props.item.title}</h2>
                 <p>{props.item.description}</p>
                 <Button className="CheckButton">
                     Check it out!
                 </Button>
             </Grid>
-            <Grid item container lg={6} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'}>
-                <Image src={`https://farhangian.birkar.ir/${props.item.image}`} width={800} height={500}  quality={100} sizes="100vw" style={{ objectFit: 'cover' }} alt={'images'} />
+            <Grid item container lg={8} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'}>
+                <Image src={`https://farhangian.birkar.ir/${props.item.image}`} width={1100} height={500}  quality={100} sizes="100vw" style={{ objectFit: 'cover' }} alt={'images'} />
             </Grid>
         </Paper>
     );

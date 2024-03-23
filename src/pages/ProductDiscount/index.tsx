@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import {Grid, Box, Typography, Divider, Button} from "@mui/material";
+import React, {useEffect, useRef, useState} from "react";
+import {Grid, Box, Typography, Divider, Button, Pagination} from "@mui/material";
 import colors from "@/Assets/theme/base/colors";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -16,11 +16,15 @@ function Clubs() {
     const elRef = useRef<HTMLDivElement>(null)
     const router = useRouter();
     const { title } = router.query;
+    const [totalItems, setTotalItems] = useState(0);
+
     useEffect(() => {
         const getData = async () => {
             const response = await fetch('https://farhangian.birkar.ir/api/Product/GetProductByTakhfif')
             const data = await response.json();
             setOstan(data.data);
+            setTotalItems(data.totalItems);
+
         }
         getData()
     }, []);
@@ -35,6 +39,10 @@ function Clubs() {
 
     const goToNextPage = () => {
         setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(ostan.length / itemsPerPage)));
+    };
+
+    const handlePageChange = (event:any, value:any) => {
+        setCurrentPage(value);
     };
     return (
         <DashboardLayout>
@@ -144,15 +152,16 @@ function Clubs() {
                         ))}
                     </Grid>
                     <Grid container justifyContent="center" alignItems="center" marginTop={2}>
-                        <MTButton onClick={goToPreviousPage} disabled={currentPage === 1}>
-                            Previous Page
-                        </MTButton>
-                        <Typography variant="subtitle2" mx={2}>
-                            Page {currentPage} of {Math.ceil(ostan.length / itemsPerPage)}
-                        </Typography>
-                        <MTButton onClick={goToNextPage} disabled={currentPage === Math.ceil(ostan.length / itemsPerPage)}>
-                            Next Page
-                        </MTButton>
+
+                        <Pagination
+                            count={Math.ceil(totalItems / itemsPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            color="primary"
+                            variant="outlined"
+                            shape="rounded"
+                            style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}
+                        />
                         {/*<Pagination count={Math.ceil(ostan.length / itemsPerPage)} shape="rounded" />*/}
                     </Grid>
                 </Grid>

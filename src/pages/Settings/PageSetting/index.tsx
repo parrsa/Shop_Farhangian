@@ -84,7 +84,7 @@ const PageSetting = () => {
             setOstan(data.data);
         }
         getData()
-    }, [ostan]);
+    }, []);
 
     const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
     const handleClick = () => {
@@ -201,7 +201,7 @@ const PageSetting = () => {
                         formData,
                         config
                     )
-
+                    console.log(response)
                     if (response.status === 200) {
                         handleFileReset();
                         setshowVerify(true)

@@ -24,7 +24,6 @@ import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
 import {Theme, useTheme} from '@emotion/react';
 
-import MBox from "@/Components/MBox";
 import FormControl from "@mui/material/FormControl";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";

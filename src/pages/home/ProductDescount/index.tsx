@@ -5,7 +5,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import MBox from "@/Components/MBox";
 import Link from "next/link";
 import Image from "next/image";
 import Group from '@/Assets/images/Group 1 (1).png'
@@ -44,25 +43,25 @@ function ProductDiscounts() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item container lg={10} xs={12} mt={{lg:4 , xs:4}}>
-                <Grid item container lg={12} mb={10} boxShadow={5} borderRadius={2} bgcolor={'farhangian.blue'}>
-                    <Grid item container lg={6} xs={12} alignItems={'center'} >
-                        <Grid item container lg={8} ml={{lg:2}}>
-                            <Typography variant={'body1'} >
-                                سری جدید لباس شویی
-                                کارایی بهتر ، شستشو در زمان کمتر ، صرفه جویی در مصرف آب و برق
-                                دارای برچسب انرژی +++A
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid lg={2} justifyContent={'center'} alignItems={'center'} sx={{display:{xs:'none' , lg:'flex'}}}>
-                        <Image src={flesh} width={500} alt={'asd'}/>
-                    </Grid>
-                    <Grid item container lg={4} xs={12} justifyContent={'end'} >
-                        <Image src={Group}  width={200}  alt={'logo'}/>
-                    </Grid>
-                </Grid>
-            </Grid>
+            {/*<Grid item container lg={10} xs={12} mt={{lg:4 , xs:4}}>*/}
+            {/*    <Grid item container lg={12} mb={10} boxShadow={5} borderRadius={2} bgcolor={'farhangian.blue'}>*/}
+            {/*        <Grid item container lg={6} xs={12} alignItems={'center'} >*/}
+            {/*            <Grid item container lg={8} ml={{lg:2}}>*/}
+            {/*                <Typography variant={'body1'} >*/}
+            {/*                    سری جدید لباس شویی*/}
+            {/*                    کارایی بهتر ، شستشو در زمان کمتر ، صرفه جویی در مصرف آب و برق*/}
+            {/*                    دارای برچسب انرژی +++A*/}
+            {/*                </Typography>*/}
+            {/*            </Grid>*/}
+            {/*        </Grid>*/}
+            {/*        <Grid lg={2} justifyContent={'center'} alignItems={'center'} sx={{display:{xs:'none' , lg:'flex'}}}>*/}
+            {/*            <Image src={flesh} width={500} alt={'asd'}/>*/}
+            {/*        </Grid>*/}
+            {/*        <Grid item container lg={4} xs={12} justifyContent={'end'} >*/}
+            {/*            <Image src={Group}  width={200}  alt={'logo'}/>*/}
+            {/*        </Grid>*/}
+            {/*    </Grid>*/}
+            {/*</Grid>*/}
 
 
             <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}

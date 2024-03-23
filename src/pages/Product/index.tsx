@@ -14,8 +14,10 @@ function Clubs() {
     const router = useRouter();
     const { title } = router.query;
     const { Search } = router.query;
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(12);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const itemsPerPage = 10;
+    const [totalItems, setTotalItems] = useState(0);
+
     const [Category, setCategory] = React.useState<any[]>([]);
     useEffect(() => {
         const getData = async () => {
@@ -32,6 +34,8 @@ function Clubs() {
             const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetByCategoryId?id=${title}`)
             const data = await response.json();
             setOstan(data.data);
+            setTotalItems(data.totalItems);
+
         }
         getData()
     }, [title])
@@ -40,7 +44,9 @@ function Clubs() {
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         const currentItems = ostan?.slice(indexOfFirstItem, indexOfLastItem);
         const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
+    const handlePageChange = (event:any, value:any) => {
+        setCurrentPage(value);
+    };
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
@@ -118,7 +124,7 @@ function Clubs() {
                                                             </Grid>
                                                             <Grid item container lg={9} justifyContent={'end'}>
                                                                 <Typography gutterBottom variant="h1" component="h2" >
-                                                                    {item?.gheymatNahai.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                    {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
                                                                 </Typography>
                                                             </Grid>
                                                         </Grid>
@@ -152,7 +158,15 @@ function Clubs() {
                     </Grid>
                 </Grid>
                     {/*<MyPagination itemsPerPage={itemsPerPage} totalItems={ostan?.length} paginate={paginate} />*/}
-
+                <Pagination
+                    count={Math.ceil(totalItems / itemsPerPage)}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                    color="primary"
+                    variant="outlined"
+                    shape="rounded"
+                    style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}
+                />
             </Grid >
         </DashboardLayout>
     )

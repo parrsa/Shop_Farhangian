@@ -583,7 +583,6 @@ import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
 import {Theme, useTheme} from '@emotion/react';
 
-import MBox from "@/Components/MBox";
 import FormControl from "@mui/material/FormControl";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
@@ -839,12 +838,10 @@ const Login = () => {
                         </Grid>
                     </Grid>
                     <Grid lg={6} md={6} sm={6} item container>
-                        <MBox  width={"100%"} height={"100%"} backProp={"contain"} backgroundImage
-                               backUrl={require("../../Assets/images/Login/cyber-monday-shopping-sales_23-2148688504.jpg").default.src}>
-                            <Grid item container justifyContent={'end'} alignItems={'end'}
-                                  flexDirection={"column"}>
+                        <Box  width={"100%"} height={"100%"}>
+                            <Grid item container justifyContent={'end'} alignItems={'end'} flexDirection={"column"}>
                             </Grid>
-                        </MBox>
+                        </Box>
                     </Grid>
                 </Grid>
                 <Snackbar open={openMessage} autoHideDuration={4500} anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>

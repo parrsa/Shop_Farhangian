@@ -20,7 +20,6 @@ import colors from "@/Assets/theme/base/colors";
 import {navList} from './navList'
 import Link from "next/link";
 import Image from "next/image";
-import MBox from "@/Components/MBox";
 import Vector from "@/Assets/images/Vector (1).svg";
 
 const drawerWidth = 200;

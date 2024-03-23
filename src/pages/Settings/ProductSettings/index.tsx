@@ -652,7 +652,7 @@ const PageSetting = () => {
                                                                         </Grid>
                                                                         <Grid item container lg={9} justifyContent={'end'}>
                                                                             <Typography gutterBottom variant="h1" component="h2" >
-                                                                                {item?.gheymatNahai.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                                {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
                                                                             </Typography>
                                                                         </Grid>
                                                                     </Grid>
