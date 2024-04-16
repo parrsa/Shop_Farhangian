@@ -37,8 +37,8 @@ function NewProduct() {
                     <Box className={'box'} key={index} ref={boxRef} my={4}>
                         <Card className={'shadow'} ref={elRef}
                             sx={{
-                                width: '280px',
-                                height: "360px",
+                                width: '290px',
+                                height: (item?.gheymat) ? '360px' : '380px',
                                 borderRadius: '1rem',
                                 outline: "none",
                                 border: 'none',
@@ -77,70 +77,129 @@ function NewProduct() {
                                 alt="green iguana"
                             />
                             <CardContent sx={{ position: 'relative', width: '100%' }}>
-
-                                <Grid item container lg={12} mt={2} flexDirection={'column'} >
-                                    <Grid item container lg={12} alignItems={'end'} justifyContent={'center'} >
-                                        <Typography gutterBottom variant="h1" component="h2">
-                                            {item?.name}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                        <Grid item container lg={3} >
-                                            <Typography gutterBottom variant="h1" component="h2">
-                                                قیمت :
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item container lg={9} justifyContent={'end'}>
-                                            <Typography gutterBottom variant="h1" component="h2" >
-                                                {item?.isTakhfif ? (
-                                                    <>
-                                                        {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
-
-                                                    </>
-                                                )}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    {
-                                        !item.isTakhfif && (
-                                            <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                <Grid item container lg={4} justifyContent={'start'}>
-                                                    <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                        موجودی :
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item container lg={8} justifyContent={'end'}>
-                                                    <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                        {item?.tedad}
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        )
-                                    }
-
-                                </Grid>
-
-                                {item?.isTakhfif && (
+                                {(item?.gheymat) ? (
                                     <>
-                                        <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                            <Grid item container lg={4} justifyContent={'start'}>
-                                                <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                    موجودی :  {item?.tedad}
+                                        <Grid item container lg={12} mt={2} flexDirection={'column'} >
+                                            <Grid item container lg={12} alignItems={'end'} justifyContent={'center'} >
+                                                <Typography gutterBottom variant="h1" component="h2">
+                                                    {item?.name}
                                                 </Typography>
                                             </Grid>
-                                            <Grid item container lg={8} justifyContent={'end'}>
-                                                <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                            <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                                <Grid item container lg={3} >
+                                                    <Typography gutterBottom variant="h1" component="h2">
+                                                        قیمت :
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item container lg={9} justifyContent={'end'}>
+                                                    <Typography gutterBottom variant="h1" component="h2" >
+                                                        {item?.isTakhfif ? (
+                                                            <>
+                                                                {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+
+                                                            </>
+                                                        )}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            {
+                                                !item.isTakhfif && (
+                                                    <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                                        <Grid item container lg={4} justifyContent={'start'}>
+                                                            <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                                موجودی :
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item container lg={8} justifyContent={'end'}>
+                                                            <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                                {item?.tedad}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                )
+                                            }
+
+                                        </Grid>
+                                        {item?.isTakhfif && (
+                                            <>
+                                                <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                                    <Grid item container lg={4} justifyContent={'start'}>
+                                                        <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                            موجودی :  {item?.tedad}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item container lg={8} justifyContent={'end'}>
+                                                        <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
+                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+
+                                            </>
+                                        )}
+                                    </>
+
+                                ) : (<>
+                                    <Grid item container lg={12} flexDirection={'column'} >
+                                        <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                            <Grid item container lg={3}>
+                                                <Typography gutterBottom variant="h1" component="h2">
+                                                    محصول :
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item container lg={9} justifyContent={'start'}>
+                                                <Typography gutterBottom variant="h1" component="h2" >
+                                                    {item?.name}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                            <Grid item container lg={3}>
+                                                <Typography gutterBottom variant="h1" component="h2">
+                                                    موجودی :
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item container lg={9} justifyContent={'start'}>
+                                                <Typography gutterBottom variant="h1" component="h2" >
+                                                    {item?.tedad}
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                        {/* <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                    <Grid item container lg={4} justifyContent={'start'}>
+                        <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                            موجودی :
+                        </Typography>
+                    </Grid>
+                    <Grid item container lg={8} justifyContent={'start'}>
+                        <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                            {item?.tedad}
+                        </Typography>
+                    </Grid>
+                </Grid> */}
+                                        <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
+                                            <Grid item container lg={12}>
+                                                <Typography gutterBottom variant="h1" component="h2">
+                                                    توضیحات :
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item container lg={12} justifyContent={'start'}>
+                                                <Typography gutterBottom variant="caption" component="h2" >
+                                                    {item?.description}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
 
-                                    </>
-                                )}
+
+                                    </Grid>
+                                </>)}
+
+
+
                             </CardContent>
                         </Card>
                     </Box>

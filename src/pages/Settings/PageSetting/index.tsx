@@ -116,13 +116,15 @@ const PageSetting = () => {
 
     // Chose TitleColor
     const [displayColorPickerTitleColor, setDisplayColorPickerTitleColor] = React.useState(false);
-    const [TitleColor, SetTitleColor] = React.useState('BB1C27')
-
+    const [TitleColor, SetTitleColor] = React.useState('400606')
+    console.log(TitleColor)
     const handleChangeTitle = (newColor: any) => {
         SetTitleColor(newColor.hex)
+        console.log(newColor)
+
     }
     const handleClickTitle = () => {
-        setDisplayColorPickerTitleColor(!displayColorPickerBackgroundColor);
+        setDisplayColorPickerTitleColor(!displayColorPickerTitleColor);
     };
 
     const handleCloseTitle = () => {
@@ -135,13 +137,15 @@ const PageSetting = () => {
 
     // Chose TextColor
     const [displayColorPickerTextColor, setDisplayColorPickerTextColor] = React.useState(false);
-    const [TextColor, SetTextColor] = React.useState('BB1C27')
+    const [TextColor, SetTextColor] = React.useState('400606')
+    console.log(TextColor)
 
     const handleChangeText = (newColor: any) => {
         SetTextColor(newColor.hex)
+        console.log(newColor.hex)
     }
     const handleClickText = () => {
-        setDisplayColorPickerTextColor(!displayColorPickerBackgroundColor);
+        setDisplayColorPickerTextColor(!displayColorPickerTextColor);
     };
 
     const handleCloseText = () => {
@@ -360,7 +364,7 @@ const PageSetting = () => {
 
     // Chose TitleColor
     const [displayColorPickerTitleColorEdit, setDisplayColorPickerTitleColorEdit] = React.useState(false);
-    const [TitleColorEdit, SetTitleColorEdit] = React.useState('BB1C27')
+    const [TitleColorEdit, SetTitleColorEdit] = React.useState('400606')
 
     const handleChangeTitleEdit = (newColor: any) => {
         SetTitleColorEdit(newColor.hex)
@@ -377,7 +381,7 @@ const PageSetting = () => {
 
     // Chose TextColor
     const [displayColorPickerTextColorEdit, setDisplayColorPickerTextColorEdit] = React.useState(false);
-    const [TextColorEdit, SetTextColorEdit] = React.useState('BB1C27')
+    const [TextColorEdit, SetTextColorEdit] = React.useState('400606')
 
     const handleChangeTextEdit = (newColor: any) => {
         SetTextColorEdit(newColor.hex)
@@ -396,6 +400,11 @@ const PageSetting = () => {
         },
         validationSchema: formValidationSchemas,
         onSubmit: (values) => {
+            console.log(
+                BackgroundColorEdit,
+                TextColorEdit,
+                TitleColorEdit
+            )
             const Submite = async () => {
                 const config = {
                     headers: {
@@ -530,14 +539,14 @@ const PageSetting = () => {
                                     display: 'inline-block',
                                     cursor: 'pointer',
                                     marginLeft: 1
-                                }} onClick={handleClickTitleEdit}>
-                                    <Box style={{ ...colorsss, backgroundColor: `${TitleColorEdit}` }}></Box>
+                                }} onClick={handleClickTitle}>
+                                    <Box style={{ ...colorsss, backgroundColor: `${TitleColor}` }}></Box>
                                 </Box>
-                                {displayColorPickerTitleColorEdit ? (
+                                {displayColorPickerTitleColor ? (
                                     <Box sx={{ position: 'absolute', zIndex: '2', }}>
                                         <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
-                                            onClick={handleCloseTitleEdit}></Box>
-                                        <SketchPicker color={TitleColorEdit} onChange={handleChangeTitleEdit} />
+                                            onClick={handleCloseTitle}></Box>
+                                        <SketchPicker color={TitleColor} onChange={handleChangeTitle} />
                                     </Box>
                                 ) : null}
 
@@ -553,14 +562,14 @@ const PageSetting = () => {
                                     display: 'inline-block',
                                     cursor: 'pointer',
                                     marginLeft: 1
-                                }} onClick={handleClickTextEdit}>
-                                    <Box style={{ ...colorsss, backgroundColor: `${TextColorEdit}` }}></Box>
+                                }} onClick={handleClickText}>
+                                    <Box style={{ ...colorsss, backgroundColor: `${TextColor}` }}></Box>
                                 </Box>
-                                {displayColorPickerTextColorEdit ? (
+                                {displayColorPickerTextColor ? (
                                     <Box sx={{ position: 'absolute', zIndex: '2' }}>
                                         <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
-                                            onClick={handleCloseTextEdit}></Box>
-                                        <SketchPicker color={TextColorEdit} onChange={handleChangeTextEdit} />
+                                            onClick={handleCloseText}></Box>
+                                        <SketchPicker color={TextColor} onChange={handleChangeText} />
                                     </Box>
                                 ) : null}
                             </Grid>
@@ -712,14 +721,14 @@ const PageSetting = () => {
                                                 display: 'inline-block',
                                                 cursor: 'pointer',
                                                 marginLeft: 1
-                                            }} onClick={handleClickTitle}>
-                                                <Box style={{ ...colorsss, backgroundColor: `${TitleColor}` }}></Box>
+                                            }} onClick={handleClickTitleEdit}>
+                                                <Box style={{ ...colorsss, backgroundColor: `${TitleColorEdit}` }}></Box>
                                             </Box>
-                                            {displayColorPickerTitleColor ? (
+                                            {displayColorPickerTitleColorEdit ? (
                                                 <Box sx={{ position: 'absolute', zIndex: '2', }}>
                                                     <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
-                                                        onClick={handleCloseTitle}></Box>
-                                                    <SketchPicker color={TitleColor} onChange={handleChangeTitle} />
+                                                        onClick={handleCloseTitleEdit}></Box>
+                                                    <SketchPicker color={TitleColorEdit} onChange={handleChangeTitleEdit} />
                                                 </Box>
                                             ) : null}
 
@@ -735,14 +744,14 @@ const PageSetting = () => {
                                                 display: 'inline-block',
                                                 cursor: 'pointer',
                                                 marginLeft: 1
-                                            }} onClick={handleClickText}>
-                                                <Box style={{ ...colorsss, backgroundColor: `${TextColor}` }}></Box>
+                                            }} onClick={handleClickTextEdit}>
+                                                <Box style={{ ...colorsss, backgroundColor: `${TextColorEdit}` }}></Box>
                                             </Box>
-                                            {displayColorPickerTextColor ? (
+                                            {displayColorPickerTextColorEdit ? (
                                                 <Box sx={{ position: 'absolute', zIndex: '2' }}>
                                                     <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
-                                                        onClick={handleCloseText}></Box>
-                                                    <SketchPicker color={TextColor} onChange={handleChangeText} />
+                                                        onClick={handleCloseTextEdit}></Box>
+                                                    <SketchPicker color={TextColorEdit} onChange={handleChangeTextEdit} />
                                                 </Box>
                                             ) : null}
                                         </Grid>

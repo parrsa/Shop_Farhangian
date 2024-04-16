@@ -179,7 +179,7 @@ const Profiles = () => {
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
-                <Grid lg={12}  item alignItems={'center'} container>
+                <Grid lg={12} item alignItems={'center'} container>
                     <Grid item container xs={12} md={12} justifyContent={"center"}
                         textAlign={{ xs: "center", md: "center" }} alignItems={"center"}>
                         <Grid item container lg={10} sm={7} xs={12} justifyContent={{ lg: "space-between", xs: 'center', sm: 'center', md: "space-between" }} alignItems={"center"}>
@@ -189,38 +189,38 @@ const Profiles = () => {
                                     {Profile.map((item) => item.codeMelli)}   نامفهوم از صنعت چاپ </Typography>
                             </Grid>
                         </Grid>
-                      
+
                     </Grid>
                     <Grid item container lg={5} sm={5} xs={12} mt={{ lg: 0, xs: 2, sm: 2, md: 0 }} sx={{ display: { lg: 'none', xs: 'flex', sm: 'flex', md: 'none' } }} justifyContent={'center'}>
-                            {Cook && (
-                                <>
-                                    <Grid sx={{
-                                        width: '16rem',
-                                        borderRadius: '0.5rem',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: colors.farhangian.blue, flexDirection: 'column',
-                                    }}>
-                                        <Typography variant={'caption'}> مبلغ قسط: <span
-                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                                        <Typography variant={'caption'}> مبلغ مانده: <span
-                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                                        <Typography variant={'caption'}> مبلغ بدهی: <span
-                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                                    </Grid>
-                                    {/*<MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>*/}
-                                    {/*    <Typography variant={'caption'}> مبلغ قسط: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
-                                    {/*    <Typography variant={'caption'}> مبلغ مانده: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
-                                    {/*    <Typography variant={'caption'}> مبلغ وام: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
-                                    {/*</MBox>*/}
+                        {Cook && (
+                            <>
+                                <Grid sx={{
+                                    width: '16rem',
+                                    borderRadius: '0.5rem',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: colors.farhangian.blue, flexDirection: 'column',
+                                }}>
+                                    <Typography variant={'caption'}> مبلغ قسط: <span
+                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                    <Typography variant={'caption'}> مبلغ مانده: <span
+                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                    <Typography variant={'caption'}> مبلغ بدهی: <span
+                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                </Grid>
+                                {/*<MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>*/}
+                                {/*    <Typography variant={'caption'}> مبلغ قسط: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                {/*    <Typography variant={'caption'}> مبلغ مانده: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                {/*    <Typography variant={'caption'}> مبلغ وام: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                {/*</MBox>*/}
 
 
 
 
-                                </>
-                            )}
-                        </Grid>
+                            </>
+                        )}
+                    </Grid>
 
                 </Grid>
 
@@ -319,7 +319,8 @@ const Profiles = () => {
                                 value={Name}
                                 onChange={(e: any) => setName(e.target.value)}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={!active}
+                                disabled={true}
+
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -348,7 +349,8 @@ const Profiles = () => {
                                 value={FName}
                                 onChange={(e: any) => setFNmae(e.target.value)}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={!active}
+                                disabled={true}
+
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -442,7 +444,8 @@ const Profiles = () => {
                                 popup
                                 value={CodeMeli}
                                 onChange={(e: any) => setCodeMeli(e.target.value)}
-                                disabled={!active}
+                                disabled={true}
+
                                 placeholder={item?.codeMelli == '' ? 'کدملی خود را وارد کنید' : item?.codeMelli}
                             />
                         </FormControl>

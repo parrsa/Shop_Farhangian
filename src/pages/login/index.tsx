@@ -1,5 +1,5 @@
 import next from 'next';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import {
     Alert,
     AlertColor,
@@ -12,7 +12,7 @@ import {
     Snackbar, Stack, TextField,
     Typography
 } from '@mui/material';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import MInput from '@/Components/Minput';
 import MTButton from '@/Components/Mbutton';
@@ -22,17 +22,18 @@ import imageslogo from '../../Assets/images/Login/cyber-monday-shopping-sales_23
 import logo from '@/Assets/images/HamedanLogo 1.webp'
 import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
-import {Theme, useTheme} from '@emotion/react';
+import { Theme, useTheme } from '@emotion/react';
 
 import FormControl from "@mui/material/FormControl";
-import {useCookies} from "react-cookie";
-import {useRouter} from "next/router";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import colors from "@/Assets/theme/base/colors";
 import Link from "next/link";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
+import Head from 'next/head';
 
 const background = require("../../Assets/images/5066999 2.png")
 
@@ -53,7 +54,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: {lg: 500, xs: 400},
+    width: { lg: 500, xs: 400 },
     bgcolor: 'background.paper',
     color: 'red.main',
     border: 'none',
@@ -218,7 +219,6 @@ const Login = () => {
                         setOpenEditePassword(false)
                     }
                 } catch (error: any) {
-                    console.log(error)
                     setTypeMessage('error');
                     setOpenMessage(true);
                     setMessage(error.response.data.Message)
@@ -231,260 +231,265 @@ const Login = () => {
 
 
     return (
-        <Grid item container justifyContent={'center'} alignItems={'center'} bgcolor={{lg:'#eef1f2' , xs:'transparent' , sm:'transparent'}} height={'100vh'}>
-            <Grid item container sm={12} md={10} lg={12} height={'100vh'} >
-                <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} md={6} sm={12} p={2}  flexDirection={"column"}>
-                    <Grid item container justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
-                        <Image src={logo} alt="Website logo" width={200} height={200}/>
-                        <Typography variant={'h4'} sx={{display:{lg:'flex' , xs:'none' , sm:'flex'}}} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
-                        <Typography variant={'h1'} sx={{display:{lg:'none' , sm:'none' , md:'none'}}} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+        <>
+            <Head >
+                <title>تعاونی مصرف فرهنگیان</title>
+            </Head>
+            <Grid item container justifyContent={'center'} alignItems={'center'} bgcolor={{ lg: '#eef1f2', xs: 'transparent', sm: 'transparent' }} height={'100vh'}>
+                <Grid item container sm={12} md={10} lg={12} height={'100vh'} >
+                    <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} md={6} sm={12} p={2} flexDirection={"column"}>
+                        <Grid item container justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
+                            <Image src={logo} alt="Website logo" width={200} height={200} />
+                            <Typography variant={'h4'} sx={{ display: { lg: 'flex', xs: 'none', sm: 'flex' } }} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+                            <Typography variant={'h1'} sx={{ display: { lg: 'none', sm: 'none', md: 'none' } }} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+                        </Grid>
+
+                        <Grid item container justifyContent={'center'} p={2} alignItems={"end"}>
+                            <form onSubmit={formik.handleSubmit} style={{ width: '100%' }} >
+                                <Grid item container justifyContent={{ lg: "space-evenly", xs: 'start' }}
+                                    display={{ xs: 'none', md: 'flex' }} lg={12}>
+                                    <FormControl
+                                        sx={{ m: 1, width: { lg: 250, xs: '100%', md: "100%" }, marginTop: 3 }}>
+                                    </FormControl>
+                                    <FormControl
+                                        sx={{ m: 1, width: { lg: 250, xs: '100%', md: "100%" }, marginTop: 3 }}>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item container justifyContent={"center"} lg={12}>
+                                    <FormControl sx={{ m: 1, width: "75%", }}>
+                                        <MInput
+                                            popup
+                                            id="phone"
+                                            name="phone"
+                                            type={'text'}
+                                            label={"نام کاربری"}
+                                            value={formik.values.phone}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={formik.touched.phone && Boolean(formik.errors.phone)}
+                                            helperText={formik.touched.phone && formik.errors.phone}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item container justifyContent={"center"} lg={12}>
+                                    <FormControl sx={{ m: 1, width: "75%", marginTop: 3 }} variant="outlined">
+                                        <MInput
+                                            popup
+                                            id="pass"
+                                            name="pass"
+                                            label={"رمز عبور"}
+                                            value={formik.values.pass}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={formik.touched.pass && Boolean(formik.errors.pass)}
+                                            helperText={formik.touched.pass && formik.errors.pass}
+                                            type={showPassword ? 'text' : 'password'}
+                                        />
+
+                                        <InputAdornment position={"start"} sx={{
+                                            width: '97%',
+                                            top: { lg: 30, xs: 30 },
+                                            position: 'absolute',
+                                            display: 'flex',
+                                            justifyContent: 'end'
+                                        }}>
+                                            <IconButton aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword} edge="end">
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+
+                                    </FormControl>
+                                </Grid>
+                                <Grid item container justifyContent={"center"} marginTop={{ lg: 3, xs: 3, md: 5 }}
+                                    lg={12} md={12}>
+                                    <MTButton register type="submit">ورود</MTButton>
+                                </Grid>
+                            </form>
+                        </Grid>
+                    </Grid>
+                    <Grid lg={6} md={6} sm={6} item container sx={{ display: { lg: 'flex', xs: 'none', sm: 'none', md: 'flex' } }} bgcolor={'#eef1f2'} >
+                        <Box width={"100%"} height={"100%"} sx={{
+                            backgroundImage: `url(${imageslogo.src}) `,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat'
+                        }} >
+
+                        </Box>
                     </Grid>
 
-                    <Grid item container justifyContent={'center'}  p={2} alignItems={"end"}>
-                        <form onSubmit={formik.handleSubmit} style={{width:'100%'}} >
-                            <Grid item container justifyContent={{lg: "space-evenly", xs: 'start'}}
-                                  display={{xs: 'none', md: 'flex'}} lg={12}>
-                                <FormControl
-                                    sx={{m: 1, width: {lg: 250, xs: '100%', md: "100%"}, marginTop: 3}}>
-                                </FormControl>
-                                <FormControl
-                                    sx={{m: 1, width: {lg: 250, xs: '100%', md: "100%"}, marginTop: 3}}>
-                                </FormControl>
-                            </Grid>
-                            <Grid item container justifyContent={"center"} lg={12}>
-                                <FormControl sx={{m: 1, width: "75%",}}>
-                                    <MInput
-                                        popup
-                                        id="phone"
-                                        name="phone"
-                                        type={'text'}
-                                        label={"نام کاربری"}
-                                        value={formik.values.phone}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        error={formik.touched.phone && Boolean(formik.errors.phone)}
-                                        helperText={formik.touched.phone && formik.errors.phone}
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid item container justifyContent={"center"} lg={12}>
-                                <FormControl sx={{m: 1, width: "75%", marginTop: 3}} variant="outlined">
-                                    <MInput
-                                        popup
-                                        id="pass"
-                                        name="pass"
-                                        label={"رمز عبور"}
-                                        value={formik.values.pass}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        error={formik.touched.pass && Boolean(formik.errors.pass)}
-                                        helperText={formik.touched.pass && formik.errors.pass}
-                                        type={showPassword ? 'text' : 'password'}
-                                    />
 
-                                    <InputAdornment position={"start"} sx={{
-                                        width: '97%',
-                                        top: {lg: 30, xs: 30},
-                                        position: 'absolute',
-                                        display: 'flex',
-                                        justifyContent: 'end'
-                                    }}>
-                                        <IconButton aria-label="toggle password visibility"
-                                                    onClick={handleClickShowPassword}
-                                                    onMouseDown={handleMouseDownPassword} edge="end">
-                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                        </IconButton>
-                                    </InputAdornment>
-
-                                </FormControl>
-                            </Grid>
-                            <Grid item container justifyContent={"center"} marginTop={{lg: 3, xs: 3, md: 5}}
-                                  lg={12} md={12}>
-                                <MTButton register type="submit">ورود</MTButton>
-                            </Grid>
-                        </form>
-                    </Grid>
+                    <Snackbar open={openMessage} autoHideDuration={4500}
+                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleCloseAlert}>
+                        <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
+                            <Typography variant={'caption'}>{message}</Typography>
+                        </Alert>
+                    </Snackbar>
                 </Grid>
-                <Grid lg={6} md={6} sm={6} item container sx={{display:{lg:'flex' , xs:'none' , sm:'none' , md:'flex'}}} bgcolor={'#eef1f2'} >
-                    <Box width={"100%"} height={"100%"}  sx={{
-                        backgroundImage: `url(${imageslogo.src}) `,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat'
-                    }} >
-                      
+                <Modal
+                    open={open}
+                    onClose={handleCloses}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={styles}>
+                        <Typography variant={'h5'}>توجه</Typography>
+                        <Typography id="modal-modal-description">
+                            نام کاربری و رمز عبور برای اولین بار کد پرسنلی شما میباشد
+                        </Typography>
                     </Box>
-                </Grid>
+                </Modal>
 
 
-                <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
-                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
-                        <Typography variant={'caption'}>{message}</Typography>
-                    </Alert>
-                </Snackbar>
+                <Modal
+                    open={openEditePassword}
+                    onClose={handleCloseEditePassword}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <>
+                        <Box sx={style} width={{ xs: 50 }}>
+                            <Grid item container lg={12} justifyContent={'center'} alignItems={'center'} p={2}>
+                                <Typography variant={'h1'} color={'black.main'}>صفحه تغییر پسورد</Typography>
+                            </Grid>
+                            <hr style={{ width: '100%', height: 2, backgroundColor: 'red.main' }} />
+                            <Grid item container lg={12} mt={{ lg: 2 }}>
+                                <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12}
+                                    sm={12}>
+                                    <List sx={{ width: '100%' }}>
+                                        <form onSubmit={formiks.handleSubmit} style={{ width: '100%' }}>
+                                            <Grid item container lg={12} p={2}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel sx={{
+                                                        marginTop: "-25px",
+                                                        fontFamily: 'Yekan Bakh Medium',
+                                                        fontSize: "1.2rem",
+                                                        fontWeight: "bold !important",
+                                                        color: colors.black.main + "!important",
+
+                                                    }} shrink htmlFor="bootstrap-input">
+                                                        رمز عبور فعلی  :
+                                                    </InputLabel>
+                                                    <MInput
+                                                        popup
+                                                        id="NowPassword"
+                                                        name="NowPassword"
+                                                        label={"رمز عبور"}
+                                                        value={formiks.values.NowPassword}
+                                                        onChange={formiks.handleChange}
+                                                        onBlur={formiks.handleBlur}
+                                                        error={formiks.touched.NowPassword && Boolean(formiks.errors.NowPassword)}
+                                                        helperText={formiks.touched.NowPassword && formiks.errors.NowPassword}
+                                                        type={showNowPassword ? 'text' : 'password'}
+                                                    />
+
+                                                    <InputAdornment position={"start"} sx={{
+                                                        width: '97%',
+                                                        top: { lg: 30, xs: 30 },
+                                                        position: 'absolute',
+                                                        display: 'flex',
+                                                        justifyContent: 'end'
+                                                    }}>
+                                                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowNowPassword} onMouseDown={handleMouseDownNowPassword} edge="end">
+                                                            {showNowPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+
+                                                </FormControl>
+                                            </Grid>
+
+
+                                            <Grid item container lg={12} p={2} mt={{ lg: 2 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel sx={{
+                                                        marginTop: "-20px",
+                                                        fontFamily: 'Yekan Bakh Medium',
+                                                        fontSize: "1.2rem",
+                                                        fontWeight: "bold !important",
+                                                        color: colors.black.main + "!important",
+
+                                                    }} shrink htmlFor="bootstrap-input">
+                                                        رمز عبور جدید :
+                                                    </InputLabel>
+                                                    <MInput
+                                                        popup
+                                                        id="NewPassword"
+                                                        name="NewPassword"
+                                                        value={formiks.values.NewPassword}
+                                                        onChange={formiks.handleChange}
+                                                        onBlur={formiks.handleBlur}
+                                                        type={showNewPassword ? 'text' : 'password'}
+                                                        error={formiks.touched.NewPassword && Boolean(formiks.errors.NewPassword)}
+                                                        helperText={formiks.touched.NewPassword && formiks.errors.NewPassword}
+                                                    />
+
+                                                    <InputAdornment position={"start"} sx={{
+                                                        width: '97%',
+                                                        top: { lg: 30, xs: 30 },
+                                                        position: 'absolute',
+                                                        display: 'flex',
+                                                        justifyContent: 'end'
+                                                    }}>
+                                                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowNewPassword} onMouseDown={handleMouseDownNewPassword} edge="end">
+                                                            {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                </FormControl>
+                                            </Grid>
+
+
+                                            <Grid item container lg={12} p={2} mt={{ lg: 2 }}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel sx={{
+                                                        marginTop: "-20px",
+                                                        fontFamily: 'Yekan Bakh Medium',
+                                                        fontSize: "1.2rem",
+                                                        fontWeight: "bold !important",
+                                                        color: colors.black.main + "!important",
+
+                                                    }} shrink htmlFor="bootstrap-input">
+                                                        تکرار عبور جدید :
+                                                    </InputLabel>
+                                                    <MInput
+                                                        popup
+                                                        id="ConfirmPassword"
+                                                        name="ConfirmPassword"
+                                                        type={showConfirmNewPassword ? 'text' : 'password'}
+                                                        value={formiks.values.ConfirmPassword}
+                                                        onChange={formiks.handleChange}
+                                                        onBlur={formiks.handleBlur}
+                                                        error={formiks.touched.ConfirmPassword && Boolean(formiks.errors.ConfirmPassword)}
+                                                        helperText={formiks.touched.ConfirmPassword && formiks.errors.ConfirmPassword}
+                                                    />
+
+                                                    <InputAdornment position={"start"} sx={{
+                                                        width: '97%',
+                                                        top: { lg: 30, xs: 30 },
+                                                        position: 'absolute',
+                                                        display: 'flex',
+                                                        justifyContent: 'end'
+                                                    }}>
+                                                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowConfirmNewPassword} onMouseDown={handleMouseDownConfirmNewPassword} edge="end">
+                                                            {showConfirmNewPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                </FormControl>
+                                            </Grid>
+
+                                            <Grid item container lg={12} justifyContent={'center'} p={2}>
+                                                <MTButton submite type="submit">تغییر رمز عبور</MTButton>
+                                            </Grid>
+                                        </form>
+                                    </List>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </>
+                </Modal>
             </Grid>
-            <Modal
-                open={open}
-                onClose={handleCloses}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={styles}>
-                    <Typography variant={'h5'}>توجه</Typography>
-                    <Typography id="modal-modal-description">
-                        نام کاربری و رمز عبور برای اولین بار کد پرسنلی شما میباشد
-                    </Typography>
-                </Box>
-            </Modal>
-
-
-            <Modal
-                open={openEditePassword}
-                onClose={handleCloseEditePassword}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <>
-                    <Box sx={style} width={{xs: 50}}>
-                        <Grid item container lg={12} justifyContent={'center'} alignItems={'center'} p={2}>
-                            <Typography variant={'h1'} color={'black.main'}>صفحه تغییر پسورد</Typography>
-                        </Grid>
-                        <hr style={{width: '100%', height: 2, backgroundColor: 'red.main'}}/>
-                        <Grid item container lg={12} mt={{lg: 2}}>
-                            <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12}
-                                  sm={12}>
-                                <List sx={{width: '100%'}}>
-                                    <form onSubmit={formiks.handleSubmit} style={{width: '100%'}}>
-                                        <Grid item container lg={12} p={2}>
-                                            <FormControl fullWidth>
-                                                <InputLabel sx={{
-                                                    marginTop: "-25px",
-                                                    fontFamily: 'Yekan Bakh Medium',
-                                                    fontSize: "1.2rem",
-                                                    fontWeight: "bold !important",
-                                                    color: colors.black.main + "!important",
-
-                                                }} shrink htmlFor="bootstrap-input">
-                                                    رمز عبور فعلی  :
-                                                </InputLabel>
-                                                <MInput
-                                                    popup
-                                                    id="NowPassword"
-                                                    name="NowPassword"
-                                                    label={"رمز عبور"}
-                                                    value={formiks.values.NowPassword}
-                                                    onChange={formiks.handleChange}
-                                                    onBlur={formiks.handleBlur}
-                                                    error={formiks.touched.NowPassword && Boolean(formiks.errors.NowPassword)}
-                                                    helperText={formiks.touched.NowPassword && formiks.errors.NowPassword}
-                                                    type={showNowPassword ? 'text' : 'password'}
-                                                />
-
-                                                <InputAdornment position={"start"} sx={{
-                                                    width: '97%',
-                                                    top: {lg: 30, xs: 30},
-                                                    position: 'absolute',
-                                                    display: 'flex',
-                                                    justifyContent: 'end'
-                                                }}>
-                                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowNowPassword} onMouseDown={handleMouseDownNowPassword} edge="end">
-                                                        {showNowPassword ? <VisibilityOff/> : <Visibility/>}
-                                                    </IconButton>
-                                                </InputAdornment>
-
-                                            </FormControl>
-                                        </Grid>
-
-
-                                        <Grid item container lg={12} p={2} mt={{lg:2}}>
-                                            <FormControl fullWidth>
-                                                <InputLabel sx={{
-                                                    marginTop: "-20px",
-                                                    fontFamily: 'Yekan Bakh Medium',
-                                                    fontSize: "1.2rem",
-                                                    fontWeight: "bold !important",
-                                                    color: colors.black.main + "!important",
-
-                                                }} shrink htmlFor="bootstrap-input">
-                                                    رمز عبور جدید :
-                                                </InputLabel>
-                                                <MInput
-                                                    popup
-                                                    id="NewPassword"
-                                                    name="NewPassword"
-                                                    value={formiks.values.NewPassword}
-                                                    onChange={formiks.handleChange}
-                                                    onBlur={formiks.handleBlur}
-                                                    type={showNewPassword ? 'text' : 'password'}
-                                                    error={formiks.touched.NewPassword && Boolean(formiks.errors.NewPassword)}
-                                                    helperText={formiks.touched.NewPassword && formiks.errors.NewPassword}
-                                                />
-
-                                                <InputAdornment position={"start"} sx={{
-                                                    width: '97%',
-                                                    top: {lg: 30, xs: 30},
-                                                    position: 'absolute',
-                                                    display: 'flex',
-                                                    justifyContent: 'end'
-                                                }}>
-                                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowNewPassword} onMouseDown={handleMouseDownNewPassword} edge="end">
-                                                        {showNewPassword ? <VisibilityOff/> : <Visibility/>}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            </FormControl>
-                                        </Grid>
-
-
-                                        <Grid item container lg={12} p={2} mt={{lg:2}}>
-                                            <FormControl fullWidth>
-                                                <InputLabel sx={{
-                                                    marginTop: "-20px",
-                                                    fontFamily: 'Yekan Bakh Medium',
-                                                    fontSize: "1.2rem",
-                                                    fontWeight: "bold !important",
-                                                    color: colors.black.main + "!important",
-
-                                                }} shrink htmlFor="bootstrap-input">
-                                                    تکرار عبور جدید :
-                                                </InputLabel>
-                                                <MInput
-                                                    popup
-                                                    id="ConfirmPassword"
-                                                    name="ConfirmPassword"
-                                                    type={showConfirmNewPassword ? 'text' : 'password'}
-                                                    value={formiks.values.ConfirmPassword}
-                                                    onChange={formiks.handleChange}
-                                                    onBlur={formiks.handleBlur}
-                                                    error={formiks.touched.ConfirmPassword && Boolean(formiks.errors.ConfirmPassword)}
-                                                    helperText={formiks.touched.ConfirmPassword && formiks.errors.ConfirmPassword}
-                                                />
-
-                                                <InputAdornment position={"start"} sx={{
-                                                    width: '97%',
-                                                    top: {lg: 30, xs: 30},
-                                                    position: 'absolute',
-                                                    display: 'flex',
-                                                    justifyContent: 'end'
-                                                }}>
-                                                    <IconButton aria-label="toggle password visibility" onClick={handleClickShowConfirmNewPassword} onMouseDown={handleMouseDownConfirmNewPassword} edge="end">
-                                                        {showConfirmNewPassword ? <VisibilityOff/> : <Visibility/>}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            </FormControl>
-                                        </Grid>
-
-                                        <Grid item container lg={12} justifyContent={'center'} p={2}>
-                                            <MTButton submite type="submit">تغییر رمز عبور</MTButton>
-                                        </Grid>
-                                    </form>
-                                </List>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </>
-            </Modal>
-        </Grid>
+        </>
     )
 }
 export default Login

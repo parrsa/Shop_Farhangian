@@ -340,6 +340,7 @@ const Example = (props: any) => {
             const response = await fetch('https://farhangian.birkar.ir/api/Advertisement/GetAll')
             const data = await response.json()
             setProduct(data.data)
+            console.log(data.data)
         }
         GetData()
     }, [])
@@ -353,37 +354,39 @@ const Example = (props: any) => {
 export default Example;
 
 const Item = (props: any) => {
+    console.log(props)
     return (
-        <Paper sx={{ maxHeight: {lg:'60vh' , xs:'60vh'}, minHeight: {lg:'60vh' , xs:'50vh'}, display: 'flex' }}>
-           <Grid item container lg={12} justifyContent={'center'} flexDirection={{xs:'column-reverse' , lg:'row' , sm:'row' , md:'row'}}>
-           <Grid container justifyContent={'start'} bgcolor={props.item.color} alignItems={'center'} flexDirection={'column'} lg={3} sm={3}>
-                <Typography variant='h4'>{props.item.title}</Typography>
-                <Typography variant='h1'>{props.item.description}</Typography>
-                {/* <Button className="CheckButton">
+        <Paper sx={{ maxHeight: { lg: '60vh', xs: '60vh' }, minHeight: { lg: '60vh', xs: '50vh' }, display: 'flex' }}>
+            <Grid item container lg={12} justifyContent={'center'} flexDirection={{ xs: 'column-reverse', lg: 'row', sm: 'row', md: 'row' }}>
+                <Grid container justifyContent={'start'} bgcolor={`${props.item.backgroundColor}`} alignItems={'center'} flexDirection={'column'} lg={2.5} sm={3}>
+                    <Typography variant='h4' color={`${props.item.titleForeColor}`}>{props.item.title}</Typography>
+                    <Typography variant='h1' color={`${props.item.desForeColor}`}>{props.item.description}</Typography>
+
+                    {/* <Button className="CheckButton">
                     Check it out!
                 </Button> */}
+                </Grid>
+                <Grid item container lg={9.5} sm={9} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'}>
+                    <div className="carouselInner1"
+                        // onClick={() => navigate(`/dashboard/${images[currImg].id}`)}
+                        style={{
+                            // backgroundImage: `url(${Test[currImg].img})`,
+                            cursor: 'pointer',
+                            backgroundSize: 'cover', // Make sure the image covers the area without being stretched
+                            backgroundPosition: 'center', // Center the background image
+                            width: '100%', // Ensure the div takes the full width of its parent
+                            height: '100%' // Ensure the div takes the full height of its parent
+                        }}
+                    >
+                        <img src={`https://farhangian.birkar.ir/${props.item.image}`} style={{ width: '100&', height: '100%', objectFit: 'cover' }} alt={'images'} />
+
+
+                    </div>
+
+                    {/* <Image src={`https://farhangian.birkar.ir/${props.item.image}`} width={1100} height={500}  quality={100} sizes="100vw" style={{ objectFit: 'cover' }} alt={'images'} /> */}
+                </Grid>
+
             </Grid>
-            <Grid item container lg={9} sm={9} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'}>
-                <div className="carouselInner1"
-                    // onClick={() => navigate(`/dashboard/${images[currImg].id}`)}
-                    style={{
-                        // backgroundImage: `url(${Test[currImg].img})`,
-                        cursor: 'pointer',
-                        backgroundSize: 'cover', // Make sure the image covers the area without being stretched
-                        backgroundPosition: 'center', // Center the background image
-                        width: '100%', // Ensure the div takes the full width of its parent
-                        height: '100%' // Ensure the div takes the full height of its parent
-                    }}
-                >
-                    <img src={`https://farhangian.birkar.ir/${props.item.image}`}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={'images'} />
-
-
-                </div>
-
-                {/* <Image src={`https://farhangian.birkar.ir/${props.item.image}`} width={1100} height={500}  quality={100} sizes="100vw" style={{ objectFit: 'cover' }} alt={'images'} /> */}
-            </Grid>
-            
-           </Grid>
         </Paper>
     );
 };
