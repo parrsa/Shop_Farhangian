@@ -16,14 +16,14 @@ import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import 'devextreme/dist/css/dx.light.css';
 
-const eventHandlingLabel = {'aria-label': 'Event Handling'};
+const eventHandlingLabel = { 'aria-label': 'Event Handling' };
 const formValidationSchemas = yup.object({
 });
-import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
+import { ColorBox, ColorBoxTypes } from 'devextreme-react/color-box';
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
@@ -31,11 +31,11 @@ import Alert from "@mui/material/Alert";
 import colors from "@/Assets/theme/base/colors";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import {CSSTransition} from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import Mbutton from "@/Components/Mbutton";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import {SketchPicker} from "react-color";
+import { SketchPicker } from "react-color";
 import Image from "next/image";
 import Edite from "@/Assets/images/nimbus_edit.svg";
 import Trash from "@/Assets/images/circum_trash.svg";
@@ -69,7 +69,7 @@ const PageSetting = () => {
     const [message, setMessage] = React.useState('')
     const [showPassword, setShowPassword] = React.useState(false);
     const [color, setColor] = React.useState('#f05b41');
-    const handleColorChange = React.useCallback(({value}: ColorBoxTypes.ValueChangedEvent) => {
+    const handleColorChange = React.useCallback(({ value }: ColorBoxTypes.ValueChangedEvent) => {
         setColor(value);
     }, []);
     const [uploadedFileName, setUploadedFileName] = React.useState("");
@@ -84,7 +84,7 @@ const PageSetting = () => {
             setOstan(data.data);
         }
         getData()
-    }, []);
+    }, [ostan]);
 
     const [displayColorPicker, setDisplayColorPicker] = React.useState(false);
     const handleClick = () => {
@@ -92,7 +92,7 @@ const PageSetting = () => {
     };
 
     const [background, setBackground] = React.useState('#fff');
-    const handleChangeComplete = (color:any) => {
+    const handleChangeComplete = (color: any) => {
         setBackground(color.hex);
     };
 
@@ -157,7 +157,7 @@ const PageSetting = () => {
         setUploadedFile(null);
         setUploadedFileName('');
     };
-    const handleFileUploads = (event:any) => {
+    const handleFileUploads = (event: any) => {
         const files = event.target.files;
 
         if (files && files.length > 0) {
@@ -201,7 +201,6 @@ const PageSetting = () => {
                         formData,
                         config
                     )
-                    console.log(response)
                     if (response.status === 200) {
                         handleFileReset();
                         setshowVerify(true)
@@ -231,7 +230,7 @@ const PageSetting = () => {
     };
     const Cook = Cookies.get('TokenLogin');
 
-    const handelDeleted=(item:any)=>{
+    const handelDeleted = (item: any) => {
         const Deleted = async () => {
             const config = {
                 headers: {
@@ -239,16 +238,16 @@ const PageSetting = () => {
                     'Authorization': `Bearer ${Cook}`,
                 }
             }
-            try  {
+            try {
                 const response = await axios.delete(`https://farhangian.birkar.ir/api/Advertisement/Delete?id=${item}`,
                     config
                 )
                 if (response.status === 200) {
-                    setMessage('شعار شما با موفقیت حذف شد')
+                    setMessage('تبلیغ شما با موفقیت حذف شد')
                     setTypeMessage('warning')
                     setOpenMessage(true)
                 }
-            } catch (error:any) {
+            } catch (error: any) {
                 setTypeMessage('error')
                 setOpenMessage(true)
                 setMessage(error.response.data.message)
@@ -282,10 +281,9 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/Advertisement/GetById?id=${item}` , config)
+                const response = await fetch(`https://farhangian.birkar.ir/api/Advertisement/GetById?id=${item}`, config)
                 const data = await response.json();
                 setEditDate(data.data)
-                console.log(data.data)
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
@@ -297,14 +295,13 @@ const PageSetting = () => {
 
 
     const [profile, setProfile] = useState({
-        title:'',
+        title: '',
     });
-    React.useMemo(()=>{
-        setProfile({'title': EditData?.title})
-        console.log(EditData)
-    },[EditData])
+    React.useMemo(() => {
+        setProfile({ 'title': EditData?.title })
+    }, [EditData])
 
-    const handleChange = (e:any) => {
+    const handleChange = (e: any) => {
         const { name, value } = e.target;
         setProfile(prevProfile => ({
             title: e.target.value
@@ -312,11 +309,11 @@ const PageSetting = () => {
     };
 
     const [profiles, setProfiles] = useState({
-        description:'',
+        description: '',
     });
-    React.useMemo(()=>{
-        setProfiles({'description': EditData?.description})
-    },[EditData])
+    React.useMemo(() => {
+        setProfiles({ 'description': EditData?.description })
+    }, [EditData])
 
     const handleFileUploadsEdit = (event: any) => {
         const files = event.target.files;
@@ -335,7 +332,7 @@ const PageSetting = () => {
         setUploadedFileEdit(null);
         setUploadedFileNameEdit('');
     };
-    const handleChanged = (e:any) => {
+    const handleChanged = (e: any) => {
         const { name, value } = e.target;
         setProfiles(prevProfile => ({
             description: e.target.value
@@ -399,7 +396,6 @@ const PageSetting = () => {
         },
         validationSchema: formValidationSchemas,
         onSubmit: (values) => {
-            alert(id)
             const Submite = async () => {
                 const config = {
                     headers: {
@@ -456,45 +452,45 @@ const PageSetting = () => {
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
 
                 <Grid item container lg={10} boxShadow={5} justifyContent={'center'} borderRadius={2}
-                      bgcolor={'white.main'}>
-                    <Grid item container lg={10}  mt={2}>
+                    bgcolor={'white.main'}>
+                    <Grid item container lg={10} mt={2}>
                         <Typography variant={'h1'} >تبلیغات موجود :</Typography>
                     </Grid>
                     <Grid item container lg={12} maxHeight={'50vh'} minHeight={'50vh'} justifyContent={'center'}
-                          overflow={'auto'}>
-                        {ostan.map((item:any)=>(
+                        overflow={'auto'}>
+                        {ostan.map((item: any) => (
                             <>
                                 <Grid item container lg={10} xs={10} maxHeight={'8vh'} minHeight={'8vh'}
-                                      bgcolor={'white.main'}
-                                      boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} borderRadius={1}
-                                      justifyContent={{
-                                          lg: 'space-between',
-                                          md: 'space-between',
-                                          xs: 'space-between',
-                                      }} alignItems={'start'}>
-                                    <Grid item container lg={4} xs={12} justifyContent={'center'} mt={{lg: 2, xs: 2}} alignItems={"center"}>
+                                    bgcolor={'white.main'}
+                                    boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} borderRadius={1}
+                                    justifyContent={{
+                                        lg: 'space-between',
+                                        md: 'space-between',
+                                        xs: 'space-between',
+                                    }} alignItems={'start'}>
+                                    <Grid item container lg={4} xs={12} justifyContent={'center'} mt={{ lg: 2, xs: 2 }} alignItems={"center"}>
                                         <Typography variant="h1" color={colors.yellow.main}> عنوان : <span>{item.title?.slice(0, 20)}</span> </Typography>
                                     </Grid>
 
                                     {/*<img src={`https://farhangian.birkar.ir/${item.image}`} />*/}
                                     {/*<Image fill src={`https://farhangian.birkar.ir${item.image}`}  alt={'icon'} width={300} height={300} />*/}
                                     <Grid item container lg={2} xs={12} justifyContent={'center'} alignItems={"center"}
-                                          mt={{xs: 2}}>
+                                        mt={{ xs: 2 }}>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handleOpenEdite(item.id)} variant="h1" color={colors.red.main}><Image src={Edite} alt={'icons'}/>
-                                                <span style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{ cursor: "pointer" }} onClick={() => handleOpenEdite(item.id)} variant="h1" color={colors.red.main}><Image src={Edite} alt={'icons'} />
+                                                <span style={{ color: colors.black.main }}></span></Typography>
                                         </Grid>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)} variant="h1" color={colors.red.main}><Image src={Trash} alt={'icons'}/>
-                                                <span style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{ cursor: "pointer" }} onClick={() => handelDeleted(item.id)} variant="h1" color={colors.red.main}><Image src={Trash} alt={'icons'} />
+                                                <span style={{ color: colors.black.main }}></span></Typography>
                                         </Grid>
 
                                     </Grid>
                                 </Grid>
                             </>
 
-                    ))}
-                </Grid>
+                        ))}
+                    </Grid>
                 </Grid>
                 <Grid item container lg={10} boxShadow={5} mt={5} justifyContent={'space-evenly'} borderRadius={2} bgcolor={'white.main'}>
                     <Grid item container lg={12} p={2}>
@@ -513,13 +509,13 @@ const PageSetting = () => {
                                     cursor: 'pointer',
                                     marginLeft: 1
                                 }} onClick={handleClickBackground}>
-                                    <Box style={{...colorsss, backgroundColor: `${BackgroundColor}`}}></Box>
+                                    <Box style={{ ...colorsss, backgroundColor: `${BackgroundColor}` }}></Box>
                                 </Box>
                                 {displayColorPickerBackgroundColor ? (
-                                    <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                        <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                             onClick={handleCloseBackground}></Box>
-                                        <SketchPicker color={BackgroundColor} onChange={handleChangeBackground}/>
+                                    <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                        <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                            onClick={handleCloseBackground}></Box>
+                                        <SketchPicker color={BackgroundColor} onChange={handleChangeBackground} />
                                     </Box>
                                 ) : null}
 
@@ -535,13 +531,13 @@ const PageSetting = () => {
                                     cursor: 'pointer',
                                     marginLeft: 1
                                 }} onClick={handleClickTitleEdit}>
-                                    <Box style={{...colorsss, backgroundColor: `${TitleColorEdit}`}}></Box>
+                                    <Box style={{ ...colorsss, backgroundColor: `${TitleColorEdit}` }}></Box>
                                 </Box>
                                 {displayColorPickerTitleColorEdit ? (
-                                    <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                        <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                             onClick={handleCloseTitleEdit}></Box>
-                                        <SketchPicker color={TitleColorEdit} onChange={handleChangeTitleEdit}/>
+                                    <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                        <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                            onClick={handleCloseTitleEdit}></Box>
+                                        <SketchPicker color={TitleColorEdit} onChange={handleChangeTitleEdit} />
                                     </Box>
                                 ) : null}
 
@@ -558,19 +554,19 @@ const PageSetting = () => {
                                     cursor: 'pointer',
                                     marginLeft: 1
                                 }} onClick={handleClickTextEdit}>
-                                    <Box style={{...colorsss, backgroundColor: `${TextColorEdit}`}}></Box>
+                                    <Box style={{ ...colorsss, backgroundColor: `${TextColorEdit}` }}></Box>
                                 </Box>
                                 {displayColorPickerTextColorEdit ? (
-                                    <Box sx={{position: 'absolute', zIndex: '2'}}>
-                                        <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                             onClick={handleCloseTextEdit}></Box>
-                                        <SketchPicker color={TextColorEdit} onChange={handleChangeTextEdit}/>
+                                    <Box sx={{ position: 'absolute', zIndex: '2' }}>
+                                        <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                            onClick={handleCloseTextEdit}></Box>
+                                        <SketchPicker color={TextColorEdit} onChange={handleChangeTextEdit} />
                                     </Box>
                                 ) : null}
                             </Grid>
                         </Grid>
                         <Grid item container lg={3} justifyContent={'center'} alignItems={'end'}>
-                            <FormControl sx={{width: {lg: 250, xs: 220, md: 350}}}>
+                            <FormControl sx={{ width: { lg: 250, xs: 220, md: 350 } }}>
                                 <Stack direction="row" alignItems="center" spacing={2}>
                                     {!uploadedFileName && (
                                         <MTButton
@@ -580,7 +576,7 @@ const PageSetting = () => {
                                                 height: "45px",
                                                 boxShadow: "none",
                                             }}
-                                            startIcon={<CloudUploadRoundedIcon/>}
+                                            startIcon={<CloudUploadRoundedIcon />}
                                             variant="contained"
                                             component="label"
                                         >
@@ -605,7 +601,7 @@ const PageSetting = () => {
                                             InputProps={{
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <DescriptionRoundedIcon/>
+                                                        <DescriptionRoundedIcon />
                                                     </InputAdornment>
                                                 ),
                                                 endAdornment: (
@@ -615,7 +611,7 @@ const PageSetting = () => {
                                                             onClick={handleClickClear}
                                                             edge="end"
                                                         >
-                                                            <ClearIcon/>
+                                                            <ClearIcon />
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )
@@ -627,7 +623,7 @@ const PageSetting = () => {
 
                         </Grid>
                     </Grid>
-                    <form onSubmit={formik.handleSubmit} style={{width:'100%'}}>
+                    <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
                         <Grid item container lg={12} p={2}>
                             <FormControl fullWidth>
                                 <MInput
@@ -674,11 +670,11 @@ const PageSetting = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style} width={{lg: 1000}}>
+                    <Box sx={style} width={{ lg: 1000 }}>
                         <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12}
-                              md={12} xs={12} sm={12} bgcolor={'white.main'}>
-                            <List sx={{width: '100%'}}>
-                                <Grid item container lg={12} p={2} sx={{color:'black.main'}}>
+                            md={12} xs={12} sm={12} bgcolor={'white.main'}>
+                            <List sx={{ width: '100%' }}>
+                                <Grid item container lg={12} p={2} sx={{ color: 'black.main' }}>
                                     <Grid item container lg={3} alignItems={'center'}>
                                         <Typography variant={'h1'} p={0.5}>نوار تبلیغاتی صفحه اصلی </Typography>
                                     </Grid>
@@ -694,13 +690,13 @@ const PageSetting = () => {
                                                 cursor: 'pointer',
                                                 marginLeft: 1
                                             }} onClick={handleClickBackgroundEdit}>
-                                                <Box style={{...colorsss, backgroundColor: `${BackgroundColorEdit}`}}></Box>
+                                                <Box style={{ ...colorsss, backgroundColor: `${BackgroundColorEdit}` }}></Box>
                                             </Box>
                                             {displayColorPickerBackgroundColorEdit ? (
-                                                <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                                    <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                                         onClick={handleCloseBackgroundEdit}></Box>
-                                                    <SketchPicker color={BackgroundColorEdit} onChange={handleChangeBackgroundEdit}/>
+                                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                                        onClick={handleCloseBackgroundEdit}></Box>
+                                                    <SketchPicker color={BackgroundColorEdit} onChange={handleChangeBackgroundEdit} />
                                                 </Box>
                                             ) : null}
 
@@ -717,13 +713,13 @@ const PageSetting = () => {
                                                 cursor: 'pointer',
                                                 marginLeft: 1
                                             }} onClick={handleClickTitle}>
-                                                <Box style={{...colorsss, backgroundColor: `${TitleColor}`}}></Box>
+                                                <Box style={{ ...colorsss, backgroundColor: `${TitleColor}` }}></Box>
                                             </Box>
                                             {displayColorPickerTitleColor ? (
-                                                <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                                    <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                                         onClick={handleCloseTitle}></Box>
-                                                    <SketchPicker color={TitleColor} onChange={handleChangeTitle}/>
+                                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                                        onClick={handleCloseTitle}></Box>
+                                                    <SketchPicker color={TitleColor} onChange={handleChangeTitle} />
                                                 </Box>
                                             ) : null}
 
@@ -740,19 +736,19 @@ const PageSetting = () => {
                                                 cursor: 'pointer',
                                                 marginLeft: 1
                                             }} onClick={handleClickText}>
-                                                <Box style={{...colorsss, backgroundColor: `${TextColor}`}}></Box>
+                                                <Box style={{ ...colorsss, backgroundColor: `${TextColor}` }}></Box>
                                             </Box>
                                             {displayColorPickerTextColor ? (
-                                                <Box sx={{position: 'absolute', zIndex: '2'}}>
-                                                    <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                                         onClick={handleCloseText}></Box>
-                                                    <SketchPicker color={TextColor} onChange={handleChangeText}/>
+                                                <Box sx={{ position: 'absolute', zIndex: '2' }}>
+                                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                                        onClick={handleCloseText}></Box>
+                                                    <SketchPicker color={TextColor} onChange={handleChangeText} />
                                                 </Box>
                                             ) : null}
                                         </Grid>
                                     </Grid>
                                     <Grid item container lg={3} justifyContent={'center'} alignItems={'end'}>
-                                        <FormControl sx={{width: {lg: 250, xs: 220, md: 350}}}>
+                                        <FormControl sx={{ width: { lg: 250, xs: 220, md: 350 } }}>
                                             <Stack direction="row" alignItems="center" spacing={2}>
                                                 {!uploadedFileNameEdit && (
                                                     <MTButton
@@ -762,7 +758,7 @@ const PageSetting = () => {
                                                             height: "45px",
                                                             boxShadow: "none",
                                                         }}
-                                                        startIcon={<CloudUploadRoundedIcon/>}
+                                                        startIcon={<CloudUploadRoundedIcon />}
                                                         variant="contained"
                                                         component="label"
                                                     >
@@ -787,7 +783,7 @@ const PageSetting = () => {
                                                         InputProps={{
                                                             startAdornment: (
                                                                 <InputAdornment position="start">
-                                                                    <DescriptionRoundedIcon/>
+                                                                    <DescriptionRoundedIcon />
                                                                 </InputAdornment>
                                                             ),
                                                             endAdornment: (
@@ -797,7 +793,7 @@ const PageSetting = () => {
                                                                         onClick={handleClickClear}
                                                                         edge="end"
                                                                     >
-                                                                        <ClearIcon/>
+                                                                        <ClearIcon />
                                                                     </IconButton>
                                                                 </InputAdornment>
                                                             )
@@ -809,8 +805,8 @@ const PageSetting = () => {
 
                                     </Grid>
                                 </Grid>
-                                <form onSubmit={formiksEdit.handleSubmit} style={{width: '100%'}}>
-                                    <Grid item container lg={12} p={2} sx={{color:'black.main'}}>
+                                <form onSubmit={formiksEdit.handleSubmit} style={{ width: '100%' }}>
+                                    <Grid item container lg={12} p={2} sx={{ color: 'black.main' }}>
                                         <FormControl fullWidth>
                                             <InputLabel sx={{
                                                 marginTop: "-15px",
@@ -831,8 +827,8 @@ const PageSetting = () => {
                                                 // value={`${EditData?.title || ''}${formiks.values.pass || ''}`}
                                                 onChange={handleChange}
                                                 onBlur={formiksEdit.handleBlur}
-                                                // error={formiks.touched.pass && Boolean(formiks.errors.pass)}
-                                                // helperText={formiks.touched.pass && formiks.errors.pass}
+                                            // error={formiks.touched.pass && Boolean(formiks.errors.pass)}
+                                            // helperText={formiks.touched.pass && formiks.errors.pass}
                                             />
                                         </FormControl>
                                     </Grid>
@@ -873,10 +869,10 @@ const PageSetting = () => {
                     </Box>
                 </Modal>
 
-                <Banner/>
+                <Banner />
                 <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
-                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleCloseAlert}>
+                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
                         <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>
@@ -884,6 +880,6 @@ const PageSetting = () => {
 
 
         </SettingLayout>
-)
+    )
 }
 export default PageSetting

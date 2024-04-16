@@ -96,7 +96,7 @@ const NavSearch = () => {
                                 style={{marginRight: 10}}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
                             <Typography variant={'caption'}> مبلغ مانده: <span
                                 style={{marginRight: 10}}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                            <Typography variant={'caption'}> مبلغ وام: <span
+                            <Typography variant={'caption'}> مبلغ بدهی: <span
                                 style={{marginRight: 10}}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
                         </Grid>
                         {/*<MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>*/}

@@ -125,7 +125,7 @@ export default function Sidebar() {
                             <Image width={50} height={'30'} src={Vector} alt={'vector'} />
                         </Box>
                     </Box>
-                    <Typography color={'black.main'} variant={'caption'} mt={1}>بیرکار سیستم </Typography>
+                    <Typography color={'black.main'} variant={'caption'} mt={1}>فروشگاه  فرهنگیان </Typography>
                 </Grid>
                 <List>
                     {navList.map((item, index) => (

@@ -29,18 +29,19 @@ function NewProduct() {
             <Grid item container xs={12} md={12} justifyContent="center" textAlign="center" alignItems="center">
                 <Grid item container lg={10} xs={12} justifyContent="space-between">
                     <Grid item container className="line" lg={4} xs={4} alignItems="center">
-                        <Typography variant="h4" color={colors.black.main}>اخبار</Typography>
+                        <Typography variant={'h4'} sx={{ display: { xs: 'none', sm: 'none', lg: 'flex' } }} color={colors.black.main}>اخبار</Typography>
+                        <Typography variant={'h5'} ml={{ lg: 0, xs: 3, sm: 3 }} sx={{ display: { xs: 'flex', sm: 'flex', lg: 'none' } }} color={colors.black.main}>اخبار</Typography>
                     </Grid>
-                    <Grid item container lg={2} xs={4} justifyContent="end" alignItems="center">
-                        <Link href="/News">
-                            <Typography variant="subtitle2" color={colors.black.main}>مشاهده همه</Typography>
+                    <Grid item container lg={2} xs={4} justifyContent={{ lg: "end", xs: 'center' }}>    
+                        <Link href="/News" style={{ display: 'flex', textDecoration: 'none' }}>
+                            <Typography variant="subtitle2" color={colors.black.main} >مشاهده همه</Typography>
+                            <ArrowBackIosIcon fontSize="small" sx={{ color: colors.black.main }} />
                         </Link>
-                        <ArrowBackIosIcon fontSize="small" sx={{ color: colors.black.main }} />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item container xs={12} md={12} textAlign="center" alignItems="center" justifyContent="center">
-                <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} justifyContent="space-evenly" columns={{ xs: 2, sm: 8, md: 12, lg: 12 }} sx={{ overflow: 'hidden' }}>
+            <Grid container rowGap={0} marginTop={{ xs: 0, md: 0 }} justifyContent={"space-evenly"} columns={{ xs: 2, sm: 12, md: 12, lg: 12 }}>
                     {news.slice(0, 3).map((item: any, index: number) => (
                         <Box key={index} ref={boxRef} my={4}>
                             <Link href={`/News/${item.id}`}>

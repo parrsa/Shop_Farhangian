@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {AlertColor, Grid, IconButton, InputAdornment, InputLabel, Stack, TextField, Typography} from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { AlertColor, Box, Grid, IconButton, InputAdornment, InputLabel, Stack, TextField, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import MInput from "@/Components/Minput";
@@ -18,8 +18,8 @@ const formValidationSchema = yup.object({
     Address: yup.string().required('انتخاب آدرس الزامی است'),
     Sabeghe: yup.string().required('انتخاب سابقه کار خود الزامی است'),
     Description: yup.string().required('انتخاب نوع زمان الزامی است'),
-    FatherName:yup.string().required('انتخاب نوع زمان الزامی است'),
-    CodeMelli:yup.string().required('انتخاب نوع زمان الزامی است')
+    FatherName: yup.string().required('انتخاب نوع زمان الزامی است'),
+    CodeMelli: yup.string().required('انتخاب نوع زمان الزامی است')
 
 });
 
@@ -37,6 +37,8 @@ const Profiles = () => {
     const [message, setMessage] = React.useState('')
     const [ostan, setOstan] = React.useState<any>([]);
     const [Address, setAddress] = React.useState('')
+    const [Name, setName] = React.useState('')
+    const [FName, setFNmae] = React.useState('')
     const [FatherName, setFatherName] = React.useState('')
     const [PhoneNumber, setPhoneNumber] = React.useState('')
     const [Sabeghe_Kar, setSabeghe_kar] = React.useState('')
@@ -44,13 +46,15 @@ const Profiles = () => {
     const [CodeMeli, setCodeMeli] = React.useState('')
 
 
-    const Profile=[...Array(ostan).map((item: any)=>item)]
-    const AddresServer=Profile.map((item)=>item.address)
-    const birthdateServers=Profile.map((item)=>item.birthdate)
-    const codeMelliServers=Profile.map((item)=>item.codeMelli)
-    const imageServers=Profile.map((item)=>item.image)
-    const phoneNumberServers=Profile.map((item)=>item.phoneNumber)
-    const fatherNameServers=Profile.map((item)=>item.fatherName)
+    const Profile = [...Array(ostan).map((item: any) => item)]
+    const NameServer = Profile.map((item) => item.firstName)
+    const FnameServer = Profile.map((item) => item.lastName)
+    const AddresServer = Profile.map((item) => item.address)
+    const birthdateServers = Profile.map((item) => item.birthdate)
+    const codeMelliServers = Profile.map((item) => item.codeMelli)
+    const imageServers = Profile.map((item) => item.image)
+    const phoneNumberServers = Profile.map((item) => item.phoneNumber)
+    const fatherNameServers = Profile.map((item) => item.fatherName)
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
@@ -69,7 +73,7 @@ const Profiles = () => {
             };
             const response = await fetch(`https://farhangian.birkar.ir/api/User/Profile`, config)
             const data = await response.json();
-                setOstan(data.data)
+            setOstan(data.data)
         }
         getData()
 
@@ -100,7 +104,7 @@ const Profiles = () => {
     const HandellSubmite = () => {
         if (Disable) {
             setDisable(false)
-        } else if (birth_date || Address || PhoneNumber || FatherName || CodeMeli) {
+        } else if (Name || FName || birth_date || Address || PhoneNumber || FatherName || CodeMeli || uploadedFile) {
             const poshtibani = async () => {
                 const config = {
                     headers: {
@@ -110,25 +114,27 @@ const Profiles = () => {
                 }
                 try {
                     setLoading(true); // فعال کردن وضعیت لودینگ
-                    const formData=new FormData();
-                    formData.append('FirstName', '' )
-                    formData.append('LastName', '' )
-                    formData.append('Address', Address )
-                    formData.append('CodeMelli', CodeMeli )
-                    formData.append('Birthdate', birth_date )
-                    formData.append('FatherName', FatherName)
-                    formData.append('PhoneNumber', PhoneNumber )
+                    const formData = new FormData();
+                    formData.append('FirstName', Name ? Name : NameServer.toString())
+                    formData.append('LastName', FName ? Name : FnameServer.toString())
+                    formData.append('Address', Address ? Address : AddresServer.toString())
+                    formData.append('CodeMelli', CodeMeli ? CodeMeli : codeMelliServers.toString())
+                    formData.append('Birthdate', birth_date ? birth_date : birthdateServers.toString())
+                    formData.append('FatherName', FatherName ? FatherName : fatherNameServers.toString())
+                    formData.append('PhoneNumber', PhoneNumber ? PhoneNumber : phoneNumberServers.toString())
                     if (uploadedFile) {
-                        formData.append('image', uploadedFile);
+                        formData.append('image', uploadedFile ? uploadedFile : imageServers.toString());
                     }
                     const response = await axios.put(`https://farhangian.birkar.ir/api/User/Update `,
-                       formData,
+                        formData,
                         config
                     )
                     if (response.status === 200) {
-                        setMessage('با موفقیت شکایت شما ثبت شد')
+                        setMessage('با موفقیت اطلاعات شما ویرایش شد')
                         setTypeMessage('success')
                         setOpenMessage(true)
+                        setActive(!active)
+                        handleFileReset()
                         setTimeout(() => {
                         }, 2000)
                         setLoading(false); // غیرفعال کردن وضعیت لودینگ
@@ -149,33 +155,85 @@ const Profiles = () => {
         setOpenMessage(false);
     };
 
+    const [UserInfo, setUserInfo] = React.useState<any>([])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const config = {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${Cook}`,
+                    },
+                };
+                const response = await fetch(`https://farhangian.birkar.ir/api/User/Profile`, config);
+                const data = await response.json();
+                setUserInfo(data.data);
 
+            } catch (error) {
+                console.error('Error fetching data: ', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
-                <Grid lg={12} p={2} item alignItems={'center'} container>
+                <Grid lg={12}  item alignItems={'center'} container>
                     <Grid item container xs={12} md={12} justifyContent={"center"}
-                          textAlign={{xs: "center", md: "center"}} alignItems={"center"}>
-                        <Grid item container lg={10} justifyContent={"space-between"} alignItems={"center"}>
-                            <Grid item container lg={4} alignItems={"start"} flexDirection={"column"}>
+                        textAlign={{ xs: "center", md: "center" }} alignItems={"center"}>
+                        <Grid item container lg={10} sm={7} xs={12} justifyContent={{ lg: "space-between", xs: 'center', sm: 'center', md: "space-between" }} alignItems={"center"}>
+                            <Grid item container lg={4} alignItems={{ lg: "start", xs: 'center', sm: 'center', md: 'start' }} flexDirection={"column"}>
                                 <Typography variant="h4" color={colors.black.main}>اطلاعات کاربری</Typography>
-                                <Typography variant="subtitle2" mt={{lg: 2}}>لورم ایپسوم متن ساختگی با تولید سادگی
-                                    {Profile.map((item)=>item.codeMelli)}   نامفهوم از صنعت چاپ </Typography>
+                                <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی
+                                    {Profile.map((item) => item.codeMelli)}   نامفهوم از صنعت چاپ </Typography>
                             </Grid>
                         </Grid>
+                      
                     </Grid>
+                    <Grid item container lg={5} sm={5} xs={12} mt={{ lg: 0, xs: 2, sm: 2, md: 0 }} sx={{ display: { lg: 'none', xs: 'flex', sm: 'flex', md: 'none' } }} justifyContent={'center'}>
+                            {Cook && (
+                                <>
+                                    <Grid sx={{
+                                        width: '16rem',
+                                        borderRadius: '0.5rem',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: colors.farhangian.blue, flexDirection: 'column',
+                                    }}>
+                                        <Typography variant={'caption'}> مبلغ قسط: <span
+                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                        <Typography variant={'caption'}> مبلغ مانده: <span
+                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                        <Typography variant={'caption'}> مبلغ بدهی: <span
+                                            style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                    </Grid>
+                                    {/*<MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>*/}
+                                    {/*    <Typography variant={'caption'}> مبلغ قسط: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                    {/*    <Typography variant={'caption'}> مبلغ مانده: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                    {/*    <Typography variant={'caption'}> مبلغ وام: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
+                                    {/*</MBox>*/}
+
+
+
+
+                                </>
+                            )}
+                        </Grid>
+
                 </Grid>
-                <Grid item container lg={12} justifyContent={'center'}>
-                </Grid>
+
+
                 {[...Array(ostan)].map((item: any) => (<>
 
-                    <Grid lg={12} item container justifyContent={'space-around'} p={2}>
-                        <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} p={2}>
+                    <Grid lg={12} item container justifyContent={'space-around'} >
+                        <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} >
                             <img src={`https://farhangian.birkar.ir/${item?.image}`} alt="User" style={{ width: 150, height: 150, borderRadius: '50%' }} />
                         </Grid>
 
                         <Grid item container justifyContent={'center'} lg={6} alignItems={'center'} p={2}>
-                            <FormControl sx={{width: {lg: 380, xs: 220, md: 350}}}>
+                            <FormControl sx={{ width: { lg: 380, xs: 220, md: 350 } }}>
                                 <Stack direction="row" alignItems="center" spacing={2}>
                                     {!uploadedFileName && (
                                         <MTButton
@@ -193,7 +251,7 @@ const Profiles = () => {
                                                 //     boxShadow: "none"
                                                 // }
                                             }}
-                                            startIcon={<CloudUploadRoundedIcon/>}
+                                            startIcon={<CloudUploadRoundedIcon />}
                                             variant="contained"
                                             component="label"
                                         >
@@ -218,7 +276,7 @@ const Profiles = () => {
                                             InputProps={{
                                                 startAdornment: (
                                                     <InputAdornment position="start">
-                                                        <DescriptionRoundedIcon/>
+                                                        <DescriptionRoundedIcon />
                                                     </InputAdornment>
                                                 ),
                                                 endAdornment: (
@@ -228,7 +286,7 @@ const Profiles = () => {
                                                             onClick={handleClickClear}
                                                             edge="end"
                                                         >
-                                                            <ClearIcon/>
+                                                            <ClearIcon />
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )
@@ -242,8 +300,9 @@ const Profiles = () => {
                     </Grid>
                     <Grid lg={12} item container justifyContent={'space-around'} p={2}>
 
-                        <FormControl sx={{m: 0, width: {lg: 380, xs: 220, md: 350,}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ m: 0, width: { lg: 380, xs: 220, md: 350, }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -257,8 +316,10 @@ const Profiles = () => {
                                 id="Name"
                                 name="Name"
                                 placeholder={item?.firstName}
+                                value={Name}
+                                onChange={(e: any) => setName(e.target.value)}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={'true'}
+                                disabled={!active}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -268,8 +329,9 @@ const Profiles = () => {
                             />
                         </FormControl>
 
-                        <FormControl sx={{m: 0, width: {lg: 380, xs: 220, md: 350,}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ m: 0, width: { lg: 380, xs: 220, md: 350, }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -283,8 +345,10 @@ const Profiles = () => {
                                 id="Name"
                                 name="Name"
                                 placeholder={item?.lastName ?? ''}
+                                value={FName}
+                                onChange={(e: any) => setFNmae(e.target.value)}
                                 // placeholder={item.user?.first_name + " " + item.user?.last_name ?? ''}
-                                disabled={'true'}
+                                disabled={!active}
                                 sx={{
                                     '& .placeholder': {
                                         color: 'red',
@@ -295,8 +359,9 @@ const Profiles = () => {
                         </FormControl>
                     </Grid>
                     <Grid item container justifyContent={'space-around'} lg={12} p={2}>
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -317,8 +382,9 @@ const Profiles = () => {
 
                             />
                         </FormControl>
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -339,8 +405,9 @@ const Profiles = () => {
                     </Grid>
 
                     <Grid item container justifyContent={'space-around'} lg={12} p={2}>
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -360,8 +427,9 @@ const Profiles = () => {
                                 placeholder={item?.fatherName == '' ? "آدرس خود را واردکنید" : item?.fatherName}
                             />
                         </FormControl>
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -381,8 +449,9 @@ const Profiles = () => {
 
                     </Grid>
                     <Grid item container justifyContent={'space-around'} lg={12} p={2}>
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -391,22 +460,23 @@ const Profiles = () => {
                             }} shrink htmlFor="bootstrap-input">
                                 آدرس :
                             </InputLabel>
-                                <MInput
-                                    popup
+                            <MInput
+                                popup
 
-                                    id="Address"
-                                    name="Address"
-                                    value={Address}
-                                    onChange={(e: any) => setAddress(e.target.value)}
-                                    disabled={!active}
-                                    // label={Disable ? item?.address == '' ? "آدرس خود را ویرایش کنید" : item?.address : 'آدرس'}
-                                    placeholder={item?.address == '' ? "آدرس خود را واردکنید" : item?.address}
-                                />
+                                id="Address"
+                                name="Address"
+                                value={Address}
+                                onChange={(e: any) => setAddress(e.target.value)}
+                                disabled={!active}
+                                // label={Disable ? item?.address == '' ? "آدرس خود را ویرایش کنید" : item?.address : 'آدرس'}
+                                placeholder={item?.address == '' ? "آدرس خود را واردکنید" : item?.address}
+                            />
                         </FormControl>
 
 
-                        <FormControl sx={{ml: {lg: 1}, width: {lg: 380, xs: 220, md: 350}, marginTop: 3}}>
-                            <InputLabel sx={{marginTop:"-15px",
+                        <FormControl sx={{ ml: { lg: 1 }, width: { lg: 380, xs: 220, md: 350 }, marginTop: 3 }}>
+                            <InputLabel sx={{
+                                marginTop: "-15px",
                                 fontFamily: 'Yekan Bakh Medium',
                                 fontSize: "1.2rem",
                                 fontWeight: "bold !important",
@@ -423,11 +493,11 @@ const Profiles = () => {
                                 onChange={(e: any) => setbirth_date(e.target.value)}
                                 disabled={!active}
                                 placeholder={Disable ? item?.birthdate == '' ? 'تاریخ تولد خود را ویرایش کنید' : item?.birthdate : 'تاریخ تولد'}
-                                // placeholder={item?.birthdate == '' ? 'تاریخ تولد خود را با ترتیب (سال و ماه و روز) وارد کنید' : item?.birth_date}
+                            // placeholder={item?.birthdate == '' ? 'تاریخ تولد خود را با ترتیب (سال و ماه و روز) وارد کنید' : item?.birth_date}
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item container justifyContent={'space-evenly'} p={2} lg={6}  alignItems={'center'}>
+                    <Grid item container justifyContent={'space-evenly'} p={2} lg={6} alignItems={'center'}>
                         {/*<MTButton color="primary" variant="contained" onClick={HandellSubmite} submite type="submit">*/}
                         {/*    تغییر اطلاعات*/}
                         {/*</MTButton>*/}
@@ -442,7 +512,7 @@ const Profiles = () => {
                         </MTButton>
                         <MTButton
                             submite
-                            sx={{color:'white.main'}}
+                            sx={{ color: 'white.main' }}
                             onClick={() => {
                                 HandellSubmite(); // ارسال درخواست به سرور برای به‌روزرسانی اطلاعات
                             }}
@@ -455,8 +525,8 @@ const Profiles = () => {
 
 
                 <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
-                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleCloseAlert}>
+                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
                         <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>

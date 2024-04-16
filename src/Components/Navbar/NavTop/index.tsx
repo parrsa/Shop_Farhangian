@@ -44,13 +44,13 @@ const NavTop = () => {
                 setRandomBackColor(slogans[randomIndex].backColor);
                 setRandomColor(slogans[randomIndex].color);
             }
-        }, 1800);
+        }, 2500);
         return () => clearInterval(intervalId);
     }, [slogans]);
 
     return (
-        <Grid item container bgcolor={randomBackColor} lg={12} p={1}>
-            <Typography  variant="h1" color={randomColor}>
+        <Grid item container bgcolor={randomBackColor} lg={12} p={1} style={{ overflow: "hidden" }}>
+            <Typography variant="h1" color={randomColor} style={{ animation: "slideRight 10s linear infinite" }}>
                 {randomSlogan}
             </Typography>
         </Grid>

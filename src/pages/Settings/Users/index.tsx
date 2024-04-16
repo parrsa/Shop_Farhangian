@@ -197,7 +197,6 @@ const UserTable = () => {
                         },
                         config
                     );
-                        console.log(response)
                     if (response.status === 200) {
                         setMessage(' با موفقیت رمز عبور ادیت شد');
                         setTypeMessage('success');
@@ -206,7 +205,6 @@ const UserTable = () => {
                         setOpenEditePassword(false)
                     }
                 } catch (error: any) {
-                    console.log(error)
                     setTypeMessage('error');
                     setOpenMessage(true);
                     setMessage(error.response.data.Message)

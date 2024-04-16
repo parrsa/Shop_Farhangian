@@ -204,13 +204,11 @@ const PageSetting = () => {
                 const response = await fetch(`https://farhangian.birkar.ir/api/News/GetById?id=${item.id}` , config)
                 const data = await response.json();
                 setEditDate(data.data)
-                console.log(data)
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
         }
         getData()
-        console.log(EditData)
         SetId(item.id)
         setOpen(true)
     }
@@ -229,7 +227,6 @@ const PageSetting = () => {
     });
     React.useMemo(()=>{
         setProfile({'title': EditData?.title})
-        console.log(EditData)
     },[EditData])
 
     const handleChange = (e:any) => {

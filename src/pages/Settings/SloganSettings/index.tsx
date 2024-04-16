@@ -160,7 +160,6 @@ const PageSetting = () => {
     const handleOpenModal = (item: any) => {
         SetId(item.id)
         SetOpenModal(true)
-        console.log(item.id)
     }
     const handleCloseModal = () => SetOpenModal(false);
 
@@ -181,7 +180,6 @@ const PageSetting = () => {
 
                 try {
                     let formData = new FormData();
-                    console.log(id)
                     formData.append('id', id ?? '');
                     formData.append('Title', values.phone);
                     formData.append('BackColor', BackgroundColor);

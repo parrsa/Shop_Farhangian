@@ -53,14 +53,14 @@ function Clubs() {
                     <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </Typography>
                 </Grid>
                 <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} justifyContent={"center"}>
-                    <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }} sx={{ overflow: 'hidden',  }}>
+                    <Grid container rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 12, md: 12, lg: 12 }} sx={{ overflow: 'hidden',  }}>
                         {ostan.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) =>(
                             <>
                                 {(index <= 11) && (
                                     <Grid key={index} marginTop={{lg: 2}} item sx={{
                                         display: "flex", justifyContent: "space-between",
                                         flexDirection: "column", alignItems: "center"
-                                    }} xs={2} sm={12} lg={3} md={6}>
+                                    }} xs={2} sm={6} lg={3} md={6}>
                                         <Box className={'box'} key={index} ref={boxRef} my={4}>
                                             <Card className={'shadow'} ref={elRef}
                                                   sx={{

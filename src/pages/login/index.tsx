@@ -231,17 +231,17 @@ const Login = () => {
 
 
     return (
-        <Grid item container justifyContent={'center'} alignItems={'center'} height={'100vh'}>
-            <Grid item container sm={12} md={10} lg={12} height={'100vh'} bgcolor={'#eef1f2'}>
-                <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} md={6} sm={6} p={2}
-                      flexDirection={"column"}>
+        <Grid item container justifyContent={'center'} alignItems={'center'} bgcolor={{lg:'#eef1f2' , xs:'transparent' , sm:'transparent'}} height={'100vh'}>
+            <Grid item container sm={12} md={10} lg={12} height={'100vh'} >
+                <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} md={6} sm={12} p={2}  flexDirection={"column"}>
                     <Grid item container justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
                         <Image src={logo} alt="Website logo" width={200} height={200}/>
-                        <Typography variant={'h4'} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+                        <Typography variant={'h4'} sx={{display:{lg:'flex' , xs:'none' , sm:'flex'}}} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+                        <Typography variant={'h1'} sx={{display:{lg:'none' , sm:'none' , md:'none'}}} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
                     </Grid>
 
-                    <Grid item container justifyContent={'center'} p={2} alignItems={"end"}>
-                        <form onSubmit={formik.handleSubmit}>
+                    <Grid item container justifyContent={'center'}  p={2} alignItems={"end"}>
+                        <form onSubmit={formik.handleSubmit} style={{width:'100%'}} >
                             <Grid item container justifyContent={{lg: "space-evenly", xs: 'start'}}
                                   display={{xs: 'none', md: 'flex'}} lg={12}>
                                 <FormControl
@@ -305,15 +305,14 @@ const Login = () => {
                         </form>
                     </Grid>
                 </Grid>
-                <Grid lg={6} md={6} sm={6} item container>
+                <Grid lg={6} md={6} sm={6} item container sx={{display:{lg:'flex' , xs:'none' , sm:'none' , md:'flex'}}} bgcolor={'#eef1f2'} >
                     <Box width={"100%"} height={"100%"}  sx={{
                         backgroundImage: `url(${imageslogo.src}) `,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'
                     }} >
-                        <Grid item container justifyContent={'end'} alignItems={'end'} flexDirection={"column"}>
-                        </Grid>
+                      
                     </Box>
                 </Grid>
 

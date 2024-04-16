@@ -192,7 +192,8 @@ const SignInPage = () => {
                 </Grid>
             </Grid>
             <Grid item container height={"100%"} alignItems={"center"} justifyContent={{lg: 'center', md: 'center', xs: 'center'}} lg={6} md={6} sm={6} display={{xs: 'flex', md: 'flex', lg: 'flex', sm: 'flex'}}>
-                <Image src={Images} width={650} alt="images"/>\
+            <Image src={Images} layout="responsive" width={600} height={400} alt="images" />
+                
             </Grid>
             <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity={typeMessage} sx={{width: '100%'}}>
