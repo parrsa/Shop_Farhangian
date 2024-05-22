@@ -26,6 +26,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 import * as yup from "yup";
 import {useFormik} from "formik";
+import url from '@/Api';
 
 
 const style = {
@@ -54,7 +55,7 @@ const Category=()=>{
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll')
+            const response = await fetch(`${url}/api/Category/GetAll`)
             const data = await response.json();
             setCategory(data);
         }
@@ -71,7 +72,7 @@ const Category=()=>{
     const handelDeleted = (item: any) => {
         const Deleted = async () => {
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/News/Delete?id=${item}`,
+                const response = await axios.delete(`${url}/api/News/Delete?id=${item}`,
                 )
                 if (response.status === 200) {
                     setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
@@ -103,7 +104,7 @@ const Category=()=>{
                 try {
 
                     const response = await axios.post(
-                        'https://farhangian.birkar.ir/api/Category/Create',
+                        `${url}/api/Category/Create`,
                         {
                             "id": 0,
                             "categoryName": values.pass

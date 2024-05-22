@@ -36,6 +36,7 @@ import Image from "next/image";
 import Trash from '@/Assets/images/circum_trash.svg'
 import CardMedia from "@mui/material/CardMedia";
 import Cookies from "js-cookie";
+import url from '@/Api';
 
 const formValidationSchema = yup.object({
     title: yup.string().required('عنوان متن الزامی است'),
@@ -74,12 +75,12 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
+            const response = await fetch(`${url}/api/News/GetAll`)
             const data = await response.json();
             setOstan(data.data);
         }
         getData()
-    }, [ostan.length]);
+    }, [ostan]);
 
     const handleFileUploads = (event: any) => {
         const files = event.target.files;
@@ -128,7 +129,7 @@ const PageSetting = () => {
                 },
             };
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/News/Delete?id=${item}`,config)
+                const response = await axios.delete(`${url}/api/News/Delete?id=${item}`,config)
                 if (response.status === 200) {
                     setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
                     setTypeMessage('warning')
@@ -168,7 +169,7 @@ const PageSetting = () => {
                     }
 
                     const response = await axios.post(
-                        'https://farhangian.birkar.ir/api/News/Create',
+                        `${url}/api/News/Create`,
                         formData,
                         config
                     );
@@ -201,7 +202,7 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/News/GetById?id=${item.id}` , config)
+                const response = await fetch(`${url}/api/News/GetById?id=${item.id}` , config)
                 const data = await response.json();
                 setEditDate(data.data)
             } catch (error) {
@@ -275,7 +276,7 @@ const PageSetting = () => {
                     }
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/News/Edit',
+                        `${url}/api/News/Edit`,
                         formData,
                         config
                     );

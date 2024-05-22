@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Edite from "@/Assets/images/nimbus_edit.svg";
 import Trash from "@/Assets/images/circum_trash.svg";
+import url from '@/Api';
 
 function Clubs() {
     const [ostan, setOstan] = React.useState<any[]>([]);
@@ -29,7 +30,7 @@ function Clubs() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPages] = useState(12);
     const getData = async (pageIndex: number) => {
-        const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetNewestProduct?pageIndex=${page}`);
+        const response = await fetch(`${url}/api/Product/GetNewestProduct?pageIndex=${page}`);
         const data = await response.json();
         setOstan(data.data);
         setTotalItems(data.totalItems);
@@ -100,7 +101,7 @@ function Clubs() {
                                                 borderRadius: '1rem'
                                             }}
                                             component="img"
-                                            image={`https://farhangian.birkar.ir/${item.image}`}
+                                            image={`${url}/${item.image}`}
                                             alt="green iguana"
                                         />
                                         <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -122,11 +123,11 @@ function Clubs() {
                                                                 <Typography gutterBottom variant="h1" component="h2" >
                                                                     {item?.isTakhfif ? (
                                                                         <>
-                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
 
                                                                         </>
                                                                     )}
@@ -161,7 +162,7 @@ function Clubs() {
                                                                 </Grid>
                                                                 <Grid item container lg={8} justifyContent={'end'}>
                                                                     <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                                     </Typography>
                                                                 </Grid>
                                                             </Grid>
@@ -173,14 +174,14 @@ function Clubs() {
                                             ) : (<>
                                                 <Grid item container lg={12} flexDirection={'column'} >
                                                     <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                        <Grid item container lg={3}>
+                                                        {/* <Grid item container lg={3}>
                                                             <Typography gutterBottom variant="h1" component="h2">
                                                                 محصول :
                                                             </Typography>
-                                                        </Grid>
-                                                        <Grid item container lg={9} justifyContent={'start'}>
+                                                        </Grid> */}
+                                                        <Grid item container lg={12} justifyContent={'start'}>
                                                             <Typography gutterBottom variant="h1" component="h2" >
-                                                                {item?.name}
+                                                                {item?.name}س
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>

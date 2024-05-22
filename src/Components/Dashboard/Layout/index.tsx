@@ -13,7 +13,7 @@ const DashboardLayout: React.FC<LayoutsInterface> = ({ children }: LayoutsInterf
     return (
         <>
             <Head >
-                <title>تعاونی مصرف فرهنگیان</title>
+                <title>فروشگاه تعاونی مصرف فرهنگیان</title>
             </Head>
             <Grid sx={{ minHeight: '100vh' }}>
                 <NavTop />

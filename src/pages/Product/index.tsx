@@ -7,6 +7,8 @@ import CardMedia from '@mui/material/CardMedia';
 import MTButton from "@/Components/Mbutton";
 import DashboardLayout from "@/Components/Dashboard/Layout";
 import { useRouter } from "next/router";
+import url from '@/Api';
+
 function Clubs() {
     const [ostan, setOstan] = React.useState<any[]>([]);
     const boxRef = useRef<HTMLDivElement>(null)
@@ -21,7 +23,7 @@ function Clubs() {
     const [Category, setCategory] = React.useState<any[]>([]);
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll')
+            const response = await fetch(`${url}/api/SubCategory/GetAll`)
             const data = await response.json();
             setCategory(data.data);
         }
@@ -29,9 +31,10 @@ function Clubs() {
     }, []);
     const CheckTitle = Category?.find((item) => item.id == title)
 
+
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetByCategoryId?id=${title}`)
+            const response = await fetch(`${url}/api/Product/GetBySubCategoryId?id= ${title}`)
             const data = await response.json();
             setOstan(data.data);
             setTotalItems(data.totalItems);
@@ -49,10 +52,9 @@ function Clubs() {
     };
     return (
         <DashboardLayout>
-            <Grid container zIndex={10} item xs={12} md={12} marginTop={5} justifyContent={"center"}>
-                <Grid item container xs={12} marginRight={7} md={10} justifyContent={"center"}
-                    textAlign={{ xs: "center", md: "center" }} alignItems={"center"} flexDirection={"column"} >
-                    <Typography variant="h4" color={colors.black.main}>{CheckTitle?.categoryName}</Typography>
+            <Grid container zIndex={10} item xs={12} md={12} sm={12} marginTop={5} justifyContent={"center"}>
+                <Grid item container xs={12} marginRight={{lg:7 , xs:0 , sm:0}} md={12} sm={12} justifyContent={"center"} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} flexDirection={"column"} >
+                    <Typography variant="h4" color={colors.black.main}>{CheckTitle?.subCategoryName}</Typography>
                     <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </Typography>
                 </Grid>
                 <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
@@ -62,7 +64,7 @@ function Clubs() {
                         {ostan?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) => (
                             <>
                                 {(index <= 11) && (
-                                      <Grid key={index} marginTop={{ lg: 2 }} item sx={{
+                                    <Grid key={index} marginTop={{ lg: 2 }} item sx={{
                                         display: "flex", justifyContent: "space-between",
                                         flexDirection: "column", alignItems: "center"
                                     }} xs={2} sm={6} lg={4} md={6}>
@@ -105,7 +107,7 @@ function Clubs() {
                                                         borderRadius: '1rem'
                                                     }}
                                                     component="img"
-                                                    image={`https://farhangian.birkar.ir/${item.image}`}
+                                                    image={`${url}/${item.image}`}
                                                     alt="green iguana"
                                                 />
                                                 <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -126,11 +128,11 @@ function Clubs() {
                                                                 <Typography gutterBottom variant="h1" component="h2" >
                                                                     {item?.isTakhfif ? (
                                                                         <>
-                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
                                                                         </>
                                                                     )}
@@ -140,33 +142,33 @@ function Clubs() {
                                                         {
                                                             !item.isTakhfif && (
                                                                 <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                            <Grid item container lg={4} justifyContent={'start'}>
-                                                                <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                                    موجودی : 
-                                                                </Typography>
-                                                            </Grid>
-                                                                <Grid item container lg={8} justifyContent={'end'}>
-                                                                <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                                    {item?.tedad}
-                                                                    </Typography>
+                                                                    <Grid item container lg={4} justifyContent={'start'}>
+                                                                        <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                                            موجودی :
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid item container lg={8} justifyContent={'end'}>
+                                                                        <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                                            {item?.tedad}
+                                                                        </Typography>
+                                                                    </Grid>
                                                                 </Grid>
-                                                            </Grid>
-                                                            ) 
+                                                            )
                                                         }
-                                                   
+
                                                     </Grid>
 
                                                     {item?.isTakhfif && (
                                                         <>
                                                             <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                            <Grid item container lg={4} justifyContent={'start'}>
-                                                                <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
-                                                                    موجودی :  {item?.tedad}
-                                                                </Typography>
-                                                            </Grid>
+                                                                <Grid item container lg={4} justifyContent={'start'}>
+                                                                    <Typography gutterBottom variant="h1" component="h2" color={item.tedad <= 5 ? "red.main" : 'black.main'} >
+                                                                        موجودی :  {item?.tedad}
+                                                                    </Typography>
+                                                                </Grid>
                                                                 <Grid item container lg={8} justifyContent={'end'}>
                                                                     <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                     </Typography>
                                                                 </Grid>
                                                             </Grid>
@@ -174,7 +176,7 @@ function Clubs() {
                                                         </>
                                                     )}
 
-                                                
+
                                                 </CardContent>
                                             </Card>
                                         </Box>

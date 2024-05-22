@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
+import url from '@/Api';
 
 interface Slogan {
     title: string;
@@ -19,7 +20,7 @@ const NavTop = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("https://farhangian.birkar.ir/api/Slogan/GetAll");
+                const response = await fetch(`${url}/api/Slogan/GetAll`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -44,13 +45,17 @@ const NavTop = () => {
                 setRandomBackColor(slogans[randomIndex].backColor);
                 setRandomColor(slogans[randomIndex].color);
             }
-        }, 2500);
+        }, 4000);
         return () => clearInterval(intervalId);
     }, [slogans]);
 
     return (
-        <Grid item container bgcolor={randomBackColor} lg={12} p={1} style={{ overflow: "hidden" }}>
-            <Typography variant="h1" color={randomColor} style={{ animation: "slideRight 10s linear infinite" }}>
+        <Grid item container bgcolor={randomBackColor} lg={12} p={2} style={{ overflow: "hidden" }}>
+            <Typography variant="h1" color={randomColor}  style={{ 
+                        animation: ' slideRight 20s  linear infinite',
+
+
+            }}>
                 {randomSlogan}
             </Typography>
         </Grid>

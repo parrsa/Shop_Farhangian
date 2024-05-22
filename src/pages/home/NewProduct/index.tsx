@@ -6,11 +6,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MyImage from "@/Assets/images/HamedanLogo 1.webp";
-import url from '@/Api/index'
+
 import Link from "next/link";
 import Image from "next/image";
 import Edite from "@/Assets/images/nimbus_edit.svg";
 import Trash from "@/Assets/images/circum_trash.svg";
+import url from '@/Api';
 
 function NewProduct() {
     const [ostan, setOstan] = useState<any[]>([]);
@@ -19,7 +20,7 @@ function NewProduct() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetNewestProduct?pageIndex=${1}`);
+            const response = await fetch(`${url}/api/Product/GetNewestProduct?pageIndex=${1}`);
             const data = await response.json();
             setOstan(data.data);
         }
@@ -30,7 +31,7 @@ function NewProduct() {
 
 
     const renderedCards = useMemo(() => {
-        return ostan.map((item, index) => (
+        return ostan?.map((item, index) => (
             <React.Fragment key={index}>
                 {(index <= 2) && (
 
@@ -73,7 +74,7 @@ function NewProduct() {
                                     borderRadius: '1rem'
                                 }}
                                 component="img"
-                                image={`https://farhangian.birkar.ir/${item.image}`}
+                                image={`${url}/${item.image}`}
                                 alt="green iguana"
                             />
                             <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -95,11 +96,11 @@ function NewProduct() {
                                                     <Typography gutterBottom variant="h1" component="h2" >
                                                         {item?.isTakhfif ? (
                                                             <>
-                                                                {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                             </>
                                                         ) : (
                                                             <>
-                                                                {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
 
                                                             </>
                                                         )}
@@ -134,7 +135,7 @@ function NewProduct() {
                                                     </Grid>
                                                     <Grid item container lg={8} justifyContent={'end'}>
                                                         <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -146,12 +147,13 @@ function NewProduct() {
                                 ) : (<>
                                     <Grid item container lg={12} flexDirection={'column'} >
                                         <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                            <Grid item container lg={3}>
+                                            {/* <Grid item container lg={3}>
                                                 <Typography gutterBottom variant="h1" component="h2">
                                                     محصول :
                                                 </Typography>
-                                            </Grid>
-                                            <Grid item container lg={9} justifyContent={'start'}>
+                                            </Grid> */}
+                                            {/* <Grid item container lg={9} justifyContent={'start'}> */}
+                                            <Grid item container lg={12} justifyContent={'center'}>
                                                 <Typography gutterBottom variant="h1" component="h2" >
                                                     {item?.name}
                                                 </Typography>

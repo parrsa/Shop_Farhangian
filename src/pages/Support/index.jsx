@@ -23,6 +23,7 @@ import MInput from "../../Components/Minput";
 import MTButton from "../../Components/Mbutton";
 import Image from "next/image";
 import DashboardLayout from "../../Components/Dashboard/Layout";
+import url from '@/Api';
 
 const formValidationSchema = yup.object({
     fname: yup.string().required('نام  الزامی است'),
@@ -71,7 +72,7 @@ const SignInPage = () => {
                     }
                 }
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/Support/Create`,
+                    const response = await axios.post(`${url}/api/Support/Create`,
                         {
                             "id": 0,
                             "firstName": values.fname,

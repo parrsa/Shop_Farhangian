@@ -1,24 +1,25 @@
 import SettingLayout from "@/Components/SettingLayout";
-import {AlertColor, Box, Grid, List, Modal, Typography,} from "@mui/material";
+import { AlertColor, Box, Grid, List, Modal, Typography, } from "@mui/material";
 import * as React from "react";
 import MInput from "@/Components/Minput";
 import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import 'devextreme/dist/css/dx.light.css';
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import colors from "@/Assets/theme/base/colors";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Edite from '@/Assets/images/nimbus_edit.svg'
 import Trash from '@/Assets/images/circum_trash.svg'
+import url from '@/Api';
 
 const formValidationSchema = yup.object({
     phone: yup.string().required('متن شعار الزامی است'),
 });
-import {SketchPicker} from 'react-color';
+import { SketchPicker } from 'react-color';
 import Image from "next/image";
 import Cookies from "js-cookie";
 import Colors from "@/Assets/theme/base/colors";
@@ -68,7 +69,7 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Slogan/GetAll')
+            const response = await fetch(`${url}/api/Slogan/GetAll`)
             const data = await response.json();
             setOstan(data.data);
         }
@@ -102,10 +103,10 @@ const PageSetting = () => {
                     let formData = new FormData();
                     formData.append('Title', values.phone);
                     formData.append('BackColor', BackgroundColor);
-                    formData.append('Color', color );
+                    formData.append('Color', color);
 
 
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/Slogan/Create`,
+                    const response = await axios.post(`${url}/api/Slogan/Create`,
                         formData,
                         config
                     )
@@ -141,8 +142,8 @@ const PageSetting = () => {
                 }
             }
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Slogan/Delete?id=${item}`,
-                config)
+                const response = await axios.delete(`${url}/api/Slogan/Delete?id=${item}`,
+                    config)
                 if (response.status === 200) {
                     setMessage('حذف خبر مورد نظر با موفقیت انجام شد')
                     setTypeMessage('warning')
@@ -163,52 +164,7 @@ const PageSetting = () => {
     }
     const handleCloseModal = () => SetOpenModal(false);
 
-    const formiks = useFormik({
-        initialValues: {
-            phone: '',
-        },
-        validationSchema: formValidationSchemas,
-        onSubmit: (values) => {
-            const Submite = async () => {
-                const config = {
-                    headers: {
-                        'Content-type': 'multipart/form-data',
-                        'Authorization': `Bearer ${Cook}`,
 
-                    },
-                };
-
-                try {
-                    let formData = new FormData();
-                    formData.append('id', id ?? '');
-                    formData.append('Title', values.phone);
-                    formData.append('BackColor', BackgroundColor);
-                    formData.append('Color', color );
-
-
-                    const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/Slogan/Edit',
-                        formData,
-                        config
-                    );
-
-                    if (response.status === 200) {
-                        formik.resetForm();
-                        setMessage('خبر شما با موفقیت ویرایش شد');
-                        setTypeMessage('success');
-                        setOpenMessage(true);
-                        SetOpenModal(false)
-                    }
-                } catch (error: any) {
-                    setTypeMessage('error');
-                    setOpenMessage(true);
-                    setMessage(error.response.data.message);
-                }
-            };
-
-            Submite();
-        },
-    });
 
     //
     // const [profile, setProfile] = useState({
@@ -251,45 +207,123 @@ const PageSetting = () => {
         SetBackgroundColor(newColor.hex)
     }
 
+
+
+
+
+
+    const [displayColorPickerEdit, setDisplayColorPickerEdit] = React.useState(false);
+    const [displayColorPickerbgEdit, setDisplayColorPickerbgEdit] = React.useState(false);
+    const [colorEdit, setColorEdit] = React.useState('430606');
+    const [BackgroundColorEdit, SetBackgroundColorEdit] = React.useState('400606')
+    const handleClickEdit = () => {
+        setDisplayColorPickerEdit(!displayColorPickerEdit);
+    };
+
+    const handleClickBackgroundEdit = () => {
+        setDisplayColorPickerbgEdit(!displayColorPickerbgEdit);
+    };
+
+    const handleCloseEdit = () => {
+        setDisplayColorPickerEdit(false);
+    };
+    const handleCloseBackgroundEdit = () => {
+        setDisplayColorPickerbgEdit(false);
+    };
+
+    const handleChangeColorEdit = (newColor: any) => {
+        setColorEdit(newColor.hex);
+    };
+
+    const handleChangeBackgroundEdit = (newColor: any) => {
+        SetBackgroundColorEdit(newColor.hex)
+    }
+
+    const formiks = useFormik({
+        initialValues: {
+            phone: '',
+        },
+        validationSchema: formValidationSchemas,
+        onSubmit: (values) => {
+            const Submite = async () => {
+                const config = {
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Authorization': `Bearer ${Cook}`,
+
+                    },
+                };
+
+                try {
+                    let formData = new FormData();
+                    formData.append('id', id ?? '');
+                    formData.append('Title', values.phone);
+                    formData.append('BackColor', BackgroundColorEdit);
+                    formData.append('Color', colorEdit);
+
+
+                    const response = await axios.put(
+                        `${url}/api/Slogan/Edit`,
+                        formData,
+                        config
+                    );
+
+                    if (response.status === 200) {
+                        formik.resetForm();
+                        setMessage('خبر شما با موفقیت ویرایش شد');
+                        setTypeMessage('success');
+                        setOpenMessage(true);
+                        SetOpenModal(false)
+                    }
+                } catch (error: any) {
+                    setTypeMessage('error');
+                    setOpenMessage(true);
+                    setMessage(error.response.data.message);
+                }
+            };
+
+            Submite();
+        },
+    });
     return (
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
                 <Grid item container lg={11} boxShadow={5} justifyContent={'center'} borderRadius={2}
-                      bgcolor={'white.main'}>
+                    bgcolor={'white.main'}>
 
                     <Grid item container lg={10} mt={2}>
                         <Typography variant={'h1'}>شعار های موجود :</Typography>
                     </Grid>
                     <Grid item container boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'}
-                          justifyContent={'center'} overflow={'auto'}>
+                        justifyContent={'center'} overflow={'auto'}>
                         {ostan.map((item: any) => (
                             <>
                                 <Grid item container lg={10} xs={10} bgcolor={'white.main'}
-                                      boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} maxHeight={'7vh'} minHeight={'7vh'}
-                                      borderRadius={1}
-                                      justifyContent={{
-                                          lg: 'space-between',
-                                          md: 'space-between',
-                                          xs: 'space-between'
-                                      }} alignItems={'center'}>
+                                    boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} maxHeight={'7vh'} minHeight={'7vh'}
+                                    borderRadius={1}
+                                    justifyContent={{
+                                        lg: 'space-between',
+                                        md: 'space-between',
+                                        xs: 'space-between'
+                                    }} alignItems={'center'}>
                                     <Grid item container lg={4} xs={12} p={1} alignItems={"center"}>
                                         <Typography variant="h1"
-                                                    color={'black.main'}>{item.title?.slice(0, 25)}</Typography>
+                                            color={'black.main'}>{item.title?.slice(0, 25)}</Typography>
                                     </Grid>
 
                                     <Grid item container lg={2} xs={12} justifyContent={'end'} alignItems={'center'}
-                                          p={1}>
+                                        p={1}>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} variant="h1"
-                                                        onClick={() => handleOpenModal(item)}
-                                                        color={colors.red.main}><Image src={Edite} alt={'icons'}/> <span
-                                                style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{ cursor: "pointer" }} variant="h1"
+                                                onClick={() => handleOpenModal(item)}
+                                                color={colors.red.main}><Image src={Edite} alt={'icons'} /> <span
+                                                    style={{ color: colors.black.main }}></span></Typography>
                                         </Grid>
                                         <Grid item container lg={4}>
-                                            <Typography sx={{cursor: "pointer"}} onClick={() => handelDeleted(item.id)}
-                                                        variant="h1" color={colors.red.main}><Image src={Trash}
-                                                                                                    alt={'icons'}/><span
-                                                style={{color: colors.black.main}}></span></Typography>
+                                            <Typography sx={{ cursor: "pointer" }} onClick={() => handelDeleted(item.id)}
+                                                variant="h1" color={colors.red.main}><Image src={Trash}
+                                                    alt={'icons'} /><span
+                                                        style={{ color: colors.black.main }}></span></Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -298,13 +332,13 @@ const PageSetting = () => {
                     </Grid>
 
                     <Grid item container lg={10} bgcolor={'white.main'} boxShadow={5} borderRadius={2}
-                          justifyContent={'space-between'} mt={5}>
+                        justifyContent={'space-between'} mt={5}>
                         <Grid item container lg={4} alignItems={'center'} justifyContent={'center'}>
                             <Typography variant={'h1'}>اضافه کردن متن </Typography>
 
                         </Grid>
                         <Grid item container lg={3} justifyContent={'center'}
-                              alignItems={'center'} p={2}>
+                            alignItems={'center'} p={2}>
 
                             <Typography variant={'h1'}>رنگ متن :</Typography>
 
@@ -317,20 +351,20 @@ const PageSetting = () => {
                                 cursor: 'pointer',
                                 marginLeft: 1
                             }} onClick={handleClick}>
-                                <Box style={{...colorsss, backgroundColor: `${color}`}}></Box>
+                                <Box style={{ ...colorsss, backgroundColor: `${color}` }}></Box>
                             </Box>
                             {displayColorPicker ? (
-                                <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                    <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                         onClick={handleClose}></Box>
-                                    <SketchPicker color={color} onChange={handleChangeColor}/>
+                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                        onClick={handleClose}></Box>
+                                    <SketchPicker color={color} onChange={handleChangeColor} />
                                 </Box>
                             ) : null}
 
                         </Grid>
 
                         <Grid item container lg={3} justifyContent={'center'}
-                              alignItems={'center'} p={2}>
+                            alignItems={'center'} p={2}>
                             <Typography variant={'h1'} p={1}>رنک بک گراند :</Typography>
 
                             <Box sx={{
@@ -342,20 +376,20 @@ const PageSetting = () => {
                                 cursor: 'pointer',
                                 marginLeft: 1
                             }} onClick={handleClickBackground}>
-                                <Box style={{...colorsss, backgroundColor: `${BackgroundColor}`}}></Box>
+                                <Box style={{ ...colorsss, backgroundColor: `${BackgroundColor}` }}></Box>
                             </Box>
                             {displayColorPickerbg ? (
-                                <Box sx={{position: 'absolute', zIndex: '2',}}>
-                                    <Box sx={{position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px',}}
-                                         onClick={handleCloseBackground}></Box>
-                                    <SketchPicker color={BackgroundColor} onChange={handleChangeBackground}/>
+                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                        onClick={handleCloseBackground}></Box>
+                                    <SketchPicker color={BackgroundColor} onChange={handleChangeBackground} />
                                 </Box>
                             ) : null}
                         </Grid>
 
                     </Grid>
 
-                    <form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
+                    <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
 
                         <Grid item container lg={12} justifyContent={'center'} p={2}>
                             <Grid item container lg={11}>
@@ -378,7 +412,7 @@ const PageSetting = () => {
                             </Grid>
                         </Grid>
                         <Grid item container justifyContent={"center"} p={2}
-                              lg={12} md={12}>
+                            lg={12} md={12}>
                             <MTButton submite type="submit">ثبت</MTButton>
                         </Grid>
                     </form>
@@ -392,16 +426,16 @@ const PageSetting = () => {
                 >
                     <Box sx={style}>
                         <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12} sm={12}
-                              bgcolor={'white.main'}>
+                            bgcolor={'white.main'}>
                             <Grid lg={12} md={12} item container justifyContent={'center'}>
                                 <Typography variant={'h1'} color={'black.main'}>ویرایش</Typography>
                             </Grid>
 
                             <Grid item container lg={12} bgcolor={'red'}>
                                 <Grid item container lg={5} justifyContent={'center'}
-                                      alignItems={'center'} p={2}>
+                                    alignItems={'center'} p={2}>
 
-                                    <Typography variant={'h1'} color={'balck.main'}>رنگ متن :</Typography>
+                                    <Typography variant={'h1'} color={'#000'}>رنگ متن :</Typography>
 
                                     <Box sx={{
                                         padding: '5px',
@@ -411,27 +445,27 @@ const PageSetting = () => {
                                         display: 'inline-block',
                                         cursor: 'pointer',
                                         marginLeft: 1
-                                    }} onClick={handleClick}>
-                                        <Box style={{...colorsss, backgroundColor: `${color}`}}></Box>
+                                    }} onClick={handleClickEdit}>
+                                        <Box style={{ ...colorsss, backgroundColor: `${colorEdit}` }}></Box>
                                     </Box>
-                                    {displayColorPicker ? (
-                                        <Box sx={{position: 'absolute', zIndex: '2',}}>
+                                    {displayColorPickerEdit ? (
+                                        <Box sx={{ position: 'absolute', zIndex: '2', }}>
                                             <Box sx={{
                                                 position: 'fixed',
                                                 top: '0px',
                                                 right: '0px',
                                                 bottom: '0px',
                                                 left: '0px',
-                                            }} onClick={handleClose}></Box>
-                                            <SketchPicker color={color} onChange={handleChangeColor}/>
+                                            }} onClick={handleCloseEdit}></Box>
+                                            <SketchPicker color={colorEdit} onChange={handleChangeColorEdit} />
                                         </Box>
                                     ) : null}
 
                                 </Grid>
 
                                 <Grid item container lg={7} justifyContent={'center'}
-                                      alignItems={'center'} p={2}>
-                                    <Typography variant={'h1'} color={'balck.main'} p={1}>رنگ بک گراند :</Typography>
+                                    alignItems={'center'} p={2}>
+                                    <Typography variant={'h1'} color={'#000'} p={1}>رنگ بک گراند :</Typography>
 
                                     <Box sx={{
                                         padding: '5px',
@@ -441,26 +475,26 @@ const PageSetting = () => {
                                         display: 'inline-block',
                                         cursor: 'pointer',
                                         marginLeft: 1
-                                    }} onClick={handleClickBackground}>
-                                        <Box style={{...colorsss, backgroundColor: `${BackgroundColor}`}}></Box>
+                                    }} onClick={handleClickBackgroundEdit}>
+                                        <Box style={{ ...colorsss, backgroundColor: `${BackgroundColorEdit}` }}></Box>
                                     </Box>
-                                    {displayColorPickerbg ? (
-                                        <Box sx={{position: 'absolute', zIndex: '2',}}>
+                                    {displayColorPickerbgEdit ? (
+                                        <Box sx={{ position: 'absolute', zIndex: '2', }}>
                                             <Box sx={{
                                                 position: 'fixed',
                                                 top: '0px',
                                                 right: '0px',
                                                 bottom: '0px',
                                                 left: '0px',
-                                            }} onClick={handleCloseBackground}></Box>
-                                            <SketchPicker color={BackgroundColor} onChange={handleChangeBackground}/>
+                                            }} onClick={handleCloseBackgroundEdit}></Box>
+                                            <SketchPicker color={BackgroundColorEdit} onChange={handleChangeBackgroundEdit} />
                                         </Box>
                                     ) : null}
                                 </Grid>
 
                             </Grid>
 
-                            <List sx={{width: '100%'}}>
+                            <List sx={{ width: '100%' }}>
                                 <form onSubmit={formiks.handleSubmit}>
                                     <Grid item container lg={12} p={2}>
                                         <FormControl fullWidth>
@@ -473,9 +507,9 @@ const PageSetting = () => {
                                                 name="phone"
                                                 value={formiks.values.phone}
                                                 onChange={formiks.handleChange}
-                                                // onBlur={formiks.handleBlur}
-                                                // error={formiks.touched.phone && Boolean(formiks.errors.phone)}
-                                                // helperText={formiks.touched.phone && formiks.errors.phone}
+                                            // onBlur={formiks.handleBlur}
+                                            // error={formiks.touched.phone && Boolean(formiks.errors.phone)}
+                                            // helperText={formiks.touched.phone && formiks.errors.phone}
 
                                             />
                                         </FormControl>
@@ -490,8 +524,8 @@ const PageSetting = () => {
                 </Modal>
 
                 <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
-                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleCloseAlert}>
+                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
                         <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>

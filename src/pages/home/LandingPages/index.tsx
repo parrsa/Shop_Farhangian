@@ -311,6 +311,7 @@ import Ubc1 from "@/Assets/images/Artboard 1 (3) 1 (1).png";
 import colors from '@/Assets/theme/base/colors';
 import MInput from '@/Components/Minput';
 import { Box } from 'devextreme-react';
+import url from '@/Api';
 
 const items = [
     {
@@ -337,7 +338,7 @@ const Example = (props: any) => {
     const [Product, setProduct] = React.useState<any[]>([])
     React.useEffect(() => {
         const GetData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Advertisement/GetAll')
+            const response = await fetch(`${url}/api/Advertisement/GetAll`)
             const data = await response.json()
             setProduct(data.data)
             console.log(data.data)
@@ -354,23 +355,32 @@ const Example = (props: any) => {
 export default Example;
 
 const Item = (props: any) => {
-    console.log(props)
     return (
-        <Paper sx={{ maxHeight: { lg: '60vh', xs: '60vh' }, minHeight: { lg: '60vh', xs: '50vh' }, display: 'flex' }}>
-            <Grid item container lg={12} justifyContent={'center'} flexDirection={{ xs: 'column-reverse', lg: 'row', sm: 'row', md: 'row' }}>
-                <Grid container justifyContent={'start'} bgcolor={`${props.item.backgroundColor}`} alignItems={'center'} flexDirection={'column'} lg={2.5} sm={3}>
-                    <Typography variant='h4' color={`${props.item.titleForeColor}`}>{props.item.title}</Typography>
-                    <Typography variant='h1' color={`${props.item.desForeColor}`}>{props.item.description}</Typography>
+        <Paper sx={{ maxHeight: { lg: '70vh', xs: '80vh' }, minHeight: { lg: '70vh', xs: '80vh' }, display: 'flex' }}>
+            <Grid item container lg={12} bgcolor={'red.main'} justifyContent={'center'} >
+                <Grid container justifyContent={'start'} sx={{ overflowY: 'scroll' }} bgcolor={`${props.item.backgroundColor}`} maxHeight={{ lg: '100%', xs: '30vh', sm: '100%' }} minHeight={{ lg: '100%', xs: '30vh', sm: '100%' }} alignItems={'center'} lg={2.5} sm={3}>
+                    <Grid item container lg={12} justifyContent={'center'} alignItems={'center'} >
+                        <Typography sx={{
+                            fontWeight: 900,
+                            lineHeight: 2,
+                        }} color={`${props.item.titleForeColor}`}>{props.item.title}</Typography>
+                    </Grid>
+                    <Grid item container lg={12} justifyContent={'center'} sx={{ overflow: 'hidden' }}>
+                        <Typography variant='subtitle2' fontSize={'16px'} color={`${props.item.desForeColor}`} p={1} sx={{
+                            textAlign: 'justify',
+                        }}>{props.item.description}</Typography>
+                    </Grid>
 
                     {/* <Button className="CheckButton">
                     Check it out!
                 </Button> */}
                 </Grid>
-                <Grid item container lg={9.5} sm={9} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} overflow={'hidden'}>
+                <Grid item container lg={9.5} sm={9} height={{ lg: '100%', xs: '50vh', sm: '100%' }} justifyContent={'center'} bgcolor={props.item.color} alignItems={'center'} >
                     <div className="carouselInner1"
                         // onClick={() => navigate(`/dashboard/${images[currImg].id}`)}
                         style={{
-                            // backgroundImage: `url(${Test[currImg].img})`,
+                            backgroundImage: `url(${url}/${props.item.image})`,
+                            backgroundColor: 'red',
                             cursor: 'pointer',
                             backgroundSize: 'cover', // Make sure the image covers the area without being stretched
                             backgroundPosition: 'center', // Center the background image
@@ -378,7 +388,7 @@ const Item = (props: any) => {
                             height: '100%' // Ensure the div takes the full height of its parent
                         }}
                     >
-                        <img src={`https://farhangian.birkar.ir/${props.item.image}`} style={{ width: '100&', height: '100%', objectFit: 'cover' }} alt={'images'} />
+                        {/* <img src={`${url}/${props.item.image}`}  alt={'images'} /> */}
 
 
                     </div>
@@ -387,6 +397,48 @@ const Item = (props: any) => {
                 </Grid>
 
             </Grid>
-        </Paper>
+        </Paper >
     );
 };
+
+
+
+
+// import { Box, Grid, Typography } from "@mui/material";
+// import colors from "../../../../Assets/theme/base/colors";
+// import MInput from "../../../../CustomMui/Minput";
+// import SearchImages from '../../../../Assets/images/Search.png'
+// import MIconButton from "../../../../CustomMui/MiconButton";
+// const LandingPage = () => {
+//     return (
+//         <Grid container about="landing pages" zIndex={-10} className="p" sx={{ backgroundSize: { xs: 'cover', md: "cover", lg: 'cover' } }} height={{ lg: "100vh", xs: '95vh', md: '100vh' }} justifyContent={"center"} alignItems={"center"} md={12}>
+//             <Grid item container position={"absolute"} mt={{ lg: 12 }} lg={12} justifyContent={"center"} alignItems={"start"} gap={5} >
+//                 <Grid container item lg={8} alignItems={"center"} flexDirection={"column"}>
+//                     <Typography variant="h3" fontSize={{ lg: "65px", xs: '35px', md: "50px" }}>هر حرفه ایی که لازم داری </Typography>
+//                     <Typography variant="h1" fontSize={{ lg: "150px", xs: '35px', md: "50px" }}>با کارناس پیدا کن</Typography>
+//                 </Grid>
+//                 <Grid container item lg={12} md={12} mt={{ lg: '10px' }} height={{ lg: "15vh", md: '15vh', xs: "15vh" }} justifyContent={"center"}>
+//                     <Grid item container lg={6} md={6} >
+//                         <Grid item container justifyContent={"center"} alignItems={"center"} flexDirection={"column"} lg={12} md={12} >
+//                             <Box sx={{ width: '80%', height: '55px', borderRadius: '20rem', backgroundColor: '#2A2A2A', border: `1px solid ${colors.kaarnas.yellow}`, display: 'flex' }} justifyContent={""} alignItems={"center"}>
+//                                 <MInput sx={{
+//                                     width: '91.5%',
+//                                     "& .MuiInputBase-root": {
+//                                         color: colors.white.main + "!important"
+//                                     },
+//                                 }} search id="outlined-basic" label="جست و جو . . ." variant="outlined" />
+//                                 <MIconButton suze={"small"} SearchBox  >
+//                                     <img src={SearchImages} alt="icons" width={"25px"} height={"25px"} />
+//                                 </MIconButton>
+//                             </Box>
+//                             <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است</Typography>
+//                         </Grid>
+//                     </Grid>
+//                 </Grid>
+//             </Grid>
+
+//         </Grid>
+//     )
+// }
+// export default LandingPage
+

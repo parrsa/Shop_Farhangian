@@ -10,7 +10,8 @@ export default function Home() {
     return (
         <>
             <Head >
-                <title>تعاونی مصرف فرهنگیان</title>
+            <title>فروشگاه تعاونی مصرف فرهنگیان</title>
+
             </Head>
             <Homes />
         </>

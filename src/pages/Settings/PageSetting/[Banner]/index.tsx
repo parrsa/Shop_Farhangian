@@ -39,6 +39,8 @@ import { SketchPicker } from "react-color";
 import Image from "next/image";
 import Edite from "@/Assets/images/nimbus_edit.svg";
 import Trash from "@/Assets/images/circum_trash.svg";
+import url from '@/Api';
+
 const formValidationSchema = yup.object({
     phone: yup.string().required('شماره موبایل الزامی است'),
     pass: yup.string().required('رمزعبور الزامی است'),
@@ -78,7 +80,7 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Banner/GetAll')
+            const response = await fetch(`${url}/api/Banner/GetAll`)
             const data = await response.json();
             setOstan(data.data);
         }
@@ -105,6 +107,37 @@ const PageSetting = () => {
     };
     const [loading, setLoading] = useState(false); // وضعیت لودینگ برای ارسال درخواست به سرور
 
+    const [displayColorPickerBackgroundColor, setDisplayColorPickerBackgroundColor] = React.useState(false);
+    const [BackgroundColor, SetBackgroundColor] = React.useState('400606')
+
+    const handleChangeBackground = (newColor: any) => {
+        SetBackgroundColor(newColor.hex)
+    }
+    const handleClickBackground = () => {
+        setDisplayColorPickerBackgroundColor(!displayColorPickerBackgroundColor);
+    };
+
+    const handleCloseBackground = () => {
+        setDisplayColorPickerBackgroundColor(false);
+    };
+
+
+    const [displayColorPickerTitleColor, setDisplayColorPickerTitleColor] = React.useState(false);
+    const [TitleColor, SetTitleColor] = React.useState('400606')
+    const handleChangeTitle = (newColor: any) => {
+        SetTitleColor(newColor.hex)
+
+    }
+    const handleClickTitle = () => {
+        setDisplayColorPickerTitleColor(!displayColorPickerTitleColor);
+    };
+
+    const handleCloseTitle = () => {
+        setDisplayColorPickerTitleColor(false);
+    };
+
+
+
     const formik = useFormik({
         initialValues: {
             phone: '',
@@ -127,11 +160,13 @@ const PageSetting = () => {
                     const formData = new FormData();
                     formData.append('title', values.phone);
                     formData.append('description', values.pass);
+                    formData.append('BackColor', BackgroundColor);
+                    formData.append('Color', TitleColor);
                     if (uploadedFile) {
                         formData.append('Image', uploadedFile);
                     }
 
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/Banner/Create`,
+                    const response = await axios.post(`${url}/api/Banner/Create`,
                         formData,
                         config
                     )
@@ -174,7 +209,7 @@ const PageSetting = () => {
                 }
             }
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Banner/Delete?id=${item}`,
+                const response = await axios.delete(`${url}/api/Banner/Delete?id=${item}`,
                     config
                 )
                 if (response.status === 200) {
@@ -211,7 +246,7 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/Advertisement/GetById?id=${item}`, config)
+                const response = await fetch(`${url}/api/Banner/GetById?id=${item}`, config)
                 const data = await response.json();
                 setEditDate(data.data)
             } catch (error) {
@@ -269,13 +304,44 @@ const PageSetting = () => {
         }));
     };
 
+
+
+    const [displayColorPickerBackgroundColorEdit, setDisplayColorPickerBackgroundColorEdit] = React.useState(false);
+    const [BackgroundColorEdit, SetBackgroundColorEdit] = React.useState('400606')
+
+    const handleChangeBackgroundEdit = (newColor: any) => {
+        SetBackgroundColorEdit(newColor.hex)
+    }
+    const handleClickBackgroundEdit = () => {
+        setDisplayColorPickerBackgroundColorEdit(!displayColorPickerBackgroundColorEdit);
+    };
+
+    const handleCloseBackgroundEdit = () => {
+        setDisplayColorPickerBackgroundColorEdit(false);
+    };
+
+
+    const [displayColorPickerTitleColorEdit, setDisplayColorPickerTitleColorEdit] = React.useState(false);
+    const [TitleColorEdit, SetTitleColorEdit] = React.useState('400606')
+    const handleChangeTitleEdit = (newColor: any) => {
+        SetTitleColorEdit(newColor.hex)
+
+    }
+    const handleClickTitleEdit = () => {
+        setDisplayColorPickerTitleColorEdit(!displayColorPickerTitleColorEdit);
+    };
+
+    const handleCloseTitleEdit = () => {
+        setDisplayColorPickerTitleColorEdit(false);
+    };
+
+
     const formiksEdit = useFormik({
         initialValues: {
             phone: '',
         },
         validationSchema: formValidationSchemas,
         onSubmit: (values) => {
-            alert(id)
             const Submite = async () => {
                 const config = {
                     headers: {
@@ -291,12 +357,14 @@ const PageSetting = () => {
                     formData.append('Id', id ?? '');
                     formData.append('Title', profile.title);
                     formData.append('Description', profiles.description);
+                    formData.append('BackColor', BackgroundColorEdit);
+                    formData.append('Color', TitleColorEdit);
                     if (uploadedFileEdit) {
                         formData.append('Image', uploadedFileEdit);
                     }
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/Banner/Edit',
+                        `${url}/api/Banner/Edit`,
                         formData,
                         config
                     );
@@ -375,10 +443,56 @@ const PageSetting = () => {
             </Grid>
             <Grid item container lg={10} boxShadow={5} mt={5} justifyContent={'space-evenly'} borderRadius={2} bgcolor={'white.main'}>
                 <Grid item container lg={12} p={2}>
-                    <Grid item container lg={3} alignItems={'center'}>
+                    <Grid item container lg={6} alignItems={'center'}>
                         <Typography variant={'h1'} p={0.5}>بنر صفحه اصلی </Typography>
                     </Grid>
+                    <Grid item container lg={6} justifyContent={'end'}>
+                        <Grid item container lg={4} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+                            <Typography variant={'caption'} p={0}>انتخاب رنگ پس زمینه </Typography>
+                            <Box sx={{
+                                padding: '5px',
+                                background: '#fff',
+                                borderRadius: '1px',
+                                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                                display: 'inline-block',
+                                cursor: 'pointer',
+                                marginLeft: 1
+                            }} onClick={handleClickBackground}>
+                                <Box style={{ ...colorsss, backgroundColor: `${BackgroundColor}` }}></Box>
+                            </Box>
+                            {displayColorPickerBackgroundColor ? (
+                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                        onClick={handleCloseBackground}></Box>
+                                    <SketchPicker color={BackgroundColor} onChange={handleChangeBackground} />
+                                </Box>
+                            ) : null}
 
+                        </Grid>
+                        <Grid item container lg={4} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+                            <Typography variant={'caption'}>انتخاب رنگ عنوان متن </Typography>
+                            <Box sx={{
+                                padding: '5px',
+                                background: '#fff',
+                                borderRadius: '1px',
+                                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                                display: 'inline-block',
+                                cursor: 'pointer',
+                                marginLeft: 1
+                            }} onClick={handleClickTitle}>
+                                <Box style={{ ...colorsss, backgroundColor: `${TitleColor}` }}></Box>
+                            </Box>
+                            {displayColorPickerTitleColor ? (
+                                <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                    <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                        onClick={handleCloseTitle}></Box>
+                                    <SketchPicker color={TitleColor} onChange={handleChangeTitle} />
+                                </Box>
+                            ) : null}
+
+
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
                     <Grid item container lg={12} p={2}>
@@ -488,8 +602,55 @@ const PageSetting = () => {
                         md={12} xs={12} sm={12} bgcolor={'white.main'}>
                         <List sx={{ width: '100%' }}>
                             <Grid item container lg={12} p={2} sx={{ color: 'black.main' }}>
-                                <Grid item container lg={3} alignItems={'center'}>
-                                    <Typography variant={'h1'} p={0.5}>نوار تبلیغاتی صفحه اصلی </Typography>
+                                <Grid item container lg={6} alignItems={'center'}>
+                                    <Typography variant={'h1'} p={0.5}>نوار بنر صفحه اصلی </Typography>
+                                </Grid>
+                                <Grid item container lg={6} justifyContent={'end'}>
+                                    <Grid item container lg={4} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+                                        <Typography variant={'caption'} p={0}>انتخاب رنگ پس زمینه </Typography>
+                                        <Box sx={{
+                                            padding: '5px',
+                                            background: '#fff',
+                                            borderRadius: '1px',
+                                            boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                                            display: 'inline-block',
+                                            cursor: 'pointer',
+                                            marginLeft: 1
+                                        }} onClick={handleClickBackgroundEdit}>
+                                            <Box style={{ ...colorsss, backgroundColor: `${BackgroundColorEdit}` }}></Box>
+                                        </Box>
+                                        {displayColorPickerBackgroundColorEdit ? (
+                                            <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                                <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                                    onClick={handleCloseBackgroundEdit}></Box>
+                                                <SketchPicker color={BackgroundColorEdit} onChange={handleChangeBackgroundEdit} />
+                                            </Box>
+                                        ) : null}
+
+                                    </Grid>
+                                    <Grid item container lg={4} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+                                        <Typography variant={'caption'}>انتخاب رنگ عنوان متن </Typography>
+                                        <Box sx={{
+                                            padding: '5px',
+                                            background: '#fff',
+                                            borderRadius: '1px',
+                                            boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                                            display: 'inline-block',
+                                            cursor: 'pointer',
+                                            marginLeft: 1
+                                        }} onClick={handleClickTitleEdit}>
+                                            <Box style={{ ...colorsss, backgroundColor: `${TitleColorEdit}` }}></Box>
+                                        </Box>
+                                        {displayColorPickerTitleColorEdit ? (
+                                            <Box sx={{ position: 'absolute', zIndex: '2', }}>
+                                                <Box sx={{ position: 'fixed', top: '0px', right: '0px', bottom: '0px', left: '0px', }}
+                                                    onClick={handleCloseTitleEdit}></Box>
+                                                <SketchPicker color={TitleColorEdit} onChange={handleChangeTitleEdit} />
+                                            </Box>
+                                        ) : null}
+
+
+                                    </Grid>
                                 </Grid>
                             </Grid>
                             <form onSubmit={formiksEdit.handleSubmit} style={{ width: '100%' }}>

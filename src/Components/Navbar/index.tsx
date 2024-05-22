@@ -5,16 +5,20 @@ import {
     IconButton,
     Menu,
     MenuItem,
+    Button,
     Grid,
     Drawer,
     List,
     ListItemIcon,
     MenuList, Avatar, Modal, Tooltip, ListItemButton,
+    MenuProps,
+    Popover,
+    ListItem,
+    ListItemText,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Setting from '@/Assets/images/settings.png'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { usePathname } from 'next/navigation';
@@ -33,8 +37,16 @@ import Category from '@/Assets/images/list.png'
 import { Box } from 'devextreme-react';
 import MInput from '../Minput';
 import LoginIcon from '@mui/icons-material/Login';
-
+import url from '@/Api';
 const drawerWidth = 200;
+import EditIcon from '@mui/icons-material/Edit';
+import Divider from '@mui/material/Divider';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import styled from 'styled-components';
+import { CSSTransition } from 'react-transition-group';
 
 const Navbars = ({ saveValue }: any) => {
 
@@ -78,9 +90,9 @@ const Navbars = ({ saveValue }: any) => {
     }
 
     const handleLogout = () => {
+        router.push('/login');
         Cookies.remove('TokenLogin');
         Cookies.remove('Stamp');
-        router.push('/login');
     };
     const handleMenuItemClick = (child: any) => {
         // dispath(saveValue(child.title);
@@ -93,12 +105,13 @@ const Navbars = ({ saveValue }: any) => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll')
+            const response = await fetch(`${url}/api/Category/GetAll`)
             const data = await response.json();
             setCategory(data.data);
         }
         getData()
     }, []);
+
 
     const [inputValue, setInputValue] = React.useState('');
 
@@ -111,10 +124,91 @@ const Navbars = ({ saveValue }: any) => {
     const handleChange = (event: any) => {
         setInputValue(event.target.value);
     };
+    const [CategoryId, setIdCategoryNames] = React.useState<any>();
+    const [SubCategory, setSubCategory] = React.useState<any[]>([]);
+
+    useEffect(() => {
+        const getData = async () => {
+            // https://tmfn2sna.ir/=1
+            const response = await fetch(`${url}/api/Category/GetById?id=${CategoryId}`)
+            const data = await response.json();
+            setSubCategory(data.data)
+            // setProduct(data.data);
+        }
+        getData()
+    }, [CategoryId])
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openSubCategory, setOpenSubCategory] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const Categoryss = [
+        { id: 1, categoryName: 'Category 1', subCategories: [{ id: 11, subCategoryName: 'Subcategory 11' }, { id: 12, subCategoryName: 'Subcategory 12' }] },
+        { id: 2, categoryName: 'Category 2', subCategories: [{ id: 21, subCategoryName: 'Subcategory 21' }, { id: 22, subCategoryName: 'Subcategory 22' }] },
+    ];
+
+    const handleClick = (event: any, categoryId: any) => {
+        setAnchorEl(event.currentTarget);
+        // setOpenSubCategory(categoryId);
+        setSelectedCategory(categoryId);
+
+    };
+
+    // const handleClose = () => {
+    //     setAnchorEl(null);
+    //     // setOpenSubCategory(null);
+    //     // setSelectedCategory(null);
+
+    // };
+    // const handleOpen = (event, categoryId) => {
+    //     setAnchorEl(event.currentTarget);
+    //     setSelectedCategory(categoryId);
+    // };
+    const [openSubmenu, setOpenSubmenu] = useState(null);
+    const [anchorElmobile, setAnchorElmobile] = useState(false);
+    const [openSubmenumobile, setOpenSubmenumobile] = useState(null);
+    const [openmobile, setopenmobile] = React.useState(false)
+    const [Id, setID] = React.useState();
+
+    const handleAddFruit = (item: any) => {
+        setID(item);
+        setopenmobile(!openmobile);
+    };
+
+    const handleOpenMenumobile = (event: any) => {
+        setAnchorElmobile(!anchorElmobile);
+    };
+
+    const handleClosemobile = () => {
+        setAnchorElmobile(!anchorElmobile);
+        setOpenSubmenumobile(null);
+        // setopenmobile(!openmobile);
+    };
+    const handleOpenMenu = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setSelectedCategory(null);
+        setOpenSubmenu(null);
+    };
+
+    const handleOpenSubmenu = (event: any, categoryId: any) => {
+        setSelectedCategory(categoryId);
+        setOpenSubmenu(categoryId);
+    };
+
+
+
+
+
     return (
         <AppBar
             sx={{
-                backgroundColor: {lg:'#F5F5F5' , xs:'#1E1E1E' , sm:'#1E1E1E' , md:'#F5F5F5'},
+                backgroundColor: { lg: '#F5F5F5', xs: '#1E1E1E', sm: '#1E1E1E', md: '#F5F5F5' },
                 margin: 0,
                 padding: 0,
                 boxShadow: 0,
@@ -122,7 +216,7 @@ const Navbars = ({ saveValue }: any) => {
             }}
         >
             <Toolbar>
-                <Grid item container  lg={12} md={12} justifyContent="space-evenly">
+                <Grid item container lg={12} md={12} justifyContent="space-evenly">
                     <Grid item container justifyContent={'space-between'} sx={{ display: { lg: 'none', md: 'none' } }} p={1} alignItems={'center'} >
 
                         <Grid item container xs={1} sm={1} justifyContent={'end'}>
@@ -232,15 +326,106 @@ const Navbars = ({ saveValue }: any) => {
                                         </>
                                     }
 
-                                    {Cook && (
-                                        <>
+
+                                    {/* <Button onClick={handleOpenMenumobile} variant="contained">
+                                        Open Menus
+                                    </Button> */}
+                                    <MenuItem
+                                        onClick={handleOpenMenumobile}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            fontFamily: 'Shabname',
+                                            color: 'white.main',
+                                        }}>
+
+                                        <MenuList>محصولات</MenuList>
+                                    </MenuItem>
+                                    {/* Mobile Drawer for the main menu */}
+                                    <Drawer
+                                        sx={{
+                                            backgroundColor: '#1E1E1E',
+                                            width: drawerWidth,
+                                            flexShrink: 0,
+                                            '& .MuiDrawer-paper': {
+                                                backgroundColor: '#1E1E1E',
+                                                width: drawerWidth,
+                                                boxSizing: 'border-box',
+                                            },
+                                        }}
+                                        anchor="left" open={anchorElmobile} onClose={handleClosemobile}>
+                                        <List >
                                             <MenuItem sx={{
                                                 cursor: 'pointer',
                                                 fontFamily: 'Shabname',
                                                 color: 'white.main',
                                             }}>
+                                                <ListItemIcon>
+                                                    <Image src={logout} width={25} height={25} alt="icon" />
+                                                </ListItemIcon>
+                                                <MenuList onClick={handleClosemobile}>بستن</MenuList>
+                                            </MenuItem>
+                                            {/* <button >parsa</button> */}
+                                            {Categorys.map((category) => (
+                                                <>  <ListItem
+                                                    key={category.id}
+                                                    button
+                                                    sx={{
+                                                        color: 'white.main',
 
-                                                <MenuList onClick={handleLogout}>خروج</MenuList>
+                                                    }}
+                                                    onClick={() => handleAddFruit(category.id)}
+                                                // onClick={(event) => handleOpenSubmenu(event, category.id)}
+                                                >
+                                                    <ListItemText primary={category.categoryName} />
+
+
+                                                </ListItem>
+                                                    <List sx={{ width: '100%' }}>
+                                                        <CSSTransition key={category.id} in={Id === category.id && openmobile} timeout={300} classNames="fade" unmountOnExit>
+                                                            <Grid item container lg={12} key={category.id}>
+                                                                {category.subCategories.map((subCategory: any) => (
+                                                                    <List
+                                                                        onClick={() => handleMenuItemClick(subCategory.id)}
+                                                                        key={subCategory.id}
+                                                                        sx={{
+                                                                            fontFamily: 'Shabname',
+                                                                            p: 1.5,
+                                                                            backgroundColor: 'white.main',
+                                                                            flexDirection: 'row',
+                                                                            width: '100%', // Set width to ensure items are aligned properly
+                                                                        }}
+                                                                    >
+                                                                        {subCategory.subCategoryName}
+                                                                    </List>
+                                                                ))}
+                                                            </Grid>
+
+                                                            {/*<Grid item container p={2} lg={4} xs={6}*/}
+                                                            {/*      justifyContent={'center'} alignItems={"center"}*/}
+                                                            {/*      flexDirection={"column"}>*/}
+                                                            {/*    <Mbutton onClick={() => handleOpen(item.id)} submite*/}
+                                                            {/*             sx={{color: 'white.main'}}>حذف شکایت</Mbutton>*/}
+                                                            {/*</Grid>*/}
+                                                        </CSSTransition>
+                                                    </List>
+                                                </>
+
+                                            ))}
+                                        </List>
+
+
+
+                                    </Drawer>
+
+                                    {Cook && (
+                                        <>
+                                            <MenuItem onClick={handleLogout} sx={{
+                                                cursor: 'pointer',
+                                                fontFamily: 'Shabname',
+                                                color: 'white.main',
+                                            }}>
+
+                                                <MenuList >خروج</MenuList>
                                             </MenuItem>
                                         </>
                                     )}
@@ -370,8 +555,11 @@ const Navbars = ({ saveValue }: any) => {
                                     )
                                 })
                             }
+                            {/* <Button onClick={handleOpenMenu} variant="contained">
+                                Open Menu
+                            </Button> */}
                             <MenuItem
-                                onClick={(e: any) => handleClickparsa(e)}
+                                onClick={handleOpenMenu}
                                 sx={{
                                     cursor: 'pointer',
                                     fontFamily: 'Shabname',
@@ -380,56 +568,71 @@ const Navbars = ({ saveValue }: any) => {
                                 <ListItemIcon>
                                     <Image src={Category} width={25} height={25} alt="icon" />
                                 </ListItemIcon>
-                                <MenuList>
-                                    محصولات
-                                </MenuList>
+                                <MenuList>محصولات</MenuList>
                             </MenuItem>
-
                             <Menu
-                                // id={`basic-menu-${item.id}`}
-                                anchorEl={anchorElparsa}
-                                open={Boolean(anchorElparsa)}
-                                onClose={handleCloseparsa}
-                                MenuListProps={{
-                                    // 'aria-labelledby': `basic-button-${item.id}`,
-                                }}
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
                                 PaperProps={{
                                     elevation: 1,
                                     sx: {
-                                        overflow: 'visible',
-                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                        mt: 1.5,
-                                        '& .MuiAvatar-root': {
-                                            width: 32,
-                                            height: 32,
-                                            ml: -0.5,
-                                            mr: 1,
-                                        },
-                                        '&::before': {
-                                            content: '""',
-                                            display: 'block',
-                                            position: 'absolute',
-                                            top: 0,
-                                            right: 50,
-                                            width: 10,
-                                            height: 10,
-                                            bgcolor: 'background.paper',
-                                            transform: 'translateY(-50%) rotate(45deg)',
-                                            zIndex: 0,
-                                        },
+                                        borderRadius: '10px',
+                                        backgroundColor: 'white',
+                                        width: '200px',
                                     },
                                 }}
-                                transformOrigin={{ horizontal: 'center', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                             >
-                                {Categorys?.map((item, index) => (
-                                    <MenuItem key={item.id} onClick={() => handleMenuItemClick(item.id)} sx={{ fontFamily: 'Shabname', p: 1.5 }}  >
-                                        {item.categoryName}
-                                    </MenuItem>
+                                {Categorys?.map((category) => (
+                                    <div key={category.id}>
+                                        <MenuItem
+                                            onClick={(event) => handleOpenSubmenu(event, category.id)}
+                                            sx={{
+                                                cursor: 'pointer',
+                                                fontFamily: 'Shabname',
+                                                color: 'black.main',
+                                            }}
+                                        >
+                                            {category.categoryName}
+                                        </MenuItem>
+                                        {openSubmenu === category.id && (
+                                            <Menu
+                                                anchorEl={anchorEl}
+                                                open={openSubmenu === category.id}
+                                                onClose={handleClose}
+
+                                                PaperProps={{
+                                                    elevation: 1,
+                                                    sx: {
+                                                        borderRadius: '10px',
+                                                        backgroundColor: 'white',
+                                                        width: '200px',
+                                                    },
+                                                }}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'left',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                            >
+                                                {category.subCategories.map((subCategory: any) => (
+                                                    <MenuItem
+                                                        onClick={() => handleMenuItemClick(subCategory.id)}
+                                                        key={subCategory.id}
+                                                        sx={{ fontFamily: 'Shabname', p: 1.5 }}
+                                                    >
+                                                        {subCategory.subCategoryName}
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        )}
+                                    </div>
                                 ))}
-
-
                             </Menu>
+
                             {CookStamp === 'Admin' &&
                                 <>
                                     <Link href={'/Settings'}>
@@ -492,7 +695,7 @@ const Navbars = ({ saveValue }: any) => {
 
                             {Cook && (
                                 <>
-                                    <MenuItem sx={{
+                                    <MenuItem onClick={handleLogout} sx={{
                                         cursor: 'pointer',
                                         fontFamily: 'Shabname',
                                         color: 'black.main',
@@ -500,7 +703,7 @@ const Navbars = ({ saveValue }: any) => {
                                         <ListItemIcon>
                                             <Image src={logout} width={25} height={25} alt="icon" />
                                         </ListItemIcon>
-                                        <MenuList onClick={handleLogout}>خروج</MenuList>
+                                        <MenuList >خروج</MenuList>
                                     </MenuItem>
                                 </>
                             )}
@@ -508,7 +711,7 @@ const Navbars = ({ saveValue }: any) => {
                     </Grid>
                 </Grid>
             </Toolbar>
-        </AppBar>
+        </AppBar >
     );
 };
 

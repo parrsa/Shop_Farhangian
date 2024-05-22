@@ -9,6 +9,7 @@ import DashboardLayout from "@/Components/Dashboard/Layout";
 import MyImage
     from "@/Assets/images/circum_trash.svg";
 import Link from "next/link";
+import url from '@/Api';
 
 function Clubs() {
     const [ostan, setOstan] = React.useState<any[]>([]);
@@ -19,7 +20,7 @@ function Clubs() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll')
+            const response = await fetch(`${url}/api/News/GetAll`)
             const data = await response.json();
             setOstan(data.data);
         }
@@ -83,7 +84,7 @@ function Clubs() {
                                                         }}
                                                         component="img"
 
-                                                        image={`https://farhangian.birkar.ir/${item.image}`}
+                                                        image={`${url}/${item.image}`}
                                                         alt="green iguana"
                                                     />
                                                     <CardContent sx={{

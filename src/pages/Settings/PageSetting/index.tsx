@@ -39,6 +39,8 @@ import { SketchPicker } from "react-color";
 import Image from "next/image";
 import Edite from "@/Assets/images/nimbus_edit.svg";
 import Trash from "@/Assets/images/circum_trash.svg";
+import url from '@/Api';
+
 import Banner from "@/pages/Settings/PageSetting/[Banner]";
 const formValidationSchema = yup.object({
     phone: yup.string().required('شماره موبایل الزامی است'),
@@ -79,7 +81,7 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Advertisement/GetAll')
+            const response = await fetch(`${url}/api/Advertisement/GetAll`)
             const data = await response.json();
             setOstan(data.data);
         }
@@ -117,10 +119,8 @@ const PageSetting = () => {
     // Chose TitleColor
     const [displayColorPickerTitleColor, setDisplayColorPickerTitleColor] = React.useState(false);
     const [TitleColor, SetTitleColor] = React.useState('400606')
-    console.log(TitleColor)
     const handleChangeTitle = (newColor: any) => {
         SetTitleColor(newColor.hex)
-        console.log(newColor)
 
     }
     const handleClickTitle = () => {
@@ -138,11 +138,9 @@ const PageSetting = () => {
     // Chose TextColor
     const [displayColorPickerTextColor, setDisplayColorPickerTextColor] = React.useState(false);
     const [TextColor, SetTextColor] = React.useState('400606')
-    console.log(TextColor)
 
     const handleChangeText = (newColor: any) => {
         SetTextColor(newColor.hex)
-        console.log(newColor.hex)
     }
     const handleClickText = () => {
         setDisplayColorPickerTextColor(!displayColorPickerTextColor);
@@ -201,7 +199,7 @@ const PageSetting = () => {
                         formData.append('Image', uploadedFile);
                     }
 
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/Advertisement/Create`,
+                    const response = await axios.post(`${url}/api/Advertisement/Create`,
                         formData,
                         config
                     )
@@ -243,7 +241,7 @@ const PageSetting = () => {
                 }
             }
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Advertisement/Delete?id=${item}`,
+                const response = await axios.delete(`${url}/api/Advertisement/Delete?id=${item}`,
                     config
                 )
                 if (response.status === 200) {
@@ -285,7 +283,7 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/Advertisement/GetById?id=${item}`, config)
+                const response = await fetch(`${url}/api/Advertisement/GetById?id=${item}`, config)
                 const data = await response.json();
                 setEditDate(data.data)
             } catch (error) {
@@ -400,11 +398,6 @@ const PageSetting = () => {
         },
         validationSchema: formValidationSchemas,
         onSubmit: (values) => {
-            console.log(
-                BackgroundColorEdit,
-                TextColorEdit,
-                TitleColorEdit
-            )
             const Submite = async () => {
                 const config = {
                     headers: {
@@ -428,7 +421,7 @@ const PageSetting = () => {
                     }
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/Advertisement/Edit',
+                        `${url}/api/Advertisement/Edit`,
                         formData,
                         config
                     );

@@ -582,13 +582,14 @@ import logo from '@/Assets/images/HamedanLogo 1.webp'
 import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
 import {Theme, useTheme} from '@emotion/react';
-
+    
 import FormControl from "@mui/material/FormControl";
 import {useCookies} from "react-cookie";
 import {useRouter} from "next/router";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import colors from "@/Assets/theme/base/colors";
 import Link from "next/link";
+import url from '@/Api';
 
 const background = require("../../Assets/images/5066999 2.png")
 
@@ -645,7 +646,7 @@ const Login = () => {
                     }
                 }
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/User/Register`,
+                    const response = await axios.post(`${url}/api/User/Register`,
                         {
                             personCode: values.personCode,
                             firstName: values.fname,

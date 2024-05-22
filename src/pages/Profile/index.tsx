@@ -13,6 +13,7 @@ import axios from "axios";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
+import url from '@/Api';
 
 const formValidationSchema = yup.object({
     Address: yup.string().required('انتخاب آدرس الزامی است'),
@@ -71,7 +72,7 @@ const Profiles = () => {
                     Authorization: `Bearer ${Cook}`,
                 }
             };
-            const response = await fetch(`https://farhangian.birkar.ir/api/User/Profile`, config)
+            const response = await fetch(`${url}/api/User/Profile`, config)
             const data = await response.json();
             setOstan(data.data)
         }
@@ -104,7 +105,7 @@ const Profiles = () => {
     const HandellSubmite = () => {
         if (Disable) {
             setDisable(false)
-        } else if (Name || FName || birth_date || Address || PhoneNumber || FatherName || CodeMeli || uploadedFile) {
+        } else if (birth_date || Address || PhoneNumber || FatherName || uploadedFile) {
             const poshtibani = async () => {
                 const config = {
                     headers: {
@@ -125,7 +126,7 @@ const Profiles = () => {
                     if (uploadedFile) {
                         formData.append('image', uploadedFile ? uploadedFile : imageServers.toString());
                     }
-                    const response = await axios.put(`https://farhangian.birkar.ir/api/User/Update `,
+                    const response = await axios.put(`${url}/api/User/Update `,
                         formData,
                         config
                     )
@@ -165,7 +166,7 @@ const Profiles = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/User/Profile`, config);
+                const response = await fetch(`${url}/api/User/Profile`, config);
                 const data = await response.json();
                 setUserInfo(data.data);
 
@@ -185,8 +186,8 @@ const Profiles = () => {
                         <Grid item container lg={10} sm={7} xs={12} justifyContent={{ lg: "space-between", xs: 'center', sm: 'center', md: "space-between" }} alignItems={"center"}>
                             <Grid item container lg={4} alignItems={{ lg: "start", xs: 'center', sm: 'center', md: 'start' }} flexDirection={"column"}>
                                 <Typography variant="h4" color={colors.black.main}>اطلاعات کاربری</Typography>
-                                <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی
-                                    {Profile.map((item) => item.codeMelli)}   نامفهوم از صنعت چاپ </Typography>
+                                {/* <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی
+                                    {Profile.map((item) => item.codeMelli)}   نامفهوم از صنعت چاپ </Typography> */}
                             </Grid>
                         </Grid>
 
@@ -202,12 +203,12 @@ const Profiles = () => {
                                     alignItems: 'center',
                                     backgroundColor: colors.farhangian.blue, flexDirection: 'column',
                                 }}>
-                                    <Typography variant={'caption'}> مبلغ قسط: <span
-                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                                    <Typography variant={'caption'}> مبلغ مانده: <span
-                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
-                                    <Typography variant={'caption'}> مبلغ بدهی: <span
-                                        style={{ marginRight: 10 }}>{UserInfo?.mablagheVam?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                    <Typography variant={'caption'} color={'#fff'}> مبلغ قسط ماه جاری: <span
+                                    style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                <Typography variant={'caption'} color={'#fff'}>  مبلغ مانده بدهی: <span
+                                    style={{ marginRight: 10 }}>{UserInfo?.mablagheMande?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
+                                <Typography variant={'caption'} color={'#fff'}>میزان اخرین سرمایه : <span
+                                    style={{ marginRight: 10 }}>{UserInfo?.mablaghSarmaye?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>
                                 </Grid>
                                 {/*<MBox UserState sx={{ flexDirection: 'column', justifyContent: 'center' }}>*/}
                                 {/*    <Typography variant={'caption'}> مبلغ قسط: <span style={{ marginRight: 10 }}>{UserInfo?.mablagheGhest?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال </span></Typography>*/}
@@ -229,7 +230,7 @@ const Profiles = () => {
 
                     <Grid lg={12} item container justifyContent={'space-around'} >
                         <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} >
-                            <img src={`https://farhangian.birkar.ir/${item?.image}`} alt="User" style={{ width: 150, height: 150, borderRadius: '50%' }} />
+                            <img src={`${url}/${item?.image}`} alt="User" style={{ width: 150, height: 150, borderRadius: '50%' }} />
                         </Grid>
 
                         <Grid item container justifyContent={'center'} lg={6} alignItems={'center'} p={2}>

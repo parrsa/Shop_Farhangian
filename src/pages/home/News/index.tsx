@@ -3,6 +3,7 @@ import { Grid, Box, Typography, Divider, Card, CardContent, CardMedia } from "@m
 import colors from "@/Assets/theme/base/colors";
 import Link from "next/link";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import url from '@/Api';
 
 function NewProduct() {
     const [news, setNews] = useState([]);
@@ -11,7 +12,7 @@ function NewProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://farhangian.birkar.ir/api/News/GetAll');
+                const response = await fetch(`${url}/api/News/GetAll`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -46,7 +47,7 @@ function NewProduct() {
                         <Box key={index} ref={boxRef} my={4}>
                             <Link href={`/News/${item.id}`}>
                                 <Card sx={{ width: '300px', height: "380px", borderRadius: '1rem', outline: "none", border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "center", boxShadow: 2, transition: 'box-shadow 0.3s', '&:hover': { cursor: "pointer", boxShadow: 10 } }}>
-                                    <CardMedia sx={{ position: 'relative', top: "0", right: "0", minHeight: 300, maxHeight: 300 }} component="img" image={`https://farhangian.birkar.ir/${item.image}`} alt="news image" />
+                                    <CardMedia sx={{ position: 'relative', top: "0", right: "0", minHeight: 300, maxHeight: 300 }} component="img" image={`${url}/${item.image}`} alt="news image" />
                                     <CardContent sx={{ position: 'relative', textAlign: 'center', display: 'flex', flexDirection: "column", alignItems: 'center' }}>
                                         <Typography gutterBottom variant="h1" component="h2">
                                             {item.title}

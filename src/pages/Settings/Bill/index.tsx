@@ -1,5 +1,5 @@
 import SettingLayout from "@/Components/SettingLayout";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     AlertColor,
     Grid, IconButton, InputAdornment,
@@ -18,13 +18,14 @@ import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import Cookies from "js-cookie";
+import url from '@/Api';
 
 const formValidationSchema = yup.object({});
 
 let alertColor: AlertColor | undefined;
-const Bills = ({formData, setCurrentStep, setFormData, client}: any) => {
+const Bills = ({ formData, setCurrentStep, setFormData, client }: any) => {
     const Cook = Cookies.get('TokenLogin')
     const [Clients, setClients] = useState([])
     const [Guids, setGuids] = useState('')
@@ -92,167 +93,335 @@ const Bills = ({formData, setCurrentStep, setFormData, client}: any) => {
         onSubmit: async (values) => {
             const Submite = async () => {
                 const config = {
-                        headers: {
-                            'Content-type': 'multipart/form-data',
-                            'Authorization': `Bearer ${Cook}`,
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Authorization': `Bearer ${Cook}`,
                     },
-                    };
+                };
 
-            try {
-                const formData = new FormData();
-                if (uploadedFile) {
-                    formData.append('file', uploadedFile);
-                }
+                try {
+                    const formData = new FormData();
+                    if (uploadedFile) {
+                        formData.append('file', uploadedFile);
+                    }
 
-                const response = await axios.post(
-                    'https://farhangian.birkar.ir/api/Excel/PostExcel',
-                    formData,
-                    config
-                );
+                    const response = await axios.post(
+                        `${url}/api/Excel/ShaghelinExcel`,
+                        formData,
+                        config
+                    );
 
-                if (response.status === 200) {
-                    handleFileReset();
-                    setMessage('فایل اکسل با موفقیت ارسال شد');
-                    setTypeMessage('success');
+                    if (response.status === 200) {
+                        handleFileReset();
+                        setMessage('فایل اکسل با موفقیت ارسال شد');
+                        setTypeMessage('success');
+                        setOpenMessage(true);
+                        formik.resetForm();
+                    }
+                } catch (error: any) {
+                    setTypeMessage('error');
                     setOpenMessage(true);
-                    formik.resetForm();
+                    setMessage(error.response.data.message);
                 }
-            } catch (error: any) {
-                setTypeMessage('error');
-                setOpenMessage(true);
-                setMessage(error.response.data.message);
-            }
-        };
+            };
 
-        Submite();
-    },
-}
-)
-;
+            Submite();
+        },
+    }
+    ) ;
 
+    const [uploadedFileNameBazneshastegan, setUploadedFileNameBazneshastegan] = useState('');
+    const [uploadedFileBazneshastegan, setUploadedFileBazneshastegan] = useState(null);
+    const handleFileUploadsBazneshastegan = (event: any) => {
+        const files = event.target.files;
 
-return (
-    <SettingLayout>
-        <Grid item container lg={12} mt={5} justifyContent={'center'}>
-            <Grid item container lg={11} borderRadius={2} boxShadow={5} bgcolor={'white.main'}>
-                <form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
-                    <Grid item container justifyContent={'space-evenly'} lg={12} p={2}>
-                        <Grid item container lg={10} p={2}>
-                            <FormControl sx={{width: {lg: '100%', xs: 220, md: 350}}}>
-                                <Stack direction="row" alignItems="center" spacing={2}>
-                                    {!uploadedFileName && (
-                                        <MTButton
-                                            selectimages
-                                            sx={{
-                                                // backgroundColor: "white",
-                                                // color: "black.main",
-                                                // fontSize: "1rem",
-                                                // border: "1px dashed rgba(0, 0, 0, 0.12)",
-                                                width: "100%",
-                                                height: "45px",
-                                                boxShadow: "none",
-                                                // "&:hover": {
-                                                //     backgroundColor: "#FAFAFA",
-                                                //     boxShadow: "none"
-                                                // }
-                                            }}
-                                            startIcon={<CloudUploadRoundedIcon/>}
-                                            variant="contained"
-                                            component="label"
-                                        >
-                                            <Typography variant={'h1'} color={'black.main'}>اپلود فایل اکسل</Typography>
-                                            <input
-                                                hidden
-                                                accept="xlsx"
-                                                multiple
-                                                type="file"
-                                                onChange={handleFileUploads}
+        if (files && files.length > 0) {
+            const file = files[0];
+            setUploadedFileBazneshastegan(file);
+            setUploadedFileNameBazneshastegan(file.name);
+        }
+    };
+
+    const handleClickClearBazneshastegan = () => {
+        setUploadedFileBazneshastegan(null);
+        setUploadedFileNameBazneshastegan('');
+    };
+
+    const handleFileResetBazneshategan = () => {
+        setUploadedFileBazneshastegan(null);
+        setUploadedFileNameBazneshastegan('');
+    };
+
+    const formikBazNeshastegan = useFormik({
+        initialValues: {},
+        validationSchema: formValidationSchema,
+        onSubmit: async (values) => {
+            const Submite = async () => {
+                const config = {
+                    headers: {
+                        'Content-type': 'multipart/form-data',
+                        'Authorization': `Bearer ${Cook}`,
+                    },
+                };
+
+                try {
+                    const formData = new FormData();
+                    if (uploadedFileBazneshastegan) {
+                        formData.append('file', uploadedFileBazneshastegan);
+                    }
+
+                    const response = await axios.post(
+                        `${url}/api/Excel/BazneshasteExcel`,
+                        formData,
+                        config
+                    );
+
+                    if (response.status === 200) {
+                        handleFileReset();
+                        setMessage('فایل اکسل با موفقیت ارسال شد');
+                        setTypeMessage('success');
+                        setOpenMessage(true);
+                        formik.resetForm();
+                    }
+                } catch (error: any) {
+                    setTypeMessage('error');
+                    setOpenMessage(true);
+                    setMessage(error.response.data.message);
+                }
+            };
+
+            Submite();
+        },
+    }
+    ) ;
+
+    return (
+        <SettingLayout>
+            <Grid item container lg={12} mt={5} justifyContent={'center'}>
+                <Grid item container lg={11} borderRadius={2} boxShadow={5} bgcolor={'white.main'}>
+                    <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
+                        <Grid item container justifyContent={'space-evenly'} lg={12} p={2}>
+                            <Grid item container lg={10} p={2}>
+                                <FormControl sx={{ width: { lg: '100%', xs: 220, md: 350 } }}>
+                                    <Stack direction="row" alignItems="center" spacing={2}>
+                                        {!uploadedFileName && (
+                                            <MTButton
+                                                selectimages
+                                                sx={{
+                                                    // backgroundColor: "white",
+                                                    // color: "black.main",
+                                                    // fontSize: "1rem",
+                                                    // border: "1px dashed rgba(0, 0, 0, 0.12)",
+                                                    width: "100%",
+                                                    height: "45px",
+                                                    boxShadow: "none",
+                                                    // "&:hover": {
+                                                    //     backgroundColor: "#FAFAFA",
+                                                    //     boxShadow: "none"
+                                                    // }
+                                                }}
+                                                startIcon={<CloudUploadRoundedIcon />}
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                <Typography variant={'h1'} color={'black.main'}>اپلود فایل اکسل شاغلین</Typography>
+                                                <input
+                                                    hidden
+                                                    accept="xlsx"
+                                                    multiple
+                                                    type="file"
+                                                    onChange={handleFileUploads}
+                                                />
+                                            </MTButton>
+                                        )}
+                                        {uploadedFileName && (
+                                            <TextField
+                                                variant="outlined"
+                                                value={uploadedFileName}
+                                                disabled
+                                                sx={{
+                                                    width: "100%"
+                                                }}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <DescriptionRoundedIcon />
+                                                        </InputAdornment>
+                                                    ),
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleClickClear}
+                                                                edge="end"
+                                                            >
+                                                                <ClearIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
                                             />
-                                        </MTButton>
-                                    )}
-                                    {uploadedFileName && (
-                                        <TextField
-                                            variant="outlined"
-                                            value={uploadedFileName}
-                                            disabled
-                                            sx={{
-                                                width: "100%"
-                                            }}
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <DescriptionRoundedIcon/>
-                                                    </InputAdornment>
-                                                ),
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            aria-label="toggle password visibility"
-                                                            onClick={handleClickClear}
-                                                            edge="end"
-                                                        >
-                                                            <ClearIcon/>
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                    )}
-                                </Stack>
-                            </FormControl>
+                                        )}
+                                    </Stack>
+                                </FormControl>
+                            </Grid>
+                            <Grid item container lg={2} p={2}>
+                                <MTButton submite type="submit">
+                                    <Typography variant={'caption'}>ارسال</Typography>
+                                </MTButton>
+                            </Grid>
                         </Grid>
-                        <Grid item container lg={2} p={2}>
-                            <MTButton submite type="submit">
-                                <Typography variant={'caption'}>ارسال</Typography>
-                            </MTButton>
+
+
+                        {/*<TableContainer style={{overflowX: 'auto', maxWidth: 1350}}>*/}
+                        {/*    <Table component={Paper}>*/}
+                        {/*        <TableHead>*/}
+                        {/*            <TableRow>*/}
+                        {/*                {Object.keys(Clients[0] ?? '').map((column, index) => (*/}
+                        {/*                    <TableCell key={index}>{column}</TableCell>*/}
+                        {/*                ))}*/}
+                        {/*            </TableRow>*/}
+                        {/*        </TableHead>*/}
+                        {/*        <TableBody>*/}
+                        {/*            {currentData.map((object, rowIndex) => (*/}
+                        {/*                <TableRow key={rowIndex}>*/}
+                        {/*                    {columns.map((column, colIndex) => (*/}
+                        {/*                        <TableCell key={colIndex}>{object[column]}</TableCell>*/}
+                        {/*                    ))}*/}
+                        {/*                </TableRow>*/}
+                        {/*            ))}*/}
+                        {/*        </TableBody>*/}
+                        {/*    </Table>*/}
+                        {/*</TableContainer>*/}
+                        {/*<TablePagination*/}
+                        {/*    rowsPerPageOptions={[5, 10, 20, 30, 40, 100]}*/}
+                        {/*    component="div"*/}
+                        {/*    count={Clients.length}*/}
+                        {/*    rowsPerPage={rowsPerPage}*/}
+                        {/*    page={currentPage}*/}
+                        {/*    onPageChange={handleChangePage}*/}
+                        {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
+                        {/*/>*/}
+
+
+                    </form>
+
+                    <form onSubmit={formikBazNeshastegan.handleSubmit} style={{ width: '100%' }}>
+                        <Grid item container justifyContent={'space-evenly'} lg={12} p={2}>
+                            <Grid item container lg={10} p={2}>
+                                <FormControl sx={{ width: { lg: '100%', xs: 220, md: 350 } }}>
+                                    <Stack direction="row" alignItems="center" spacing={2}>
+                                        {!uploadedFileNameBazneshastegan && (
+                                            <MTButton
+                                                selectimages
+                                                sx={{
+                                                    // backgroundColor: "white",
+                                                    // color: "black.main",
+                                                    // fontSize: "1rem",
+                                                    // border: "1px dashed rgba(0, 0, 0, 0.12)",
+                                                    width: "100%",
+                                                    height: "45px",
+                                                    boxShadow: "none",
+                                                    // "&:hover": {
+                                                    //     backgroundColor: "#FAFAFA",
+                                                    //     boxShadow: "none"
+                                                    // }
+                                                }}
+                                                startIcon={<CloudUploadRoundedIcon />}
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                <Typography variant={'h1'} color={'black.main'}>اپلود فایل اکسل بازنشستگان</Typography>
+                                                <input
+                                                    hidden
+                                                    accept="xlsx"
+                                                    multiple
+                                                    type="file"
+                                                    onChange={handleFileUploadsBazneshastegan}
+                                                />
+                                            </MTButton>
+                                        )}
+                                        {uploadedFileNameBazneshastegan && (
+                                            <TextField
+                                                variant="outlined"
+                                                value={uploadedFileNameBazneshastegan}
+                                                disabled
+                                                sx={{
+                                                    width: "100%"
+                                                }}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <DescriptionRoundedIcon />
+                                                        </InputAdornment>
+                                                    ),
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleClickClearBazneshastegan}
+                                                                edge="end"
+                                                            >
+                                                                <ClearIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        )}
+                                    </Stack>
+                                </FormControl>
+                            </Grid>
+                            <Grid item container lg={2} p={2}>
+                                <MTButton submite type="submit">
+                                    <Typography variant={'caption'}>ارسال</Typography>
+                                </MTButton>
+                            </Grid>
                         </Grid>
-                    </Grid>
 
 
-                    {/*<TableContainer style={{overflowX: 'auto', maxWidth: 1350}}>*/}
-                    {/*    <Table component={Paper}>*/}
-                    {/*        <TableHead>*/}
-                    {/*            <TableRow>*/}
-                    {/*                {Object.keys(Clients[0] ?? '').map((column, index) => (*/}
-                    {/*                    <TableCell key={index}>{column}</TableCell>*/}
-                    {/*                ))}*/}
-                    {/*            </TableRow>*/}
-                    {/*        </TableHead>*/}
-                    {/*        <TableBody>*/}
-                    {/*            {currentData.map((object, rowIndex) => (*/}
-                    {/*                <TableRow key={rowIndex}>*/}
-                    {/*                    {columns.map((column, colIndex) => (*/}
-                    {/*                        <TableCell key={colIndex}>{object[column]}</TableCell>*/}
-                    {/*                    ))}*/}
-                    {/*                </TableRow>*/}
-                    {/*            ))}*/}
-                    {/*        </TableBody>*/}
-                    {/*    </Table>*/}
-                    {/*</TableContainer>*/}
-                    {/*<TablePagination*/}
-                    {/*    rowsPerPageOptions={[5, 10, 20, 30, 40, 100]}*/}
-                    {/*    component="div"*/}
-                    {/*    count={Clients.length}*/}
-                    {/*    rowsPerPage={rowsPerPage}*/}
-                    {/*    page={currentPage}*/}
-                    {/*    onPageChange={handleChangePage}*/}
-                    {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
-                    {/*/>*/}
+                        {/*<TableContainer style={{overflowX: 'auto', maxWidth: 1350}}>*/}
+                        {/*    <Table component={Paper}>*/}
+                        {/*        <TableHead>*/}
+                        {/*            <TableRow>*/}
+                        {/*                {Object.keys(Clients[0] ?? '').map((column, index) => (*/}
+                        {/*                    <TableCell key={index}>{column}</TableCell>*/}
+                        {/*                ))}*/}
+                        {/*            </TableRow>*/}
+                        {/*        </TableHead>*/}
+                        {/*        <TableBody>*/}
+                        {/*            {currentData.map((object, rowIndex) => (*/}
+                        {/*                <TableRow key={rowIndex}>*/}
+                        {/*                    {columns.map((column, colIndex) => (*/}
+                        {/*                        <TableCell key={colIndex}>{object[column]}</TableCell>*/}
+                        {/*                    ))}*/}
+                        {/*                </TableRow>*/}
+                        {/*            ))}*/}
+                        {/*        </TableBody>*/}
+                        {/*    </Table>*/}
+                        {/*</TableContainer>*/}
+                        {/*<TablePagination*/}
+                        {/*    rowsPerPageOptions={[5, 10, 20, 30, 40, 100]}*/}
+                        {/*    component="div"*/}
+                        {/*    count={Clients.length}*/}
+                        {/*    rowsPerPage={rowsPerPage}*/}
+                        {/*    page={currentPage}*/}
+                        {/*    onPageChange={handleChangePage}*/}
+                        {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
+                        {/*/>*/}
 
 
-                </form>
-
-
-                <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
-                        <Typography variant={'caption'}>{message}</Typography>
-                    </Alert>
-                </Snackbar>
+                    </form>
+                    <Snackbar open={openMessage} autoHideDuration={4500}
+                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
+                            <Typography variant={'caption'}>{message}</Typography>
+                        </Alert>
+                    </Snackbar>
+                </Grid>
             </Grid>
-        </Grid>
-    </SettingLayout>
-)
+        </SettingLayout>
+    )
 }
 
 export default Bills

@@ -441,10 +441,15 @@ a {
 }
 
 @keyframes slideRight {
-    0% {
+   from {
         transform: translateX(100%);
     }
-    100% {
-        transform: translateX(-1500%);
+    to {
+        transform: translateX(-150%);
     }
 }
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }

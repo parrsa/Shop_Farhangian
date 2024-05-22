@@ -8,6 +8,7 @@ import DashboardLayout from "@/Components/Dashboard/Layout";
 import Image from "next/image";
 import MyImage from "@/Assets/images/megaphone-laptop-screen-orange-background-ai-digital-illustration_803320-1252 1.png";
 import { useRouter } from "next/router";
+import url from '@/Api';
 
 
 const tileData = [
@@ -72,7 +73,7 @@ const MasterCraftsmanDetails = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/News/GetById?id=${router.query.Newsid}`);
+            const response = await fetch(`${url}/api/News/GetById?id=${router.query.Newsid}`);
             const data = await response.json();
             setOstan(data.data);
         };
@@ -107,51 +108,57 @@ const MasterCraftsmanDetails = () => {
     return (
         <DashboardLayout>
             <Grid container lg={12} md={12}>
-                <Grid item container justifyContent="center" lg={12} md={6} sm={6}>
-                    <Grid item container lg={12} alignItems={"end"} height={{ lg: '15vh' }}>
-                        <Grid item container lg={12} justifyContent={"center"} alignItems={'center'} height={{ lg: '10vh' }}>
-                            <Grid item container lg={12} alignItems={'center '} justifyContent={'space-evenly'} >
-                                <Typography variant="h4" color={colors.black.main}>اخبار</Typography>
-                                <Divider sx={{ width: { lg: '85%', xs: '100%' }, marginRight: 2 }} style={{
+                <Grid item container justifyContent="center" lg={12} md={12} sm={12}>
+                    <Grid item container lg={12} alignItems={"end"} >
+                        <Grid item container lg={12} alignItems={'center '} p={5} justifyContent={'center'} >
+                            <Typography variant="h4" color={colors.black.main}>اخبار : {ostan.title}</Typography>
+                            {/* <Divider sx={{ width: { lg: '85%', xs: '100%' }, marginRight: 2 }} style={{
                                     display: 'flex',
                                     backgroundColor: 'gray',
                                     height: 0.1,
-                                }} />
-                            </Grid>
+                                }} /> */}
                         </Grid>
                     </Grid>
 
 
                     {/*توضیحات*/}
                     <Grid item container lg={12} justifyContent={{ xs: 'center', lg: 'center', md: 'start' }}  >
-                        <Grid item container lg={11} bgcolor={'farhangian.gray'} borderRadius={3} minHeight={'55vh'} xs={11} justifyContent={{ xs: 'center' }}>
-                            <Grid item container lg={6}  alignItems={'center'} justifyContent={'space-evenly'}>
+                        <Grid item container lg={11}>
+                            {/* <Grid item container lg={6} alignItems={'center'} justifyContent={'space-evenly'}>
                                 <Typography variant={'h4'} color={'#970C0C'}>
                                     <Typography>{ostan.title}</Typography>
                                 </Typography>
-                            </Grid>
-                            <Grid item container lg={6} justifyContent={'center'} alignItems={'center'}>
+                            </Grid> */}
+                            <Grid item container lg={12} sm={12} justifyContent={'center'}  alignItems={'start'}>
+
                                 <CardMedia
                                     sx={{
+                                        width: '90%',
                                         position: 'relative',
-                                        top: "0",
-                                        right: "-10px",
-                                        minHeight: 300,
-                                        maxHeight: 300,
-                                        borderRadius: '0.2'
+                                        minHeight: { lg: 420, xs: 200 },
+                                        maxHeight: { lg: 420, xs: 200 },
                                     }}
                                     component="img"
-                                    image={`https://farhangian.birkar.ir/${ostan.image}`}
+                                    image={`${url}/${ostan.image}`}
                                     alt="green iguana"
                                 />
                             </Grid>
                         </Grid>
 
-                        <Grid item container lg={11} borderRadius={3} minHeight={'55vh'} xs={11} justifyContent={{ xs: 'center' }}>
-                            <Typography variant={'body1'} color={'black.main'} textAlign={'justify'}>
-                                <Typography>{ostan.description}</Typography>
+                        <Grid item container lg={11} borderRadius={3} xs={11} justifyContent={{ xs: 'center' }}>
+                            <Grid item container lg={12}>
+                                <Grid item container lg={12}>
+                                    <Typography variant={'body1'} color={'black.main'} textAlign={'justify'}>
+                                        <Typography>توضیحات : </Typography>
+                                    </Typography>
+                                </Grid>
+                                <Grid item container lg={12}>
+                                    <Typography variant={'body1'} color={'black.main'} textAlign={'justify'}>
+                                        <Typography>{ostan.description}</Typography>
+                                    </Typography>
+                                </Grid>
 
-                            </Typography>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

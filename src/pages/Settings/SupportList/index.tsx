@@ -36,6 +36,7 @@ import MInput from "@/Components/Minput";
 import MTButton from "@/Components/Mbutton";
 import SettingLayout from "@/Components/SettingLayout";
 import Image from "next/image";
+import url from '@/Api';
 
 function renderItem({
                         item,
@@ -109,7 +110,7 @@ function HistoryShekayet() {
                     Authorization: `Token ${Cook}`,
                 }
             };
-            const response = await fetch(`https://farhangian.birkar.ir/api/Support/GetAll`, config)
+            const response = await fetch(`${url}/api/Support/GetAll`, config)
             const data = await response.json();
             if (!Cook) {
             } else {
@@ -152,7 +153,7 @@ function HistoryShekayet() {
     const DeleteShekayet = () => {
         const Deleted = async () => {
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Support/Delete?id=${IdDeltedShekayet}`,
+                const response = await axios.delete(`${url}/api/Support/Delete?id=${IdDeltedShekayet}`,
                 )
                 if (response.status === 200) {
                     setMessage('حذف شکایت مورد نظر با موفقیت انجام شد')

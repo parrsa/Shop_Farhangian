@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import React from "react";
 import {useRouter} from "next/router";
 import axios from "axios";
+import url from '@/Api';
 
 const Search = () => {
     const router = useRouter();
@@ -14,7 +15,7 @@ const Search = () => {
     const [DataSearch, setDataSearch] = React.useState<any>()
     React.useEffect(() => {
         const GetData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Product/Search?param=${title}`)
+            const response = await fetch(`${url}/api/Product/Search?param=${title}`)
             const data = await response.json()
             setDataSearch(data)
         }
@@ -82,7 +83,7 @@ const Search = () => {
                                                         borderRadius: '1rem'
                                                     }}
                                                     component="img"
-                                                    image={`https://farhangian.birkar.ir/${item.image}`}
+                                                    image={`${url}/${item.image}`}
                                                     alt="green iguana"
                                                 />
                                                 <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -103,11 +104,11 @@ const Search = () => {
                                                                 <Typography gutterBottom variant="h1" component="h2" >
                                                                     {item?.isTakhfif ? (
                                                                         <>
-                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
 
                                                                         </>
                                                                     )}
@@ -143,7 +144,7 @@ const Search = () => {
                                                             </Grid>
                                                                 <Grid item container lg={8} justifyContent={'end'}>
                                                                     <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                                                                     </Typography>
                                                                 </Grid>
                                                             </Grid>

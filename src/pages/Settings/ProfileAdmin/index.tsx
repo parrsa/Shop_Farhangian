@@ -9,6 +9,8 @@ import {useFormik} from "formik";
 import axios from "axios";
 import {useCookies} from "react-cookie";
 import * as yup from "yup";
+import url from '@/Api';
+
 const formValidationSchema = yup.object({
     phone: yup.string().required('نام کاربری الزامی است'),
     pass: yup.string().required('رمزعبور الزامی است'),
@@ -40,7 +42,7 @@ const ProfileAdmin=()=>{
                     }
                 }
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/User/Login`,
+                    const response = await axios.post(`${url}/api/User/Login`,
                         {
                             codePersonneli: values.phone,
                             password: values.pass,

@@ -4,7 +4,7 @@ import {
     Box, Button, FormControlLabel, FormHelperText,
     Grid,
     IconButton,
-    InputAdornment, InputLabel, List, Modal, OutlinedInput, RadioGroup, Select,
+    InputAdornment, InputLabel, List, Modal, OutlinedInput, Pagination, RadioGroup, Select,
     Stack,
     TextField,
     Typography
@@ -36,6 +36,7 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Cookies from "js-cookie";
 import Radio from '@mui/material/Radio';
+import url from '@/Api';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -52,6 +53,10 @@ const style = {
 const formValidationSchemasEdite = yup.object({
     title: yup.string().required('عنوان متن الزامی است'),
 });
+const formValidationSchemasSub = yup.object({
+    title: yup.string().required('عنوان متن الزامی است'),
+});
+
 
 const formValidationSchemas = yup.object({
     title: yup.string().required('عنوان متن الزامی است'),
@@ -71,8 +76,11 @@ const PageSetting = () => {
     const [typeMessage, setTypeMessage] = React.useState('')
     const [message, setMessage] = React.useState('')
     const [Category, setCategory] = React.useState<any[]>([]);
+    const [SubCategory, setSubCategory] = React.useState<any[]>([]);
     const [opens, setOpen] = React.useState(false);
     const [CategoryId, setIdCategoryNames] = React.useState<any>();
+    const [CategoryIdForSub, setIdCategoryNamesForSub] = React.useState<any>();
+    const [CategoryIdForSubAddProduct, setIdCategoryNamesForSubAddProduct] = React.useState<any>();
     const [Cate, setCate] = React.useState<any>();
     const [ModalProduct, setModalProduct] = React.useState(false)
     const [ModalProductEdit, setModalProductEdit] = React.useState(false)
@@ -80,7 +88,7 @@ const PageSetting = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Category/GetAll')
+            const response = await fetch(`${url}/api/Category/GetAll`)
             const data = await response.json();
             setCategory(data.data);
         }
@@ -93,6 +101,15 @@ const PageSetting = () => {
     const handleOpenEdite = (item: any) => {
         SetIdEdit(item)
         setOpen(true)
+    }
+
+
+    const [OpenModalAddSubCategory, setOpenModalAddSubCategory] = React.useState(false)
+    const handleOpenAddSubCategory = () => {
+        setOpenModalAddSubCategory(true)
+    }
+    const handelCloseModalAddSubCategory = () => {
+        setOpenModalAddSubCategory(false)
     }
 
     const [OpenModalAddCategory, setOpenModalAddCategory] = React.useState(false)
@@ -112,9 +129,34 @@ const PageSetting = () => {
                 },
             };
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Category/Delete?id=${item}`, config)
+                const response = await axios.delete(`${url}/api/Category/Delete?id=${item}`, config)
                 if (response.status === 200) {
                     setMessage('حذف دسته مورد نظر با موفقیت انجام شد')
+                    setTypeMessage('warning')
+                    setOpenMessage(true)
+                }
+            } catch (error: any) {
+                setTypeMessage('error')
+                setOpenMessage(true)
+                setMessage(error.message)
+            }
+        }
+        Deleted()
+    }
+
+    const handelDeletedSub = (item: any) => {
+        const Deleted = async () => {
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${Cook}`,
+
+                },
+            };
+            try {
+                const response = await axios.delete(`${url}/api/SubCategory/Delete?id=${item}`, config)
+                if (response.status === 200) {
+                    setMessage('حذف زیر دسته مورد نظر با موفقیت انجام شد')
                     setTypeMessage('warning')
                     setOpenMessage(true)
                 }
@@ -135,7 +177,7 @@ const PageSetting = () => {
                 }
             };
             try {
-                const response = await axios.delete(`https://farhangian.birkar.ir/api/Product/Delete?id=${id}`, config)
+                const response = await axios.delete(`${url}/api/Product/Delete?id=${id}`, config)
                 if (response.status === 200) {
                     setMessage('حذف محصول  با موفقیت انجام شد')
                     setTypeMessage('warning')
@@ -169,7 +211,7 @@ const PageSetting = () => {
                 try {
                     setLoadingCategory(true)
                     const response = await axios.post(
-                        'https://farhangian.birkar.ir/api/Category/Create',
+                        `${url}/api/Category/Create`,
                         {
                             "categoryName": values.title
                         },
@@ -196,7 +238,53 @@ const PageSetting = () => {
         },
     });
 
+    const formiksAddSubCategory = useFormik({
+        initialValues: {
+            title: '',
+        },
+        validationSchema: formValidationSchemasSub,
+        onSubmit: (values) => {
+            console.log('p')
+            const Submite = async () => {
 
+                const config = {
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${Cook}`,
+
+                    },
+                };
+
+                try {
+                    setLoadingCategory(true)
+                    const response = await axios.post(
+                        `${url}/api/SubCategory/Create`,
+                        {
+                            "subCategoryName": values.title,
+                            "categoryId": CategoryIdForSub
+                        },
+                        config
+                    );
+
+                    if (response.status === 200) {
+                        setMessage('با موفقیت اضافه شد');
+                        setTypeMessage('success');
+                        setOpenMessage(true);
+                        formiksAddSubCategory.resetForm();
+                        setOpenModalAddSubCategory(false)
+                        // setLoadingCategory(false)
+                    }
+                } catch (error: any) {
+                    setTypeMessage('error');
+                    setOpenMessage(true);
+                    setMessage(error.message);
+                    setLoadingCategory(false)
+                }
+            };
+
+            Submite();
+        },
+    });
 
 
     const formiksEditeCategory = useFormik({
@@ -217,7 +305,7 @@ const PageSetting = () => {
                 try {
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/Category/Edit',
+                        `${url}/api/Category/Edit`,
                         {
                             "id": IdEdit,
                             "categoryName": values.title
@@ -244,7 +332,7 @@ const PageSetting = () => {
     });
     useMemo(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Category/GetById?id=${CategoryId}`)
+            const response = await fetch(`${url}/api/Category/GetById?id=${CategoryId}`)
             const data = await response.json();
             setCate(data?.data);
 
@@ -254,16 +342,34 @@ const PageSetting = () => {
     }, [])
 
     const [Products, setProduct] = React.useState<[]>([])
+    const [page, setPage] = useState(1);
+    const productsPerPage = 6; // Number of products per page
+
+    const handleChangePage = (event: any, newPage: any) => {
+        setPage(newPage);
+    };
+
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetByCategoryId?id=${CategoryId}`)
+            // https://tmfn2sna.ir/=1
+            const response = await fetch(`${url}/api/Category/GetById?id=${CategoryId}`)
+            const data = await response.json();
+            setSubCategory(data.data)
+            // setProduct(data.data);
+        }
+        getData()
+    }, [CategoryId, SubCategory])
+
+    useEffect(() => {
+        const getData = async () => {
+            const response = await fetch(`${url}/api/Product/GetBySubCategoryId?id=${CategoryIdForSubAddProduct}`)
             const data = await response.json();
             setProduct(data.data);
         }
         getData()
-    }, [CategoryId])
+    }, [Products, CategoryIdForSubAddProduct])
 
-    const product = Cate?.map((item: any) => (item.products.map((item: any) => (item))))
+    const product = Cate?.map((item: any) => (item?.products?.map((item: any) => (item))))
 
     const ShowModalProduct = (item: any) => {
         setModalProduct(true)
@@ -279,12 +385,15 @@ const PageSetting = () => {
 
 
     const [valueTakhfif, setValueTakhfif] = React.useState('');
+    const [valueGheymat, setValueGheymat] = React.useState('');
     const [CategoryIdProdcutADD, setIdCategoryNamesProductAdd] = React.useState<any>();
     const [DarsadeTakhfif, setDarsadeTakhfif] = React.useState<any>();
     const [GheymatTakhfif, setGheymatTakhfif] = React.useState<any>();
     const [Gheymat, setGheymat] = React.useState<any>();
     let GheymatNahai = (Gheymat * DarsadeTakhfif / 100 - Gheymat)
-
+    const handleRadioChangeGheymat = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValueGheymat((event.target as HTMLInputElement).value);
+    };
     const handleRadioChangeTakhfif = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueTakhfif((event.target as HTMLInputElement).value);
     };
@@ -311,9 +420,17 @@ const PageSetting = () => {
                     const formData = new FormData();
                     formData.append('Name', values.title);
                     formData.append('Tedad', values.Tedad);
-                    formData.append('Gheymat', Gheymat);
-                    formData.append('CategoryId', CategoryIdProdcutADD);
+                    // formData.append('CategoryId', CategoryIdProdcutADD);
+                    formData.append('SubCategoryId', CategoryIdForSubAddProduct);
                     formData.append('Description', values.Description);
+                    if (valueGheymat == 'best') {
+                        formData.append('Gheymat', Gheymat);
+                        formData.append('baGheymat', 'true');
+
+                    } else {
+                        formData.append('baGheymat', 'false');
+                    }
+
                     if (valueTakhfif == 'best') {
                         formData.append('DarsadeTakhfif', DarsadeTakhfif);
 
@@ -334,7 +451,7 @@ const PageSetting = () => {
 
 
                     const response = await axios.post(
-                        'https://farhangian.birkar.ir/api/Product/Create',
+                        `${url}/api/Product/Create`,
                         formData,
                         config
                     );
@@ -374,7 +491,7 @@ const PageSetting = () => {
                         'Authorization': `Bearer ${Cook}`,
                     },
                 };
-                const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetById?param=${item}`, config)
+                const response = await fetch(`${url}/api/Product/GetById?param=${item}`, config)
                 const data = await response.json();
                 setEditDate(data)
             } catch (error) {
@@ -483,8 +600,10 @@ const PageSetting = () => {
     };
 
 
+    let GheymatNahai2 = (Number(gheymate?.gheymate) * Number(darsadtakhfif.darsadtakhfif) / 100 - Number(gheymate.gheymate))
+    // (gheymate?.gheymate * darsadtakhfif.darsadtakhfif / 100 - gheymate.gheymate)
 
-    let GheymatNahai1 = (Number(gheymate.gheymate) * Number(darsadtakhfif.darsadtakhfif) / 100 - Number(gheymate.gheymate))
+    let GheymatNahai1 = (Number(gheymate?.gheymate) * Number(darsadtakhfif.darsadtakhfif) / 100 - Number(gheymate.gheymate))
     const [CategoryIdProdcutADDEdit, setIdCategoryNamesProductAddEdit] = React.useState<any>();
 
     const [uploadedFileEdit, setUploadedFileEdit] = useState(null);
@@ -524,14 +643,23 @@ const PageSetting = () => {
                     const formData = new FormData();
                     formData.append('Name', name.name);
                     formData.append('Tedad', tedad.tedad);
-                    formData.append('Gheymat', gheymate.gheymate);
-                    formData.append('CategoryId', CategoryIdProdcutADDEdit);
+                    // formData.append('Gheymat', gheymate.gheymate);
+                    // formData.append('CategoryId', CategoryIdProdcutADDEdit);
+                    formData.append('SubCategoryId', CategoryIdForSubAddProduct);
+                    if (valueGheymat == 'best') {
+                        formData.append('Gheymat', gheymate?.gheymate);
+                        formData.append('baGheymat', 'true');
+
+                    } else {
+                        formData.append('baGheymat', 'false');
+                    }
+
                     formData.append('Description', description.descriptions);
                     formData.append('Id', idEdite);
                     if (istakhfifedit == 'best') {
                         formData.append('DarsadeTakhfif', darsadtakhfif.darsadtakhfif);
 
-                        formData.append('GheymatNahai', GheymatNahai1.toString());
+                        formData.append('GheymatNahai', GheymatNahai2.toString());
                         // formData.append('GheymatNahai', '100');
 
                         formData.append('isTakhfif', 'true');
@@ -548,7 +676,7 @@ const PageSetting = () => {
 
 
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/Product/Edit',
+                        `${url}/api/Product/Edit`,
                         formData,
                         config
                     );
@@ -558,7 +686,7 @@ const PageSetting = () => {
                         setMessage('با موفقیت اضافه شد');
                         setTypeMessage('success');
                         setOpenMessage(true);
-                        formiksAdd.resetForm();
+                        formiksEditProduct.resetForm();
                         setOpen(false)
                         setGheymat('')
                         setDarsadeTakhfif('')
@@ -587,6 +715,7 @@ const PageSetting = () => {
     };
 
 
+    let nameof = SubCategory?.map(item => item.subCategories?.find((cate: any) => (cate.id == CategoryIdForSubAddProduct)))
 
 
     return (
@@ -636,6 +765,86 @@ const PageSetting = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
+                            </>
+                        ))}
+                    </Grid>
+
+                    <Grid item container lg={10} p={2} justifyContent={'space-between'} alignItems={'center'} mt={2}>
+                        <Typography variant={'h1'}>زیر دسته های موجود :</Typography>
+
+                    </Grid>
+                    <Grid item container lg={10} justifyContent={'space-between'} alignItems={'center'} mt={2}>
+                        <Grid item container lg={6} p={2}>
+                            <FormControl fullWidth>
+                                <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
+                                    id="demo-controlled-open-select-label">انتخاب دسته</InputLabel>
+                                <Select
+                                    labelId="demo-controlled-open-select-label"
+                                    name="gens"
+                                    native
+                                    defaultValue=""
+                                    id="gens"
+                                    value={CategoryId}
+                                    onChange={(e: any) => setIdCategoryNames(e.target.value)}
+                                    // onBlur={formiks.handleBlur}
+                                    // error={formiks.touched.gens && Boolean(formiks.errors.gens)}
+                                    label="انتخاب دسته"
+                                    sx={{ width: '16rem', height: '3.2rem', fontFamily: 'Shabname' }}>
+                                    <>
+                                        <option aria-label="None" value="" />
+                                        {Category?.map((item) => (
+                                            <>
+                                                <option value={item.id} key={item.id}>{item.categoryName}</option>
+                                            </>
+                                        ))}
+                                    </>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <MTButton onClick={handleOpenAddSubCategory} submite> <AddIcon fontSize={'small'} /> اضافه کردن
+                        </MTButton>
+                    </Grid>
+                    <Grid item container boxShadow={5} mt={2} borderRadius={2} lg={10} height={'50vh'}
+                        justifyContent={'center'} overflow={'auto'}>
+                        {SubCategory?.map((item: any) => (
+                            <>
+
+                                {item.subCategories.map((item: any) => (
+                                    <>
+                                        <Grid item container lg={10} xs={10} maxHeight={'8vh'} minHeight={'8vh'}
+                                            bgcolor={'white.main'}
+                                            boxShadow={'1px 1px 10px 1px #C4C4C4'} my={1} borderRadius={1}
+                                            justifyContent={{
+                                                lg: 'space-between',
+                                                md: 'space-between',
+                                                xs: 'space-between',
+                                            }} alignItems={'center'}>
+                                            <Grid item container lg={4} xs={12} justifyContent={'center'}
+                                                alignItems={"center"}>
+                                                <Typography variant="h1" color={colors.yellow.main}>زیر دسته
+                                                    : <span>{item.subCategoryName}</span> </Typography>
+                                            </Grid>
+
+                                            <Grid item container lg={2} xs={12} justifyContent={'center'} alignItems={"end"}
+                                            >
+                                                <Grid item container lg={4}>
+                                                    <Typography sx={{ cursor: "pointer" }}
+                                                        onClick={() => handleOpenEdite(item.id)}
+                                                        variant="h1" color={colors.red.main}><Image src={Edite}
+                                                            alt={'icons'} />
+                                                        <span style={{ color: colors.black.main }}></span></Typography>
+                                                </Grid>
+                                                <Grid item container lg={4}>
+                                                    <Typography sx={{ cursor: "pointer" }}
+                                                        onClick={() => handelDeletedSub(item.id)}
+                                                        variant="h1" color={colors.red.main}><Image src={Trash}
+                                                            alt={'icons'} />
+                                                        <span style={{ color: colors.black.main }}></span></Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid></>
+                                ))}
+
                             </>
                         ))}
                     </Grid>
@@ -689,6 +898,89 @@ const PageSetting = () => {
                         </Box>
                     </Modal>
 
+                    {/* SubCate */}
+                    <Modal
+                        open={OpenModalAddSubCategory}
+                        onClose={handelCloseModalAddSubCategory}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <>
+
+                            <Box sx={style} width={{ lg: 800 }}>
+                                <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12}
+                                    sm={12} bgcolor={'white.main'}>
+                                    <Grid item container lg={12} >
+                                        <Typography color={'black.main'}>اضافه کردن زیر دسته</Typography>
+                                    </Grid>
+                                    <hr />
+                                    <List sx={{ width: '100%' }}>
+                                        <form onSubmit={formiksAddSubCategory.handleSubmit} style={{ width: '100%' }}>
+                                            <Grid item container lg={12} >
+                                                <Grid item container lg={6}>
+                                                    <FormControl fullWidth>
+                                                        <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
+                                                            id="demo-controlled-open-select-label">انتخاب دسته</InputLabel>
+                                                        <Select
+                                                            labelId="demo-controlled-open-select-label"
+                                                            name="gens"
+                                                            native
+                                                            defaultValue=""
+                                                            id="gens"
+                                                            value={CategoryIdForSub}
+                                                            onChange={(e: any) => setIdCategoryNamesForSub(e.target.value)}
+                                                            // onBlur={formiks.handleBlur}
+                                                            // error={formiks.touched.gens && Boolean(formiks.errors.gens)}
+                                                            label="انتخاب دسته"
+                                                            sx={{ width: '16rem', height: '3.2rem', fontFamily: 'Shabname' }}>
+                                                            <>
+                                                                <option aria-label="None" value="" />
+                                                                {Category?.map((item) => (
+                                                                    <>
+                                                                        <option value={item.id} key={item.id}>{item.categoryName}</option>
+                                                                    </>
+                                                                ))}
+                                                            </>
+                                                        </Select>
+                                                    </FormControl>
+                                                </Grid>
+                                                <Grid item container lg={6}>
+                                                    <FormControl fullWidth>
+                                                        <InputLabel sx={{
+                                                            marginTop: "-15px",
+                                                            fontFamily: 'Yekan Bakh Medium',
+                                                            fontSize: "1.2rem",
+                                                            fontWeight: "bold !important",
+                                                            color: colors.black.main + "!important",
+
+                                                        }} shrink htmlFor="bootstrap-input">
+                                                            عنوان متن :
+                                                        </InputLabel>
+                                                        <MInput
+                                                            popup
+                                                            minRows={0}
+                                                            multiline
+                                                            id="title"
+                                                            name="title"
+                                                            value={formiksAddSubCategory.values.title}
+                                                            onChange={formiksAddSubCategory.handleChange}
+                                                            onBlur={formiksAddSubCategory.handleBlur}
+                                                            error={formiksAddSubCategory.touched.title && Boolean(formiksAddSubCategory.errors.title)}
+                                                            helperText={formiksAddSubCategory.touched.title && formiksAddSubCategory.errors.title}
+                                                        />
+                                                    </FormControl></Grid>
+                                            </Grid>
+                                            <Grid item container lg={12} justifyContent={'end'} mt={2} p={2}>
+                                                <MTButton submite type="submit">
+                                                    {loading ? "در حال ارسال..." : "ثبت "}
+                                                </MTButton>
+                                            </Grid>
+                                        </form>
+                                    </List>
+                                </Grid>
+                            </Box>
+                        </>
+                    </Modal>
 
                     {/*EditCategory*/}
                     <Modal
@@ -745,7 +1037,7 @@ const PageSetting = () => {
                         </Grid>
 
                         <Grid item container lg={12} mb={{ lg: 8 }} alignItems={'center'}>
-                            <Grid item container lg={6} p={2}>
+                            <Grid item container lg={4} p={2}>
                                 <FormControl fullWidth>
                                     <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
                                         id="demo-controlled-open-select-label">انتخاب دسته</InputLabel>
@@ -773,9 +1065,46 @@ const PageSetting = () => {
                                 </FormControl>
                             </Grid>
 
+                            <Grid item container lg={4} p={2}>
+                                <FormControl fullWidth>
+                                    <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
+                                        id="demo-controlled-open-select-label">انتخاب زیر دسته</InputLabel>
+                                    <Select
+                                        labelId="demo-controlled-open-select-label"
+                                        name="gens"
+                                        native
+                                        defaultValue=""
+                                        id="gens"
+                                        value={CategoryIdForSubAddProduct}
+                                        onChange={(e: any) => setIdCategoryNamesForSubAddProduct(e.target.value)}
+                                        // onBlur={formiks.handleBlur}
+                                        // error={formiks.touched.gens && Boolean(formiks.errors.gens)}
+                                        label="انتخاب زیر دسته"
+                                        sx={{ width: '16rem', height: '3.2rem', fontFamily: 'Shabname' }}>
+                                        <>
+                                            <option aria-label="None" value="" />
+                                            {SubCategory?.map((item: any) => (
+                                                <>
+
+                                                    {item.subCategories.map((item: any) => (
+                                                        <>
+                                                            <option value={item.id} key={item.id}>{item.subCategoryName}</option>
+
+                                                        </>
+                                                    ))}
+
+                                                </>
+                                            ))}
+                                        </>
+                                    </Select>
 
 
-                            <Grid item container lg={6} justifyContent={'end'} alignItems={'center'}>
+                                </FormControl>
+                            </Grid>
+
+
+
+                            <Grid item container lg={4} justifyContent={'end'} alignItems={'center'}>
                                 <MTButton submite onClick={ShowModalProduct} sx={{ marginTop: 2, height: '3.3rem' }}>اضافه
                                     کردن محصول</MTButton>
                             </Grid>
@@ -785,8 +1114,8 @@ const PageSetting = () => {
 
                         <Grid item container lg={12} xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} borderRadius={2} boxShadow={5} justifyContent={"space-between"}>
                             <Grid container item justifyContent={'space-around'} rowGap={0} marginTop={{ xs: 10, md: 0 }} columns={{ xs: 2, sm: 8, md: 12, lg: 10 }} sx={{ overflow: 'hidden', }}>
+                                {Products?.slice((page - 1) * productsPerPage, page * productsPerPage).map((item: any, index: any) => (
 
-                                {Products?.map((item: any, index: any) => (
                                     <>
                                         <Grid key={index} marginTop={{ lg: 2 }} item sx={{
                                             display: "flex", justifyContent: "space-between",
@@ -831,7 +1160,7 @@ const PageSetting = () => {
                                                             borderRadius: '1rem'
                                                         }}
                                                         component="img"
-                                                        image={`https://farhangian.birkar.ir/${item.image}`}
+                                                        image={`${url}/${item.image}`}
                                                         alt="green iguana"
                                                     />
                                                     <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -853,11 +1182,11 @@ const PageSetting = () => {
                                                                             <Typography gutterBottom variant="h1" component="h2" >
                                                                                 {item?.isTakhfif ? (
                                                                                     <>
-                                                                                        {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                                        {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
-                                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
                                                                                     </>
                                                                                 )}
@@ -892,7 +1221,7 @@ const PageSetting = () => {
                                                                             </Grid>
                                                                             <Grid item container lg={8} justifyContent={'end'}>
                                                                                 <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ریال
+                                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                                 </Typography>
                                                                             </Grid>
                                                                         </Grid>
@@ -904,12 +1233,12 @@ const PageSetting = () => {
                                                         ) : (<>
                                                             <Grid item container lg={12} flexDirection={'column'} >
                                                                 <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                                    <Grid item container lg={3}>
+                                                                    {/* <Grid item container lg={3}>
                                                                         <Typography gutterBottom variant="h1" component="h2">
                                                                             محصول :
                                                                         </Typography>
-                                                                    </Grid>
-                                                                    <Grid item container lg={9} justifyContent={'start'}>
+                                                                    </Grid> */}
+                                                                    <Grid item container lg={12} justifyContent={'center'}>
                                                                         <Typography gutterBottom variant="h1" component="h2" >
                                                                             {item?.name}
                                                                         </Typography>
@@ -971,7 +1300,13 @@ const PageSetting = () => {
                                         </Grid>
                                     </>
                                 ))}
+
                             </Grid>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                                {Products && Products.length > 0 && (
+                                    <Pagination count={Math.ceil(Products.length / productsPerPage)} page={page} onChange={handleChangePage} />
+                                )}
+                            </Box>
 
                         </Grid>
                         {/*AddProduct*/}
@@ -985,7 +1320,7 @@ const PageSetting = () => {
                                 <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12}
                                     sm={12} bgcolor={'white.main'}>
                                     <Grid item container lg={12} justifyContent={'center'}>
-                                        <Typography color={'black.main'}>اضافه کردن محصول در دسته</Typography>
+                                        <Typography color={'black.main'}>اضافه کردن محصول در دسته{nameof?.map((item: any) => item?.subCategoryName)}</Typography>
                                     </Grid>
                                     <List sx={{ width: '100%' }}>
                                         <form onSubmit={formiksAdd.handleSubmit} style={{ width: '100%' }}>
@@ -1104,7 +1439,7 @@ const PageSetting = () => {
                                                         />
                                                     </FormControl>
 
-                                                    <FormControl>
+                                                    {/* <FormControl>
                                                         <InputLabel sx={{
                                                             marginTop: "-15px",
                                                             fontFamily: 'Yekan Bakh Medium',
@@ -1127,9 +1462,9 @@ const PageSetting = () => {
                                                         // error={formiksAdd.touched.Gheymat && Boolean(formiksAdd.errors.Gheymat)}
                                                         // helperText={formiksAdd.touched.Gheymat && formiksAdd.errors.Gheymat}
                                                         />
-                                                    </FormControl>
+                                                    </FormControl> */}
 
-                                                    <FormControl >
+                                                    {/* <FormControl >
                                                         <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
                                                             id="demo-controlled-open-select-label">انتخاب دسته</InputLabel>
                                                         <Select
@@ -1153,11 +1488,70 @@ const PageSetting = () => {
                                                                 ))}
                                                             </>
                                                         </Select>
-                                                    </FormControl>
+                                                    </FormControl> */}
 
                                                 </Grid>
 
+                                                <Grid item container lg={12} p={2} color={'black.main'} alignItems={'center'}
+                                                    justifyContent={''}>
+                                                    <Typography ml={{ lg: 2 }} color={'black.main'} id="demo-error-radios" variant={'h1'}>ایا قیمت دارد ؟</Typography>
+                                                    <RadioGroup
+                                                        row
+                                                        sx={{ marginRight: { lg: 2 }, color: 'black.main' }}
+                                                        name="quiz"
+                                                        value={valueGheymat}
+                                                        onChange={handleRadioChangeGheymat}
+                                                    >
+                                                        <FormControlLabel sx={{
+                                                            direction: 'rtl',
+                                                            marginLeft: { lg: 3 },
+                                                            '& .MuiFormControlLabel-label': {
+                                                                color: 'black.main',
+                                                                fontWeight: 900,
+                                                                lineHeight: 1.2
+                                                            }
+                                                        }} value="best" label="بله" control={<Radio />} />
+                                                        <FormControlLabel sx={{
+                                                            direction: 'rtl', '& .MuiFormControlLabel-label': {
+                                                                color: 'black.main',
+                                                                fontWeight: 900,
+                                                                lineHeight: 1.2
+                                                            }
+                                                        }} value="worst" control={<Radio />} label="خیر" />
+                                                    </RadioGroup>
 
+                                                    {valueGheymat == 'best' && (
+                                                        <>
+                                                            <Grid item container justifyContent={'space-between'} mt={{ lg: 3 }} mb={{ lg: 3 }} lg={12}>
+                                                                <FormControl>
+                                                                    <InputLabel sx={{
+                                                                        marginTop: "-15px",
+                                                                        fontFamily: 'Yekan Bakh Medium',
+                                                                        fontSize: "1.2rem",
+                                                                        fontWeight: "bold !important",
+                                                                        color: colors.black.main + "!important",
+
+                                                                    }} shrink htmlFor="bootstrap-input">
+                                                                        قیمت :
+                                                                    </InputLabel>
+                                                                    <MInput
+                                                                        popup
+                                                                        name="Gheymat"
+                                                                        id='Gheymat'
+                                                                        value={Gheymat}
+                                                                        onChange={(e: any) => setGheymat(e.target.value)}
+                                                                        // value={formiksAdd.values.Gheymat}
+                                                                        // onChange={formiksAdd.handleChange}
+                                                                        onBlur={formiksAdd.handleBlur}
+                                                                    // error={formiksAdd.touched.Gheymat && Boolean(formiksAdd.errors.Gheymat)}
+                                                                    // helperText={formiksAdd.touched.Gheymat && formiksAdd.errors.Gheymat}
+                                                                    />
+                                                                </FormControl>
+                                                            </Grid>
+
+                                                        </>
+                                                    )}
+                                                </Grid>
                                                 <Grid item container lg={12} p={2} color={'black.main'} alignItems={'center'}
                                                     justifyContent={''}>
                                                     <Typography ml={{ lg: 2 }} color={'black.main'} id="demo-error-radios" variant={'h1'}>ایا تخفیف دارد ؟</Typography>
@@ -1312,7 +1706,7 @@ const PageSetting = () => {
                                 <Grid item container m={0} mb={0} p={0} position={'relative'} lg={12} md={12} xs={12}
                                     sm={12} bgcolor={'white.main'}>
                                     <Grid item container lg={12} justifyContent={'center'}>
-                                        <Typography color={'black.main'}>اضافه کردن محصول در دسته</Typography>
+                                        <Typography color={'black.main'}>ویرایش کردن محصول در دسته {nameof?.map((item: any) => item?.subCategoryName)}</Typography>
                                     </Grid>
                                     <List sx={{ width: '100%' }}>
                                         <form onSubmit={formiksEditProduct.handleSubmit} style={{ width: '100%' }}>
@@ -1425,7 +1819,7 @@ const PageSetting = () => {
                                                         />
                                                     </FormControl>
 
-                                                    <FormControl>
+                                                    {/* <FormControl>
                                                         <InputLabel sx={{
                                                             marginTop: "-15px",
                                                             fontFamily: 'Yekan Bakh Medium',
@@ -1448,9 +1842,9 @@ const PageSetting = () => {
                                                         // error={formiksAdd.touched.Gheymat && Boolean(formiksAdd.errors.Gheymat)}
                                                         // helperText={formiksAdd.touched.Gheymat && formiksAdd.errors.Gheymat}
                                                         />
-                                                    </FormControl>
+                                                    </FormControl> */}
 
-                                                    <FormControl >
+                                                    {/* <FormControl >
                                                         <InputLabel sx={{ color: 'black.main', fontFamily: 'Shabname' }}
                                                             id="demo-controlled-open-select-label">انتخاب دسته</InputLabel>
                                                         <Select
@@ -1474,10 +1868,71 @@ const PageSetting = () => {
                                                                 ))}
                                                             </>
                                                         </Select>
-                                                    </FormControl>
+                                                    </FormControl> */}
 
                                                 </Grid>
 
+                                                {/* edite */}
+                                                <Grid item container lg={12} p={2} color={'black.main'} alignItems={'center'}
+                                                    justifyContent={''}>
+                                                    <Typography ml={{ lg: 2 }} color={'black.main'} id="demo-error-radios" variant={'h1'}>ایا قیمت دارد ؟</Typography>
+                                                    <RadioGroup
+                                                        row
+                                                        sx={{ marginRight: { lg: 2 }, color: 'black.main' }}
+                                                        name="quiz"
+                                                        value={valueGheymat}
+                                                        onChange={handleRadioChangeGheymat}
+                                                    >
+                                                        <FormControlLabel sx={{
+                                                            direction: 'rtl',
+                                                            marginLeft: { lg: 3 },
+                                                            '& .MuiFormControlLabel-label': {
+                                                                color: 'black.main',
+                                                                fontWeight: 900,
+                                                                lineHeight: 1.2
+                                                            }
+                                                        }} value="best" label="بله" control={<Radio />} />
+                                                        <FormControlLabel sx={{
+                                                            direction: 'rtl', '& .MuiFormControlLabel-label': {
+                                                                color: 'black.main',
+                                                                fontWeight: 900,
+                                                                lineHeight: 1.2
+                                                            }
+                                                        }} value="worst" control={<Radio />} label="خیر" />
+                                                    </RadioGroup>
+
+                                                    {valueGheymat == 'best' && (
+                                                        <>
+                                                            <Grid item container justifyContent={'space-between'} mt={{ lg: 3 }} mb={{ lg: 3 }} lg={12}>
+                                                                <FormControl>
+                                                                    <InputLabel sx={{
+                                                                        marginTop: "-15px",
+                                                                        fontFamily: 'Yekan Bakh Medium',
+                                                                        fontSize: "1.2rem",
+                                                                        fontWeight: "bold !important",
+                                                                        color: colors.black.main + "!important",
+
+                                                                    }} shrink htmlFor="bootstrap-input">
+                                                                        قیمت :
+                                                                    </InputLabel>
+                                                                    <MInput
+                                                                        popup
+                                                                        name="Gheymat"
+                                                                        id='Gheymat'
+                                                                        value={gheymate?.gheymate}
+                                                                        onChange={handleChangegheymate}
+                                                                        // value={formiksAdd.values.Gheymat}
+                                                                        // onChange={formiksAdd.handleChange}
+                                                                        onBlur={formiksAdd.handleBlur}
+                                                                    // error={formiksAdd.touched.Gheymat && Boolean(formiksAdd.errors.Gheymat)}
+                                                                    // helperText={formiksAdd.touched.Gheymat && formiksAdd.errors.Gheymat}
+                                                                    />
+                                                                </FormControl>
+                                                            </Grid>
+
+                                                        </>
+                                                    )}
+                                                </Grid>
 
                                                 <Grid item container lg={12} p={2} color={'black.main'} alignItems={'center'}
                                                     justifyContent={''}>

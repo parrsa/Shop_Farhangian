@@ -23,6 +23,7 @@ import logo from '@/Assets/images/HamedanLogo 1.webp'
 import BirkarSeystem from '@/Assets/images/Artboard 1 (3) 1 (1).png'
 import React from 'react';
 import { Theme, useTheme } from '@emotion/react';
+import url from '@/Api';
 
 import FormControl from "@mui/material/FormControl";
 import { useCookies } from "react-cookie";
@@ -125,7 +126,7 @@ const Login = () => {
                     }
                 }
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/User/Login`,
+                    const response = await axios.post(`${url}/api/User/Login`,
                         {
                             codePersonneli: values.phone,
                             password: values.pass,
@@ -201,7 +202,7 @@ const Login = () => {
 
                 try {
                     const response = await axios.put(
-                        'https://farhangian.birkar.ir/api/User/UpdatePassword',
+                        `${url}/api/User/UpdatePassword`,
                         {
                             'oldPass': values.NowPassword,
                             'newPass': values.NewPassword,
@@ -233,15 +234,15 @@ const Login = () => {
     return (
         <>
             <Head >
-                <title>تعاونی مصرف فرهنگیان</title>
+                <title>شرکت  تعاونی مصرف  فرهنگیان ناحیه 2 سنندج</title>
             </Head>
             <Grid item container justifyContent={'center'} alignItems={'center'} bgcolor={{ lg: '#eef1f2', xs: 'transparent', sm: 'transparent' }} height={'100vh'}>
                 <Grid item container sm={12} md={10} lg={12} height={'100vh'} >
                     <Grid item container justifyContent={'center'} alignItems={'center'} lg={6} md={6} sm={12} p={2} flexDirection={"column"}>
                         <Grid item container justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
                             <Image src={logo} alt="Website logo" width={200} height={200} />
-                            <Typography variant={'h4'} sx={{ display: { lg: 'flex', xs: 'none', sm: 'flex' } }} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
-                            <Typography variant={'h1'} sx={{ display: { lg: 'none', sm: 'none', md: 'none' } }} color={'blue.main'}>فروشگاه تعاونی مصرف کارکنان فرهنگیان</Typography>
+                            <Typography variant={'h4'} sx={{ display: { lg: 'flex', xs: 'none', sm: 'flex' } }} color={'blue.main'}>شرکت  تعاونی مصرف  فرهنگیان ناحیه 2 سنندج</Typography>
+                            <Typography variant={'h1'} sx={{ display: { lg: 'none', sm: 'none', md: 'none' } }} color={'blue.main'}>شرکت  تعاونی مصرف  فرهنگیان ناحیه 2 سنندج</Typography>
                         </Grid>
 
                         <Grid item container justifyContent={'center'} p={2} alignItems={"end"}>

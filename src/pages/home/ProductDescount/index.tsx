@@ -11,6 +11,8 @@ import Group from '@/Assets/images/Group 1 (1).png'
 import flesh from '@/Assets/images/flesh.png'
 import MyAx from '@/Assets/images/realistic-tv-screen-modern-television-lcd-panel-with-soccer-match_97886-738 1.png'
 import { Item } from "devextreme-react/cjs/accordion";
+import url from '@/Api';
+
 function ProductDiscounts() {
     const [ostan, setOstan] = React.useState<any[]>([]);
     const boxRef = useRef<HTMLDivElement>(null);
@@ -18,7 +20,7 @@ function ProductDiscounts() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch(`https://farhangian.birkar.ir/api/Product/GetProductByTakhfif`);
+            const response = await fetch(`${url}/api/Product/GetProductByTakhfif`);
             const data = await response.json();
             setOstan(data.data);
         }
@@ -29,14 +31,13 @@ function ProductDiscounts() {
     const [banner, setbaneer] = React.useState<any[]>([]);
     useEffect(() => {
         const getData = async () => {
-            const response = await fetch('https://farhangian.birkar.ir/api/Banner/GetAll')
+            const response = await fetch(`${url}/api/Banner/GetAll`)
             const data = await response.json();
             setbaneer(data.data);
         }
         getData()
-    }, [banner]);
+    }, []);
 
-    console.log(banner);
 
 
     return (
@@ -82,7 +83,7 @@ function ProductDiscounts() {
                 justifyContent={"center"}>
                 <Grid container rowGap={0} marginTop={{ xs: 0, md: 0 }} justifyContent={"space-evenly"} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
                 >
-                    {ostan.map((item, index) => (
+                    {ostan?.map((item, index) => (
                         <>
                             {(index <= 2) && (
 
@@ -125,7 +126,7 @@ function ProductDiscounts() {
                                                 borderRadius: '1rem'
                                             }}
                                             component="img"
-                                            image={`https://farhangian.birkar.ir/${item.image}`}
+                                            image={`${url}/${item.image}`}
                                             alt="green iguana"
                                         />
                                         <CardContent sx={{ position: 'relative', width: '100%' }}>
@@ -198,12 +199,12 @@ function ProductDiscounts() {
                                             ) : (<>
                                                 <Grid item container lg={12} flexDirection={'column'} >
                                                     <Grid item container lg={12} justifyContent={'start'} alignItems={'end'}>
-                                                        <Grid item container lg={3}>
+                                                        {/* <Grid item container lg={3}>
                                                             <Typography gutterBottom variant="h1" component="h2">
                                                                 محصول :
                                                             </Typography>
-                                                        </Grid>
-                                                        <Grid item container lg={9} justifyContent={'start'}>
+                                                        </Grid> */}
+                                                        <Grid item container lg={12} justifyContent={'center'}>
                                                             <Typography gutterBottom variant="h1" component="h2" >
                                                                 {item?.name}
                                                             </Typography>
@@ -241,10 +242,7 @@ function ProductDiscounts() {
                                                         </Grid>
                                                         <Grid item container lg={12} justifyContent={'start'}>
                                                             <Typography gutterBottom variant="caption" component="h2" >
-                                                                {/* {item?.description} */}
-                                                                سری جدید لباس شویی
-                                                                کارایی بهتر ، شستشو در زمان کمتر ، صرفه جویی در مصرف آب و برق
-                                                                دارای برچسب انرژی +++A
+                                                                {item?.description}
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
@@ -269,9 +267,9 @@ function ProductDiscounts() {
                 <Grid item container lg={12} mb={10} borderRadius={2} justifyContent={'space-evenly'} >
 
 
-                    {banner.map((item, index) => (
-                        <Grid item key={index} container lg={5} minHeight={{ lg: '25vh' }} boxShadow={5} xs={10} sm={5} borderRadius={3} alignItems={'center'} >
-                            <Grid item container lg={6} justifyContent={'center'}>
+                    {banner?.map((item, index) => (<>
+                        <Grid item key={index} container lg={5.5} bgcolor={item?.backColor} minHeight={{ lg: '25vh' }} boxShadow={5} xs={10} sm={5} borderRadius={3} justifyContent={'center'} alignItems={'center'} >
+                            <Grid item container lg={5} justifyContent={'center'}>
                                 <CardMedia
                                     sx={{
                                         position: 'relative',
@@ -282,21 +280,29 @@ function ProductDiscounts() {
                                         borderRadius: '0.2'
                                     }}
                                     component="img"
-                                    image={`https://farhangian.birkar.ir/${item.image}`}
+                                    image={`${url}/${item.image}`}
                                     alt="green iguana"
                                 />
                             </Grid>
-                            <Grid item container lg={6} justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
-                                <Typography variant={'body2'} color={'black.main'}>
-                                    {item.title}
-                                </Typography>
-                                <Typography variant={'body1'} color={'black.main'} textAlign={'center'} >
+                            <Grid item container lg={7} justifyContent={'center'} flexDirection={'column'} alignItems={'center'}>
+                                <Grid item container lg={11}>
+                                    <Typography variant={'body1'} sx={{
+                                        textAlign: 'justify',
+                                        lineHeight: 1.68,
+                                    }} color={item?.color}>
+                                        {item.title}
+                                    </Typography>
+                                </Grid>
+
+                                <Typography variant={'body1'} mt={2} sx={{
+                                    lineHeight: 1.68,
+                                }} color={item?.color}  >
                                     {item.description}
                                 </Typography>
                             </Grid>
                         </Grid>
+                    </>
                     ))}
-
 
                     {/* Object.entries(obj).map(
       ([k, v], i) => [k, fn(v, k, i)]

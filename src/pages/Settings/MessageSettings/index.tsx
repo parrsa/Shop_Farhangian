@@ -16,20 +16,21 @@ import FormControl from "@mui/material/FormControl";
 import MTButton from "@/Components/Mbutton";
 import 'devextreme/dist/css/dx.light.css';
 
-const eventHandlingLabel = {'aria-label': 'Event Handling'};
+const eventHandlingLabel = { 'aria-label': 'Event Handling' };
 
-import {ColorBox, ColorBoxTypes} from 'devextreme-react/color-box';
+import { ColorBox, ColorBoxTypes } from 'devextreme-react/color-box';
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ClearIcon from "@mui/icons-material/Clear";
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import axios from "axios";
 import * as yup from "yup";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import Cookies from "js-cookie";
+import url from '@/Api';
 
-const defaultModeLabel = {'aria-label': 'Default mode'};
+const defaultModeLabel = { 'aria-label': 'Default mode' };
 const formValidationSchemas = yup.object({
     phone: yup.string().required('عنوان متن الزامی است'),
 });
@@ -40,7 +41,7 @@ const PageSetting = () => {
     const [typeMessage, setTypeMessage] = React.useState('')
     const [message, setMessage] = React.useState('')
     const [color, setColor] = React.useState('#f05b41');
-    const handleColorChange = React.useCallback(({value}: ColorBoxTypes.ValueChangedEvent) => {
+    const handleColorChange = React.useCallback(({ value }: ColorBoxTypes.ValueChangedEvent) => {
         setColor(value);
     }, []);
     const [uploadedFileName, setUploadedFileName] = React.useState("");
@@ -69,13 +70,12 @@ const PageSetting = () => {
             const login = async () => {
                 const config = {
                     headers: {
-                        'Content-type': 'application/text',
+                        'Content-type': 'application/json',
                         'Authorization': `Bearer ${Cook}`,
-                    }
-                }
+                    },
+                };
                 try {
-                    const response = await axios.post(`https://farhangian.birkar.ir/api/User/SendSms?textMessage=${values.phone}`,
-                    )
+                    const response = await axios.post(`${url}/api/User/SendSms?textMessage=${values.phone}`,config )
                     if (response.status === 200) {
                         setMessage('پیامک شما با  برای تمام کاربران وبسایت ارسال  شد')
                         setTypeMessage('success')
@@ -101,8 +101,8 @@ const PageSetting = () => {
         <SettingLayout>
             <Grid item container lg={12} justifyContent={'center'} mt={2}>
                 <Grid item container lg={10} boxShadow={5} justifyContent={'space-evenly'} borderRadius={2}
-                      bgcolor={'white.main'}>
-                    <form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
+                    bgcolor={'white.main'}>
+                    <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
 
                         <Grid item container lg={12} p={2}>
                             <FormControl fullWidth>
@@ -127,8 +127,8 @@ const PageSetting = () => {
                     </form>
                 </Grid>
                 <Snackbar open={openMessage} autoHideDuration={4500}
-                          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}} onClose={handleCloseAlert}>
-                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{width: '100%'}}>
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }} onClose={handleCloseAlert}>
+                    <Alert onClose={handleCloseAlert} severity={typeMessage as AlertColor} sx={{ width: '100%' }}>
                         <Typography variant={'caption'}>{message}</Typography>
                     </Alert>
                 </Snackbar>
