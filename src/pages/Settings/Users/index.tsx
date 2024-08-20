@@ -315,46 +315,46 @@ const UserTable = () => {
                                 <MTButton onClick={getExcell} submite>خروجی</MTButton>
                                 <MTButton onClick={() => handleOpenEdite(1)} submite >اضافه کردن ادمین</MTButton>
                             </Grid>
-
-
                         </Grid>
 
                         <Grid alignItems={'center'}>
                         </Grid>
                     </Grid>
-                    <TableContainer component={Paper} sx={{ marginTop: 2, fontFamily: 'Shabname', overflow: 'auto', minWidth:'95%' , maxWidth:'95%' }}>
-                        <Table sx={{ overflow: 'auto' , }}>
-                            <TableHead>
-                                <TableRow>
-                                    {columns?.map((column, index) => (
-                                        <TableCell sx={{ fontFamily: 'Shabname' }} key={index}>{column}</TableCell>
-                                    ))}
-                                    <TableCell>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {Clients.map((item: any, index) => (
-                                    <TableRow key={index}>
-                                        {columns?.map((column, colIndex) => (
-                                            <TableCell sx={{ fontFamily: 'Shabname' }} key={colIndex}>{item[column]}</TableCell>
+                    {/* <TableContainer component={Paper} sx={{ marginTop: 2, fontFamily: 'Shabname', overflow: 'auto', minWidth: '95%', maxWidth: '95%' }}> */}
+                    <Grid item container lg={12}>
+                        <TableContainer component={Paper} sx={{ marginTop: 2, fontFamily: 'Shabname', overflow: 'auto' }}>
+                            <Table sx={{ overflow: 'auto', minWidth: '95%', maxWidth: '95%' }}>
+                                <TableHead>
+                                    <TableRow>
+                                        {columns?.map((column, index) => (
+                                            <TableCell sx={{ fontFamily: 'Shabname' }} key={index}>{column}</TableCell>
                                         ))}
-                                        <TableCell>
-                                            <>
-                                                <Button onClick={() => handleDelete(item?.id ?? '')}>
-                                                    <Image src={Trash} alt={'icons'} />
-                                                </Button>
-
-                                                <Button onClick={() => handelEditePassUser(item?.id ?? '')}>
-                                                    <Image src={Edite} alt={'icons'} />
-                                                </Button>
-                                            </>
-                                        </TableCell>
+                                        <TableCell>Actions</TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {Clients.map((item: any, index) => (
+                                        <TableRow key={index}>
+                                            {columns?.map((column, colIndex) => (
+                                                <TableCell sx={{ fontFamily: 'Shabname' }} key={colIndex}>{item[column]}</TableCell>
+                                            ))}
+                                            <TableCell>
+                                                <>
+                                                    <Button onClick={() => handleDelete(item?.id ?? '')}>
+                                                        <Image src={Trash} alt={'icons'} />
+                                                    </Button>
 
+                                                    <Button onClick={() => handelEditePassUser(item?.id ?? '')}>
+                                                        <Image src={Edite} alt={'icons'} />
+                                                    </Button>
+                                                </>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
                     <Pagination
                         count={Math.ceil(totalItems / itemsPerPage)}
                         page={page}

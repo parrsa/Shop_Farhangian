@@ -79,19 +79,20 @@ function ProductDiscounts() {
             {/*</Grid>*/}
 
 
-            <Grid item container xs={12} md={12} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
+            <Grid item container xs={12} md={12} bgcolor={colors.red[450]} textAlign={{ xs: "center", md: "center" }} alignItems={"center"}
                 justifyContent={"center"}>
-                <Grid container rowGap={0} marginTop={{ xs: 0, md: 0 }} justifyContent={"space-evenly"} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
+                <Grid container bgcolor={colors.red[450]} rowGap={0} marginTop={{ xs: 0, md: 0 }} justifyContent={"space-evenly"} columns={{ xs: 2, sm: 8, md: 12, lg: 12 }}
                 >
                     {ostan?.map((item, index) => (
                         <>
                             {(index <= 2) && (
 
-                                <Box className={'box'} key={index} ref={boxRef} my={4}>
+                                <Box className={'box'}  key={index} ref={boxRef} my={4}>
                                     <Card className={'shadow'} ref={elRef}
                                         sx={{
                                             width: '290px',
-                                            height: (item?.gheymat) ? '360px' : '380px',
+                                            backgroundColor: 'red',
+                                            height: (item?.gheymat) ? '420px' : '420px',
                                             borderRadius: '1rem',
                                             outline: "none",
                                             border: 'none',
@@ -121,19 +122,19 @@ function ProductDiscounts() {
                                                 position: 'absolute',
                                                 top: "0",
                                                 right: "0",
-                                                minHeight: 200,
-                                                maxHeight: 200,
+                                                minHeight: 300,
+                                                maxHeight: 300,
                                                 borderRadius: '1rem'
                                             }}
                                             component="img"
                                             image={`${url}/${item.image}`}
                                             alt="green iguana"
                                         />
-                                        <CardContent sx={{ position: 'relative', width: '100%' }}>
+                                        <CardContent sx={{ position: 'relative', width: '100%', backgroundColor: colors.black.main }} >
                                             {(item?.gheymat) ? (
                                                 <>
                                                     <Grid item container lg={12} mt={2} flexDirection={'column'} >
-                                                        <Grid item container lg={12} alignItems={'end'} justifyContent={'center'} >
+                                                        <Grid item container lg={12} alignItems={'center'} justifyContent={'center'} >
                                                             <Typography gutterBottom variant="h1" component="h2">
                                                                 {item?.name}
                                                             </Typography>

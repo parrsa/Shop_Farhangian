@@ -46,7 +46,7 @@ function NewProduct() {
                     {news.slice(0, 3).map((item: any, index: number) => (
                         <Box key={index} ref={boxRef} my={4}>
                             <Link href={`/News/${item.id}`}>
-                                <Card sx={{ width: '300px', height: "380px", borderRadius: '1rem', outline: "none", border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "center", boxShadow: 2, transition: 'box-shadow 0.3s', '&:hover': { cursor: "pointer", boxShadow: 10 } }}>
+                                <Card sx={{ width: '300px', height: "400px", borderRadius: '1rem', outline: "none", border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: "center", boxShadow: 2, transition: 'box-shadow 0.3s', '&:hover': { cursor: "pointer", boxShadow: 10 } }}>
                                     <CardMedia sx={{ position: 'relative', top: "0", right: "0", minHeight: 300, maxHeight: 300 }} component="img" image={`${url}/${item.image}`} alt="news image" />
                                     <CardContent sx={{ position: 'relative', textAlign: 'center', display: 'flex', flexDirection: "column", alignItems: 'center' }}>
                                         <Typography gutterBottom variant="h1" component="h2">

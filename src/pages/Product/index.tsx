@@ -53,7 +53,7 @@ function Clubs() {
     return (
         <DashboardLayout>
             <Grid container zIndex={10} item xs={12} md={12} sm={12} marginTop={5} justifyContent={"center"}>
-                <Grid item container xs={12} marginRight={{lg:7 , xs:0 , sm:0}} md={12} sm={12} justifyContent={"center"} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} flexDirection={"column"} >
+                <Grid item container xs={12} marginRight={{ lg: 7, xs: 0, sm: 0 }} md={12} sm={12} justifyContent={"center"} textAlign={{ xs: "center", md: "center" }} alignItems={"center"} flexDirection={"column"} >
                     <Typography variant="h4" color={colors.black.main}>{CheckTitle?.subCategoryName}</Typography>
                     <Typography variant="subtitle2" mt={{ lg: 2 }}>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </Typography>
                 </Grid>
@@ -72,14 +72,14 @@ function Clubs() {
                                             <Card className={'shadow'} ref={elRef}
                                                 sx={{
                                                     width: '280px',
-                                                    height: "360px",
+                                                    height: "430px",
                                                     borderRadius: '1rem',
                                                     outline: "none",
                                                     border: 'none',
                                                     display: 'flex',
                                                     flexDirection: 'column',
                                                     alignItems: 'center',
-                                                    justifyContent: "end",
+                                                    justifyContent: "center",
                                                     transition: 'box-shadow 0.3s',
                                                     boxShadow: 5,
                                                     '&:hover': {
@@ -102,8 +102,8 @@ function Clubs() {
                                                         position: 'absolute',
                                                         top: "0",
                                                         right: "0",
-                                                        minHeight: 200,
-                                                        maxHeight: 200,
+                                                        minHeight: 300,
+                                                        maxHeight: 300,
                                                         borderRadius: '1rem'
                                                     }}
                                                     component="img"

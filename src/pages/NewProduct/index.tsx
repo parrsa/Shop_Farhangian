@@ -66,8 +66,9 @@ function Clubs() {
                                     <Card className={'shadow'} ref={elRef}
                                         sx={{
                                             width: '290px',
-                                            height: (item?.gheymat) ? '360px' : '380px',
+                                            height: (item?.gheymat) ? '450px' : '420px',
                                             borderRadius: '1rem',
+
                                             outline: "none",
                                             border: 'none',
                                             display: 'flex',
@@ -96,19 +97,20 @@ function Clubs() {
                                                 position: 'absolute',
                                                 top: "0",
                                                 right: "0",
-                                                minHeight: 200,
-                                                maxHeight: 200,
+                                                minHeight: 300,
+                                                maxHeight: 300,
+                                                marginBottom:20,
                                                 borderRadius: '1rem'
                                             }}
                                             component="img"
                                             image={`${url}/${item.image}`}
                                             alt="green iguana"
                                         />
-                                        <CardContent sx={{ position: 'relative', width: '100%' }}>
+                                        <CardContent sx={{ position: 'relative', width: '100%', }}>
                                             {(item?.gheymat) ? (
                                                 <>
-                                                    <Grid item container lg={12} mt={2} flexDirection={'column'} >
-                                                        <Grid item container lg={12} alignItems={'end'} justifyContent={'center'} >
+                                                    <Grid item container lg={12} mt={2}   flexDirection={'column'} >
+                                                        <Grid item container lg={12}  alignItems={'end'} justifyContent={'center'} >
                                                             <Typography gutterBottom variant="h1" component="h2">
                                                                 {item?.name}
                                                             </Typography>
@@ -123,11 +125,11 @@ function Clubs() {
                                                                 <Typography gutterBottom variant="h1" component="h2" >
                                                                     {item?.isTakhfif ? (
                                                                         <>
-                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                            {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                            {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
                                                                         </>
                                                                     )}
@@ -162,7 +164,7 @@ function Clubs() {
                                                                 </Grid>
                                                                 <Grid item container lg={8} justifyContent={'end'}>
                                                                     <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                        {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                     </Typography>
                                                                 </Grid>
                                                             </Grid>

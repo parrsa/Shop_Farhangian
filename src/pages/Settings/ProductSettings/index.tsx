@@ -1125,7 +1125,7 @@ const PageSetting = () => {
                                                 <Card className={'shadow'} ref={elRef}
                                                     sx={{
                                                         width: '290px',
-                                                        height: (item?.gheymat) ? '360px' : '380px',
+                                                        height: (item?.gheymat) ? '450px' : '420px',
                                                         borderRadius: '1rem',
                                                         outline: "none",
                                                         border: 'none',
@@ -1155,8 +1155,8 @@ const PageSetting = () => {
                                                             position: 'absolute',
                                                             top: "0",
                                                             right: "0",
-                                                            minHeight: 200,
-                                                            maxHeight: 200,
+                                                            minHeight: 300,
+                                                            maxHeight: 300,
                                                             borderRadius: '1rem'
                                                         }}
                                                         component="img"

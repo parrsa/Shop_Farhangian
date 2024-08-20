@@ -75,7 +75,7 @@ const PageSetting = () => {
                     },
                 };
                 try {
-                    const response = await axios.post(`${url}/api/User/SendSms?textMessage=${values.phone}`,config )
+                    const response = await axios.post(`${url}/api/User/SendSms?textMessage=${values.phone}`,config)
                     if (response.status === 200) {
                         setMessage('پیامک شما با  برای تمام کاربران وبسایت ارسال  شد')
                         setTypeMessage('success')

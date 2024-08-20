@@ -67,7 +67,7 @@ function Clubs() {
                                             <Card className={'shadow'} ref={elRef}
                                                 sx={{
                                                     width: '290px',
-                                                    height: (item?.gheymat) ? '360px' : '380px',
+                                                    height: (item?.gheymat) ? '450px' : '420px',
                                                     borderRadius: '1rem',
                                                     outline: "none",
                                                     border: 'none',
@@ -97,8 +97,8 @@ function Clubs() {
                                                         position: 'absolute',
                                                         top: "0",
                                                         right: "0",
-                                                        minHeight: 200,
-                                                        maxHeight: 200,
+                                                        minHeight: 300,
+                                                        maxHeight: 300,
                                                         borderRadius: '1rem'
                                                     }}
                                                     component="img"
@@ -124,11 +124,11 @@ function Clubs() {
                                                                         <Typography gutterBottom variant="h1" component="h2" >
                                                                             {item?.isTakhfif ? (
                                                                                 <>
-                                                                                    {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                                    {item?.gheymatNahai?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                                 </>
                                                                             ) : (
                                                                                 <>
-                                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                                    {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 
                                                                                 </>
                                                                             )}
@@ -163,7 +163,7 @@ function Clubs() {
                                                                         </Grid>
                                                                         <Grid item container lg={8} justifyContent={'end'}>
                                                                             <Typography gutterBottom variant="caption" component="h2" color={'grey.500'} style={{ textDecoration: "line-through" }}>
-                                                                                {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                                                                                {item?.gheymat?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                                             </Typography>
                                                                         </Grid>
                                                                     </Grid>
